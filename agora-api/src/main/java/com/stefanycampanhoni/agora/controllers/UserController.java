@@ -1,19 +1,21 @@
 package com.stefanycampanhoni.agora.controllers;
 
-import com.stefanycampanhoni.agora.controllers.dtos.UserRequest;
-import com.stefanycampanhoni.agora.controllers.dtos.UserResponse;
-import com.stefanycampanhoni.agora.controllers.mappers.UserMapper;
-import com.stefanycampanhoni.agora.models.User;
+import com.stefanycampanhoni.agora.dtos.TokenResponse;
+import com.stefanycampanhoni.agora.dtos.UserLoginRequest;
+import com.stefanycampanhoni.agora.dtos.UserRequest;
+import com.stefanycampanhoni.agora.dtos.UserResponse;
+import com.stefanycampanhoni.agora.mappers.UserMapper;
 import com.stefanycampanhoni.agora.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
+@Tag(name = "Usuários", description = "Endpoints para gerenciamento de usuários")
 public class UserController {
 
     @Autowired
@@ -23,34 +25,23 @@ public class UserController {
     private UserMapper userMapper;
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
-        User createdUser = userService.createUser(userMapper.toUser(userRequest));
-        return ResponseEntity.ok(userMapper.toUserResponse(createdUser));
+    @Operation(summary = "Registrar", description = "Registra um novo usuário")
+    public ResponseEntity<TokenResponse> register(@RequestBody UserRequest userRequest) {
+        TokenResponse token = userService.register(userMapper.toUser(userRequest));
+        return ResponseEntity.ok(token);
     }
 
-    @GetMapping
-    public ResponseEntity<List<UserResponse>> getAllUsers() {
-        List<UserResponse> response = userService.getAllUsers().stream()
-                .map(userMapper::toUserResponse)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(response);
+    @PostMapping(path = "/login")
+    @Operation(summary = "Logar", description = "Autentica um usuário existente")
+    public ResponseEntity<TokenResponse> login(@RequestBody UserLoginRequest userRequest) {
+        TokenResponse token = userService.login(userMapper.toUser(userRequest));
+        return ResponseEntity.ok(token);
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obter Usuário por ID", description = "Retorna os detalhes de um usuário específico pelo ID")
     public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
         UserResponse response = userMapper.toUserResponse(userService.getUserById(id));
         return ResponseEntity.ok(response);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserRequest userRequest) {
-        User updatedUser = userService.updateUser(id, userMapper.toUser(userRequest));
-        return ResponseEntity.ok(userMapper.toUserResponse(updatedUser));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
     }
 }
