@@ -6,9 +6,6 @@ import com.stefanycampanhoni.agora.models.User;
 import com.stefanycampanhoni.agora.repositories.UserRepository;
 import com.stefanycampanhoni.agora.security.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +17,6 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     @Autowired
     private AuthService authService;
@@ -38,9 +32,7 @@ public class UserService {
     }
 
     public TokenResponse login(User user) {
-        var authToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-        Authentication authentication = authenticationManager.authenticate(authToken);
-        return new TokenResponse(authService.generateToken(authentication));
+        return new TokenResponse(authService.generateToken(user));
     }
 
     public User getUserById(Long id) {

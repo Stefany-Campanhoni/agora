@@ -1,5 +1,6 @@
 package com.stefanycampanhoni.agora.security;
 
+import com.stefanycampanhoni.agora.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,7 +20,7 @@ public class AuthService {
     @Autowired
     private JwtEncoder jwtEncoder;
 
-    public String generateToken(Authentication authentication) {
+    public String generateToken(User authentication) {
         Instant now = Instant.now();
         String issuer = "agora-api";
 
@@ -31,8 +32,8 @@ public class AuthService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer(issuer)
                 .issuedAt(now)
-                .expiresAt(now.plus(10, ChronoUnit.MINUTES))
-                .subject(authentication.getName())
+                .expiresAt(now.plus(1, ChronoUnit.MINUTES))
+                .subject(authentication.getUsername())
                 .claim("scope", scope)
                 .build();
 
