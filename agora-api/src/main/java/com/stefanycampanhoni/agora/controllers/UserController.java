@@ -1,14 +1,17 @@
 package com.stefanycampanhoni.agora.controllers;
 
-import com.stefanycampanhoni.agora.dtos.TokenResponse;
-import com.stefanycampanhoni.agora.dtos.UserLoginRequest;
-import com.stefanycampanhoni.agora.dtos.UserRequest;
-import com.stefanycampanhoni.agora.dtos.UserResponse;
-import com.stefanycampanhoni.agora.mappers.UserMapper;
+import com.stefanycampanhoni.agora.controllers.dtos.TokenResponse;
+import com.stefanycampanhoni.agora.controllers.dtos.UserLoginRequest;
+import com.stefanycampanhoni.agora.controllers.dtos.UserRequest;
+import com.stefanycampanhoni.agora.controllers.dtos.UserResponse;
+import com.stefanycampanhoni.agora.controllers.mappers.AuthMapper;
+import com.stefanycampanhoni.agora.controllers.mappers.UserMapper;
+import com.stefanycampanhoni.agora.security.Token;
 import com.stefanycampanhoni.agora.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,18 +27,23 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private AuthMapper authMapper;
+
     @PostMapping
     @Operation(summary = "Registrar", description = "Registra um novo usuário")
     public ResponseEntity<TokenResponse> register(@RequestBody UserRequest userRequest) {
-        TokenResponse token = userService.register(userMapper.toUser(userRequest));
-        return ResponseEntity.ok(token);
+        Token token = userService.register(userMapper.toUser(userRequest));
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(authMapper.toResponse(token));
     }
 
     @PostMapping(path = "/login")
     @Operation(summary = "Logar", description = "Autentica um usuário existente")
     public ResponseEntity<TokenResponse> login(@RequestBody UserLoginRequest userRequest) {
-        TokenResponse token = userService.login(userMapper.toUser(userRequest));
-        return ResponseEntity.ok(token);
+        Token token = userService.login(userMapper.toUser(userRequest));
+        return ResponseEntity.ok(authMapper.toResponse(token));
     }
 
     @GetMapping("/{id}")

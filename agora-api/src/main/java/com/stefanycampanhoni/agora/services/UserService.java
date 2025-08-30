@@ -1,10 +1,11 @@
 package com.stefanycampanhoni.agora.services;
 
-import com.stefanycampanhoni.agora.dtos.TokenResponse;
+import com.stefanycampanhoni.agora.exceptions.user.InvalidCredentialsException;
 import com.stefanycampanhoni.agora.exceptions.user.UserNotFoundException;
 import com.stefanycampanhoni.agora.models.User;
 import com.stefanycampanhoni.agora.repositories.UserRepository;
 import com.stefanycampanhoni.agora.security.AuthService;
+import com.stefanycampanhoni.agora.security.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class UserService {
     @Autowired
     private AuthService authService;
 
-    public TokenResponse register(User user) {
+    public Token register(User user) {
         String originalPassword = user.getPassword();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -31,8 +32,16 @@ public class UserService {
         return login(user);
     }
 
-    public TokenResponse login(User user) {
-        return new TokenResponse(authService.generateToken(user));
+    public Token login(User user) {
+        if (!passwordEncoder.matches(user.getPassword(), getUserByEmail(user.getEmail()).getPassword())) {
+            throw new InvalidCredentialsException();
+        }
+        return authService.generateToken(user);
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
     }
 
     public User getUserById(Long id) {

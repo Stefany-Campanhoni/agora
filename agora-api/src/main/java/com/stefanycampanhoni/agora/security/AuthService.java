@@ -2,7 +2,6 @@ package com.stefanycampanhoni.agora.security;
 
 import com.stefanycampanhoni.agora.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -20,7 +19,10 @@ public class AuthService {
     @Autowired
     private JwtEncoder jwtEncoder;
 
-    public String generateToken(User authentication) {
+    @Autowired
+    private TokenRepository tokenRepository;
+
+    public Token generateToken(User authentication) {
         Instant now = Instant.now();
         String issuer = "agora-api";
 
@@ -32,13 +34,14 @@ public class AuthService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer(issuer)
                 .issuedAt(now)
-                .expiresAt(now.plus(1, ChronoUnit.MINUTES))
+                .expiresAt(now.plus(10, ChronoUnit.MINUTES))
                 .subject(authentication.getUsername())
                 .claim("scope", scope)
                 .build();
 
         JwsHeader jwsHeader = JwsHeader.with(() -> "HS256").build();
 
-        return jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
+        String token = jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
+        return tokenRepository.save(new Token(null, token, authentication));
     }
 }

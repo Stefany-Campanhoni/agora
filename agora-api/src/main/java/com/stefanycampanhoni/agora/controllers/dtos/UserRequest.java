@@ -1,6 +1,7 @@
-package com.stefanycampanhoni.agora.dtos;
+package com.stefanycampanhoni.agora.controllers.dtos;
 
 import jakarta.validation.constraints.Email;
+import jdk.jfr.Enabled;
 
 public record UserRequest(
         String name,

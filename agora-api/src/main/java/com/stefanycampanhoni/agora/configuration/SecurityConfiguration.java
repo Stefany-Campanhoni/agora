@@ -1,7 +1,7 @@
 package com.stefanycampanhoni.agora.configuration;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
-import com.stefanycampanhoni.agora.security.JwtSecret;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,13 +21,12 @@ import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
 @EnableWebSecurity
-@EnableConfigurationProperties(JwtSecret.class)
 public class SecurityConfiguration {
 
     private final SecretKeySpec jwtKey;
 
-    public SecurityConfiguration(JwtSecret jwtSecret) {
-        this.jwtKey = new SecretKeySpec(jwtSecret.secret().getBytes(), "HmacSHA256");
+    public SecurityConfiguration(@Value("${jwt.secret}") String jwtSecret) {
+        this.jwtKey = new SecretKeySpec(jwtSecret.getBytes(), "HmacSHA256");
     }
 
     @Bean
@@ -38,7 +37,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder())))

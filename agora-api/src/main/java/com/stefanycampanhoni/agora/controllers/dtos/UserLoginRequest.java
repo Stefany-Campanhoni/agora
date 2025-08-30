@@ -1,4 +1,4 @@
-package com.stefanycampanhoni.agora.dtos;
+package com.stefanycampanhoni.agora.controllers.dtos;
 
 public record UserLoginRequest(
         String email,

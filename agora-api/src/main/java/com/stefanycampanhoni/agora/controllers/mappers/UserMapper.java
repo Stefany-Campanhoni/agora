@@ -1,8 +1,8 @@
-package com.stefanycampanhoni.agora.mappers;
+package com.stefanycampanhoni.agora.controllers.mappers;
 
-import com.stefanycampanhoni.agora.dtos.UserLoginRequest;
-import com.stefanycampanhoni.agora.dtos.UserRequest;
-import com.stefanycampanhoni.agora.dtos.UserResponse;
+import com.stefanycampanhoni.agora.controllers.dtos.UserLoginRequest;
+import com.stefanycampanhoni.agora.controllers.dtos.UserRequest;
+import com.stefanycampanhoni.agora.controllers.dtos.UserResponse;
 import com.stefanycampanhoni.agora.models.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
