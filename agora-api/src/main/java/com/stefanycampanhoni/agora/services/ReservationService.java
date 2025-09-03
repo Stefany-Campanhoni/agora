@@ -1,6 +1,7 @@
 package com.stefanycampanhoni.agora.services;
 
 import com.stefanycampanhoni.agora.models.Reservation;
+import com.stefanycampanhoni.agora.models.User;
 import com.stefanycampanhoni.agora.repositories.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,9 @@ public class ReservationService {
         return repository.findAll();
     }
 
-    public Reservation createReservation(Reservation reservation) {
+    public Reservation createReservation(Reservation reservation, User user) {
+        reservation.setReservedBy(user);
+
         if (!isValidReservation(reservation)) {
             throw new IllegalArgumentException("Invalid reservation: Time slot is either invalid or overlaps with an existing reservation.");
         }
