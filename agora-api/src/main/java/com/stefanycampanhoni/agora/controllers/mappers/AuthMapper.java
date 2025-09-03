@@ -7,6 +7,5 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface AuthMapper {
-    @Mapping(source = "token", target = "token.token")
     TokenResponse toResponse(Token token);
 }

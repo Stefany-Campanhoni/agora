@@ -1,9 +1,9 @@
 package com.stefanycampanhoni.agora.controllers;
 
 import com.stefanycampanhoni.agora.controllers.dtos.TokenResponse;
-import com.stefanycampanhoni.agora.controllers.dtos.UserLoginRequest;
-import com.stefanycampanhoni.agora.controllers.dtos.UserRequest;
-import com.stefanycampanhoni.agora.controllers.dtos.UserResponse;
+import com.stefanycampanhoni.agora.controllers.dtos.user.UserLoginRequest;
+import com.stefanycampanhoni.agora.controllers.dtos.user.UserRequest;
+import com.stefanycampanhoni.agora.controllers.dtos.user.UserResponse;
 import com.stefanycampanhoni.agora.controllers.mappers.AuthMapper;
 import com.stefanycampanhoni.agora.controllers.mappers.UserMapper;
 import com.stefanycampanhoni.agora.security.Token;

@@ -32,10 +32,13 @@ public class UserService {
         return login(user);
     }
 
-    public Token login(User user) {
-        if (!passwordEncoder.matches(user.getPassword(), getUserByEmail(user.getEmail()).getPassword())) {
+    public Token login(User userCredentials) {
+        User user = getUserByEmail(userCredentials.getEmail());
+
+        if (!passwordEncoder.matches(userCredentials.getPassword(), user.getPassword())) {
             throw new InvalidCredentialsException();
         }
+
         return authService.generateToken(user);
     }
 
