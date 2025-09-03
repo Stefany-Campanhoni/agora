@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,13 +26,13 @@ public class ReservationController {
     }
 
     @PostMapping
-    public ResponseEntity<Reservation> createReservation(Reservation reservation) {
+    public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
         Reservation createdReservation = service.createReservation(reservation);
         return ResponseEntity.ok(createdReservation);
     }
 
     @PostMapping(path = "/validate")
-    public ResponseEntity<Boolean> validateReservation(Reservation reservation) {
+    public ResponseEntity<Boolean> validateReservation(@RequestBody Reservation reservation) {
         boolean isValidReservation = service.isValidReservation(reservation);
         return ResponseEntity.ok(isValidReservation);
     }
