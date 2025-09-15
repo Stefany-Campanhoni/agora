@@ -1,0 +1,23 @@
+.header-nav {
+  width: 100dvw;
+  height: 90px;
+  justify-content: center;
+  align-items: center;
+  background-color: #462500;
+  padding: 10px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.nav-link {
+  height: 50px;
+  font-weight: 600;
+  margin: 0 15px;
+}
+
+.nav-link.active {
+  background-color: #5f3300 !important;
+  border: 2px solid #794000 !important;
+}
