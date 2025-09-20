@@ -1,10 +1,13 @@
-import { Header } from "../components/header/Header";
+import { Outlet } from "react-router-dom"
+import { Header } from "../components/header/Header"
 
-export function BasicLayout({ children }: { children: React.ReactNode }) {
+export function BasicLayout() {
   return (
     <>
-      <Header /> 
-      <main>{children}</main>
+      <Header />
+      <main>
+        <Outlet />
+      </main>
     </>
-  );
+  )
 }

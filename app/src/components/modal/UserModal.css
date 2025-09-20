@@ -1,0 +1,129 @@
+/* Modal principal */
+.user-modal .modal-content {
+  background-color: #fffbeb;
+  border: 2px solid #794000;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(70, 37, 0, 0.3);
+  min-height: 300px;
+}
+
+/* Header da modal */
+.user-modal-header {
+  background-color: #462500;
+  border-bottom: 2px solid #794000;
+  border-radius: 10px 10px 0 0 !important;
+  padding: 30px 40px;
+}
+
+.user-modal-title {
+  color: #fffbeb;
+  font-weight: 600;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-user-icon {
+  color: #fffbeb;
+}
+
+/* Botão de fechar do header */
+.user-modal-header .btn-close {
+  filter: invert(1);
+  opacity: 0.8;
+}
+
+.user-modal-header .btn-close:hover {
+  opacity: 1;
+}
+
+/* Body da modal */
+.user-modal-body {
+  background-color: #fffbeb;
+  padding: 50px 40px;
+  text-align: center;
+}
+
+.user-modal-text {
+  color: #462500;
+  font-size: 1.1rem;
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+/* Footer da modal */
+.user-modal-footer {
+  background-color: #fffbeb;
+  border-top: 1px solid #e6d3b3;
+  border-radius: 0 0 10px 10px;
+  padding: 30px 40px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Botões */
+.user-modal-btn {
+  padding: 15px 30px;
+  font-weight: 600;
+  border: 2px solid;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  min-width: 150px;
+  font-size: 1rem;
+}
+
+/* Botão de Login */
+.login-btn {
+  background-color: #5f3300;
+  border-color: #794000;
+  color: #fffbeb;
+}
+
+.login-btn:hover {
+  background-color: #794000;
+  border-color: #8b4500;
+  color: #fffbeb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(70, 37, 0, 0.3);
+}
+
+.login-btn:active {
+  background-color: #462500;
+  border-color: #5f3300;
+  transform: translateY(0);
+}
+
+/* Botão de Registro */
+.register-btn {
+  background-color: transparent;
+  border-color: #794000;
+  color: #462500;
+}
+
+.register-btn:hover {
+  background-color: #794000;
+  border-color: #8b4500;
+  color: #fffbeb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(121, 64, 0, 0.3);
+}
+
+.register-btn:active {
+  background-color: #5f3300;
+  border-color: #794000;
+  transform: translateY(0);
+}
+
+/* Responsividade */
+@media (max-width: 576px) {
+  .user-modal-footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .user-modal-btn {
+    width: 100%;
+  }
+}
