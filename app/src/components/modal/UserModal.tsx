@@ -1,5 +1,6 @@
 import Button from "react-bootstrap/Button"
 import Modal from "react-bootstrap/Modal"
+import { useNavigate } from "react-router-dom"
 import "./UserModal.css"
 
 type UserModalProps = {
@@ -8,13 +9,15 @@ type UserModalProps = {
 }
 
 export function UserModal(props: UserModalProps) {
+  const navigate = useNavigate()
+
   const handleLogin = () => {
-    alert("Login clicked")
+    navigate("/user/login")
     props.onHide()
   }
 
   const handleRegister = () => {
-    alert("Register clicked")
+    navigate("/user/register")
     props.onHide()
   }
 

@@ -1,8 +1,9 @@
-import Nav from "react-bootstrap/Nav"
-import "./header.css"
 import { useState } from "react"
+import Nav from "react-bootstrap/Nav"
 import { useNavigate } from "react-router-dom"
+import logo from "../../assets/logo.png"
 import { UserModal } from "../modal/UserModal"
+import "./header.css"
 
 export function Header() {
   const [active, setActive] = useState("/home")
@@ -20,6 +21,13 @@ export function Header() {
         onHide={handleUserIconClick}
       />
       <div className="header-container">
+        <div className="logo-container">
+          <img
+            src={logo}
+            alt="Agora Logo"
+            className="logo"
+          />
+        </div>
         <Nav
           variant="pills"
           activeKey={active}

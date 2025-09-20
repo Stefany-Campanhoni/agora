@@ -1,129 +1,117 @@
 /* Modal principal */
 .user-modal .modal-content {
-  background-color: #fffbeb;
-  border: 2px solid #794000;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(70, 37, 0, 0.3);
-  min-height: 300px;
+  background-color: #fffbeb !important;
+  border: 2px solid #794000 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(70, 37, 0, 0.3) !important;
+  min-height: 300px !important;
 }
 
 /* Header da modal */
 .user-modal-header {
-  background-color: #462500;
-  border-bottom: 2px solid #794000;
+  background-color: #462500 !important;
+  border-bottom: 2px solid #794000 !important;
   border-radius: 10px 10px 0 0 !important;
-  padding: 30px 40px;
+  padding: 30px 40px !important;
 }
 
 .user-modal-title {
-  color: #fffbeb;
-  font-weight: 600;
-  font-size: 1.4rem;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  color: #fffbeb !important;
+  font-weight: 600 !important;
+  font-size: 1.4rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
 }
 
 .modal-user-icon {
-  color: #fffbeb;
+  color: #fffbeb !important;
 }
 
 /* Botão de fechar do header */
 .user-modal-header .btn-close {
-  filter: invert(1);
-  opacity: 0.8;
+  filter: invert(1) !important;
+  opacity: 0.8 !important;
 }
 
 .user-modal-header .btn-close:hover {
-  opacity: 1;
+  opacity: 1 !important;
 }
 
 /* Body da modal */
 .user-modal-body {
-  background-color: #fffbeb;
-  padding: 50px 40px;
-  text-align: center;
+  background-color: #fffbeb !important;
+  padding: 50px 40px !important;
+  text-align: center !important;
 }
 
 .user-modal-text {
-  color: #462500;
-  font-size: 1.1rem;
-  margin-bottom: 0;
-  font-weight: 500;
+  color: #462500 !important;
+  font-size: 1.1rem !important;
+  margin-bottom: 0 !important;
+  font-weight: 500 !important;
 }
 
 /* Footer da modal */
 .user-modal-footer {
-  background-color: #fffbeb;
-  border-top: 1px solid #e6d3b3;
-  border-radius: 0 0 10px 10px;
-  padding: 30px 40px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+  background-color: #fffbeb !important;
+  border-top: 1px solid #e6d3b3 !important;
+  border-radius: 0 0 10px 10px !important;
+  padding: 30px 40px !important;
+  display: flex !important;
+  justify-content: center !important;
+  gap: 20px !important;
 }
 
 /* Botões */
 .user-modal-btn {
-  padding: 15px 30px;
-  font-weight: 600;
-  border: 2px solid;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  min-width: 150px;
-  font-size: 1rem;
+  padding: 15px 30px !important;
+  font-weight: 600 !important;
+  border: 2px solid !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+  min-width: 150px !important;
+  font-size: 1rem !important;
 }
 
 /* Botão de Login */
 .login-btn {
-  background-color: #5f3300;
-  border-color: #794000;
-  color: #fffbeb;
+  background-color: #5f3300 !important;
+  border-color: #794000 !important;
+  color: #fffbeb !important;
 }
 
 .login-btn:hover {
-  background-color: #794000;
-  border-color: #8b4500;
-  color: #fffbeb;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(70, 37, 0, 0.3);
+  background-color: #794000 !important;
+  border-color: #8b4500 !important;
+  color: #fffbeb !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(70, 37, 0, 0.3) !important;
 }
 
 .login-btn:active {
-  background-color: #462500;
-  border-color: #5f3300;
-  transform: translateY(0);
+  background-color: #462500 !important;
+  border-color: #5f3300 !important;
+  transform: translateY(0) !important;
 }
 
 /* Botão de Registro */
 .register-btn {
-  background-color: transparent;
-  border-color: #794000;
-  color: #462500;
+  background-color: transparent !important;
+  border-color: #794000 !important;
+  color: #462500 !important;
 }
 
 .register-btn:hover {
-  background-color: #794000;
-  border-color: #8b4500;
-  color: #fffbeb;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(121, 64, 0, 0.3);
+  background-color: #794000 !important;
+  border-color: #8b4500 !important;
+  color: #fffbeb !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(121, 64, 0, 0.3) !important;
 }
 
 .register-btn:active {
-  background-color: #5f3300;
-  border-color: #794000;
-  transform: translateY(0);
-}
-
-/* Responsividade */
-@media (max-width: 576px) {
-  .user-modal-footer {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .user-modal-btn {
-    width: 100%;
-  }
+  background-color: #5f3300 !important;
+  border-color: #794000 !important;
+  transform: translateY(0) !important;
 }

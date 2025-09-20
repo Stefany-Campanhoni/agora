@@ -12,6 +12,20 @@
   align-items: center;
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.logo {
+  height: 70px;
+  width: auto;
+  object-fit: contain;
+  border: 1px solid #ffbcd6;
+  border-radius: 100%;
+}
+
 .header-nav {
   display: flex;
   justify-content: center;
@@ -31,8 +45,6 @@
 }
 
 .user-icon {
-  position: absolute;
-  left: 96dvw;
   display: flex;
   align-items: center;
   justify-content: center;
