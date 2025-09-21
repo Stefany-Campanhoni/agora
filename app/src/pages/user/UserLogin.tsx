@@ -1,20 +1,18 @@
-import axios from "axios"
+import { useNavigate } from "react-router-dom"
+import { loginUser } from "../../api/user/user.api"
 import { LoginForm, type LoginFormData } from "../../components/form/user/LoginForm"
-import { login } from "../../store/authSlice"
-import { useAppDispatch } from "../../store/hooks"
-
-const API_URL = "http://localhost:8080"
+import { useAuth } from "../../hooks/useAuth"
 
 export function UserLogin() {
-  const dispatch = useAppDispatch()
+  const { login } = useAuth()
+  const navigate = useNavigate()
 
   const handleLogin = async (data: LoginFormData) => {
     try {
-      const response = await axios.post(`${API_URL}/users/login`, data)
-      const { token } = response.data
+      const { token } = await loginUser(data)
 
-      dispatch(login(token))
-      alert("Usuário logado com sucesso!")
+      login(token)
+      navigate("/home")
     } catch (err) {
       console.error("Erro ao logar usuário:", err)
       alert("Erro ao logar usuário.")

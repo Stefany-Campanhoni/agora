@@ -1,13 +1,17 @@
-import axios from "axios"
+import { useNavigate } from "react-router-dom"
+import { registerUser } from "../../api/user/user.api"
 import { RegisterForm, type RegisterFormData } from "../../components/form/user/RegisterForm"
-
-const API_URL = "http://localhost:8080"
+import { useAuth } from "../../hooks/useAuth"
 
 export function UserRegistration() {
+  const navigate = useNavigate()
+  const { login } = useAuth()
+
   const handleRegister = async (data: Omit<RegisterFormData, "confirmPassword">) => {
     try {
-      await axios.post(`${API_URL}/users`, data)
-      alert("Usuário registrado com sucesso!")
+      const { token } = await registerUser(data)
+      login(token)
+      navigate("/login")
     } catch (err) {
       console.error("Erro ao registrar usuário:", err)
       alert("Erro ao registrar usuário.")
