@@ -6,4 +6,8 @@ public class InvalidCredentialsException extends BadRequestException {
     public InvalidCredentialsException() {
         super("Invalid password.");
     }
+
+    public InvalidCredentialsException(String message) {
+        super(message);
+    }
 }

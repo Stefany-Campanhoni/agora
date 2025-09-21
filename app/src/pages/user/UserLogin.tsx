@@ -10,14 +10,10 @@ export function UserLogin() {
 
   const handleLogin = async (data: LoginFormData) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, data)
-
-      // Extraindo o token da resposta do backend
+      const response = await axios.post(`${API_URL}/users/login`, data)
       const { token } = response.data
 
-      // Despachando a action de login para armazenar o token no Redux
       dispatch(login(token))
-
       alert("Usuário logado com sucesso!")
     } catch (err) {
       console.error("Erro ao logar usuário:", err)

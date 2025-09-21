@@ -23,6 +23,10 @@ public class UserService {
     private AuthService authService;
 
     public Token register(User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new InvalidCredentialsException("Email is already in use.");
+        }
+
         String originalPassword = user.getPassword();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);

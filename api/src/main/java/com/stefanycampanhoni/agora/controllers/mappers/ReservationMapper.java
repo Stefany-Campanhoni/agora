@@ -16,7 +16,6 @@ public interface ReservationMapper {
     @Mapping(target = "reservedBy", ignore = true)
     Reservation toReservation(ReservationRequest reservationRequest);
 
-    @Mapping(target = "id", ignore = true)
     ReservationResponse toReservationResponse(Reservation reservation);
 
     default ReservationListResponse toReservationListResponse(List<Reservation> reservations) {
