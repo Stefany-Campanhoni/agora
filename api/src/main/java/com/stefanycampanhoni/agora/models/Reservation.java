@@ -23,8 +23,9 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "room_name", nullable = false)
-    private String roomName;
+    @ManyToOne
+    @JoinColumn(name = "room_id", nullable = false)
+    private Room room;
 
     @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;

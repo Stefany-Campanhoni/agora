@@ -7,6 +7,7 @@ import com.stefanycampanhoni.agora.controllers.mappers.ReservationMapper;
 import com.stefanycampanhoni.agora.models.Reservation;
 import com.stefanycampanhoni.agora.models.User;
 import com.stefanycampanhoni.agora.services.ReservationService;
+import com.stefanycampanhoni.agora.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,6 +27,9 @@ public class ReservationController {
     private ReservationService service;
 
     @Autowired
+    private RoomService roomService;
+
+    @Autowired
     private ReservationMapper reservationMapper;
 
     @GetMapping
@@ -39,7 +43,7 @@ public class ReservationController {
     public ResponseEntity<ReservationResponse> createReservation(@RequestBody ReservationRequest reservationRequest,
                                                                  @AuthenticationPrincipal User currentUser) {
         Reservation reservation = reservationMapper.toReservation(reservationRequest);
-        Reservation createdReservation = service.createReservation(reservation, currentUser);
+        Reservation createdReservation = service.createReservation(reservation, currentUser, reservationRequest.roomId());
         ReservationResponse response = reservationMapper.toReservationResponse(createdReservation);
         return ResponseEntity.ok(response);
     }
@@ -47,6 +51,7 @@ public class ReservationController {
     @PostMapping(path = "/validate")
     public ResponseEntity<Boolean> validateReservation(@RequestBody ReservationRequest reservationRequest) {
         Reservation reservation = reservationMapper.toReservation(reservationRequest);
+        reservation.setRoom(roomService.getRoomById(reservationRequest.roomId()));
         boolean isValidReservation = service.isValidReservation(reservation);
         return ResponseEntity.ok(isValidReservation);
     }

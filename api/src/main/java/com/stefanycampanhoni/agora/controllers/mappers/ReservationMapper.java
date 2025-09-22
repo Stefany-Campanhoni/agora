@@ -9,11 +9,12 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = UserMapper.class)
+@Mapper(componentModel = "spring", uses = {UserMapper.class, RoomMapper.class})
 public interface ReservationMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "reservedBy", ignore = true)
+    @Mapping(target = "room", ignore = true)
     Reservation toReservation(ReservationRequest reservationRequest);
 
     ReservationResponse toReservationResponse(Reservation reservation);
