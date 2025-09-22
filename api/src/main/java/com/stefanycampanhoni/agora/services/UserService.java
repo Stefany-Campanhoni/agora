@@ -24,16 +24,19 @@ public class UserService {
 
     public Token register(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new InvalidCredentialsException("Email is already in use.");
+            throw new InvalidCredentialsException("Email already in use.");
         }
 
         String originalPassword = user.getPassword();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
-        user.setPassword(originalPassword);
+        User originalCredentials = User.builder()
+                .email(user.getEmail())
+                .password(originalPassword)
+                .build();
 
-        return login(user);
+        return login(originalCredentials);
     }
 
     public Token login(User userCredentials) {

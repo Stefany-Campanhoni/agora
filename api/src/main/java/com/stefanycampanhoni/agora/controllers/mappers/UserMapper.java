@@ -13,14 +13,12 @@ public interface UserMapper {
     @Mapping(source = "userRequest.name", target = "name")
     @Mapping(source = "userRequest.password", target = "password")
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "authorities", ignore = true)
     User toUser(UserRequest userRequest);
 
     @Mapping(source = "userRequest.email", target = "email")
     @Mapping(source = "userRequest.password", target = "password")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "name", ignore = true)
-    @Mapping(target = "authorities", ignore = true)
     User toUser(UserLoginRequest userRequest);
 
     UserResponse toUserResponse(User user);

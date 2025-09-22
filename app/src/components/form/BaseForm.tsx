@@ -9,7 +9,6 @@ interface BaseFormProps {
   onSubmit: (e: React.FormEvent) => void
   submitText: string
   isLoading?: boolean
-  footerContent?: ReactNode
   showBackButton?: boolean
 }
 
@@ -19,7 +18,6 @@ export function BaseForm({
   onSubmit,
   submitText,
   isLoading = false,
-  footerContent,
   showBackButton = true,
 }: BaseFormProps) {
   const navigate = useNavigate()
@@ -73,7 +71,6 @@ export function BaseForm({
               {isLoading ? "Carregando..." : submitText}
             </Button>
           </Form>
-          {footerContent && <div className="base-form-footer">{footerContent}</div>}
         </Card.Body>
       </Card>
     </div>

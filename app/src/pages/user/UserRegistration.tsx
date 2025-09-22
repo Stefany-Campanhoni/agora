@@ -11,7 +11,7 @@ export function UserRegistration() {
     try {
       const { token } = await registerUser(data)
       login(token)
-      navigate("/login")
+      navigate("/home")
     } catch (err) {
       console.error("Erro ao registrar usuário:", err)
       alert("Erro ao registrar usuário.")
