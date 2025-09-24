@@ -34,9 +34,23 @@ public class SecurityConfiguration {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // Public endpoints
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs").permitAll()
+
+                        // Room endpoints - only admins can manage rooms
+                        .requestMatchers(HttpMethod.GET, "/rooms", "/rooms/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/rooms").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/rooms/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/rooms/**").hasRole("ADMIN")
+
+                        // Reservation endpoints - users can create, view their own reservations
+                        .requestMatchers(HttpMethod.GET, "/reservations").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/reservations").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/reservations/validate").hasAnyRole("USER", "ADMIN")
+
+                        // All other requests require authentication
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
