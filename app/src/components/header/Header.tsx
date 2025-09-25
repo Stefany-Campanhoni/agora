@@ -1,14 +1,16 @@
 import { useState } from "react"
 import Nav from "react-bootstrap/Nav"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import logo from "../../assets/logo.png"
+import { useAuth } from "../../hooks/useAuth"
 import { UserModal } from "../modal/UserModal"
 import "./header.css"
 
 export function Header() {
-  const [active, setActive] = useState("/home")
   const [isModalOpen, setIsModalOpen] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
+  const { isAdmin } = useAuth()
 
   const handleUserIconClick = () => {
     setIsModalOpen((prev) => !prev)
@@ -30,10 +32,9 @@ export function Header() {
         </div>
         <Nav
           variant="pills"
-          activeKey={active}
+          activeKey={location.pathname}
           className="header-nav"
           onSelect={(selectedKey) => {
-            setActive(selectedKey || "/home")
             navigate(selectedKey || "/home")
           }}
         >
@@ -53,14 +54,16 @@ export function Header() {
               Salas Disponíveis
             </Nav.Link>
           </Nav.Item>
-          <Nav.Item>
-            <Nav.Link
-              eventKey="/rooms/create"
-              className="nav-link text-light"
-            >
-              Criar Reserva
-            </Nav.Link>
-          </Nav.Item>
+          {isAdmin && (
+            <Nav.Item>
+              <Nav.Link
+                eventKey="/rooms/create"
+                className="nav-link text-light"
+              >
+                Criar Sala
+              </Nav.Link>
+            </Nav.Item>
+          )}
         </Nav>
         <div
           className="user-icon"

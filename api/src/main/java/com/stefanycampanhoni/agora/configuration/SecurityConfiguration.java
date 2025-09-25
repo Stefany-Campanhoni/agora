@@ -40,7 +40,6 @@ public class SecurityConfiguration {
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs").permitAll()
 
                         // Room endpoints - only admins can manage rooms
-                        .requestMatchers(HttpMethod.GET, "/rooms", "/rooms/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/rooms").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/rooms/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/rooms/**").hasRole("ADMIN")

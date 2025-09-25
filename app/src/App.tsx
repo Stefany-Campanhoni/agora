@@ -1,10 +1,11 @@
 import { Navigate, Route, Routes } from "react-router-dom"
 import "./App.css"
+import { ProtectedRoute } from "./components/routing/ProtectedRoute"
 import { BasicLayout } from "./layouts/BasicLayout"
 import { UserLayout } from "./layouts/UserLayout"
 import { Home } from "./pages/Home"
-import { RoomForm } from "./pages/RoomForm"
-import { Rooms } from "./pages/Rooms"
+import { RoomForm } from "./pages/room/RoomForm"
+import { RoomList } from "./pages/room/RoomList"
 import { UserLogin } from "./pages/user/UserLogin"
 import { UserRegistration } from "./pages/user/UserRegistration"
 
@@ -31,12 +32,19 @@ function App() {
         />
         <Route
           path="rooms"
-          element={<Rooms />}
+          element={<RoomList />}
         />
-        <Route
-          path="rooms/create"
-          element={<RoomForm />}
-        />
+
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="rooms/create"
+            element={<RoomForm />}
+          />
+          <Route
+            path="rooms/edit/:id"
+            element={<RoomForm />}
+          />
+        </Route>
       </Route>
 
       <Route

@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.stefanycampanhoni.agora.models.User;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,27 +47,21 @@ public class JwtService {
 
     public String validateToken(String token) {
         try {
-            JWTVerifier verifier = JWT.require(algorithm)
-                    .withIssuer(ISSUER)
-                    .build();
-
-            DecodedJWT jwt = verifier.verify(token);
+            DecodedJWT jwt = this.decodeToken(token);
             return jwt.getSubject();
+        } catch (TokenExpiredException exception) {
+            throw new RuntimeException("Token expired", exception);
         } catch (JWTVerificationException exception) {
-            return "";
+            throw new RuntimeException("Invalid token", exception);
         }
     }
 
     public DecodedJWT decodeToken(String token) {
-        try {
-            JWTVerifier verifier = JWT.require(algorithm)
-                    .withIssuer(ISSUER)
-                    .build();
+        JWTVerifier verifier = JWT.require(algorithm)
+                .withIssuer(ISSUER)
+                .build();
 
-            return verifier.verify(token);
-        } catch (JWTVerificationException exception) {
-            throw new RuntimeException("Token JWT inválido", exception);
-        }
+        return verifier.verify(token);
     }
 
     private Instant generateExpirationDate() {

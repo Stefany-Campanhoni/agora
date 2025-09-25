@@ -10,10 +10,9 @@ export type LoginFormData = {
 type LoginFormProps = {
   onSubmit: (data: LoginFormData) => void | Promise<void>
   isLoading?: boolean
-  onRegisterClick?: () => void
 }
 
-export function LoginForm({ onSubmit, isLoading = false, onRegisterClick }: LoginFormProps) {
+export function LoginForm({ onSubmit, isLoading = false }: LoginFormProps) {
   const {
     register,
     handleSubmit,
@@ -24,28 +23,12 @@ export function LoginForm({ onSubmit, isLoading = false, onRegisterClick }: Logi
     onSubmit(data)
   }
 
-  const footerContent = onRegisterClick && (
-    <div>
-      <span className="text-muted">Não tem uma conta? </span>
-      <a
-        href="#"
-        onClick={(e) => {
-          e.preventDefault()
-          onRegisterClick()
-        }}
-      >
-        Criar conta
-      </a>
-    </div>
-  )
-
   return (
     <BaseForm
       title="Entrar"
       onSubmit={handleSubmit(handleFormSubmit)}
       submitText="Entrar"
       isLoading={isLoading}
-      footerContent={footerContent}
     >
       <Form.Group className="mb-3">
         <Form.Label>Email</Form.Label>

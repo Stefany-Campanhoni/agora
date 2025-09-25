@@ -1,37 +1,41 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 
-// Definindo o tipo do estado da autenticação
+export type UserRole = "ADMIN" | "USER"
+
 interface AuthState {
   token: string | null
   isAuthenticated: boolean
+  role: UserRole | null
 }
 
-// Estado inicial
 const initialState: AuthState = {
   token: null,
   isAuthenticated: false,
+  role: null,
 }
 
-// Criando o slice de autenticação
+interface LoginPayload {
+  token: string
+  role: UserRole
+}
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    // Action para fazer login (armazenar o token)
-    login: (state, action: PayloadAction<string>) => {
-      state.token = action.payload
+    login: (state, action: PayloadAction<LoginPayload>) => {
+      state.token = action.payload.token
       state.isAuthenticated = true
+      state.role = action.payload.role
     },
-    // Action para fazer logout (limpar o token)
     logout: (state) => {
       state.token = null
       state.isAuthenticated = false
+      state.role = null
     },
   },
 })
 
-// Exportando as actions
 export const { login, logout } = authSlice.actions
 
-// Exportando o reducer como default
 export default authSlice.reducer

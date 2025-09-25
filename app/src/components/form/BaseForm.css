@@ -1,3 +1,12 @@
+.base-form-card {
+  width: 100% !important;
+  max-width: 550px !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(70, 37, 0, 0.2) !important;
+  overflow: hidden !important;
+}
+
 .base-form-container {
   display: flex !important;
   justify-content: center !important;

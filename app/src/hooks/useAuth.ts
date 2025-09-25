@@ -1,12 +1,20 @@
-import { login, logout } from "../store/authSlice"
+import { jwtDecode } from "jwt-decode"
+import { login, logout, type UserRole } from "../store/authSlice"
 import { useAppDispatch, useAppSelector } from "../store/hooks"
 
-export const useAuth = () => {
+interface DecodedToken {
+  scope: UserRole
+}
+
+export function useAuth() {
   const dispatch = useAppDispatch()
-  const { token, isAuthenticated } = useAppSelector((state) => state.auth)
+  const { token, isAuthenticated, role } = useAppSelector((state) => state.auth)
 
   const handleLogin = (token: string) => {
-    dispatch(login(token))
+    const decodedToken = jwtDecode<DecodedToken>(token)
+    const role = decodedToken.scope.includes("ADMIN") ? "ADMIN" : "USER"
+
+    dispatch(login({ token, role }))
   }
 
   const handleLogout = () => {
@@ -16,6 +24,8 @@ export const useAuth = () => {
   return {
     token,
     isAuthenticated,
+    role,
+    isAdmin: role === "ADMIN",
     login: handleLogin,
     logout: handleLogout,
   }
