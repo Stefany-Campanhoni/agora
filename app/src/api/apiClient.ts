@@ -1,5 +1,5 @@
 import axios, { type AxiosError, type AxiosResponse } from "axios"
-import { store } from "../store"
+import { persistor, store } from "../store"
 import { logout } from "../store/authSlice"
 
 export const API_URL = "http://localhost:8080"
@@ -14,9 +14,13 @@ apiClient.interceptors.request.use(
   (config) => {
     const state = store.getState()
     const token = state.auth.token
+    const isAuthenticated = state.auth.isAuthenticated
+    const headers = config.headers
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+    if (token && isAuthenticated) {
+      headers.Authorization = `Bearer ${token}`
+    } else if (headers && headers.Authorization) {
+      delete headers.Authorization
     }
 
     return config
@@ -30,11 +34,12 @@ apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
     return response
   },
-  (error: AxiosError) => {
+  async (error: AxiosError) => {
     if (error.response?.status === 401 && !isLoggingOut) {
       isLoggingOut = true
 
       store.dispatch(logout())
+      await persistor.flush()
 
       window.location.href = "/user/login"
 
