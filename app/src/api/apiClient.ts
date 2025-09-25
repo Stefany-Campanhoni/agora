@@ -38,9 +38,7 @@ apiClient.interceptors.response.use(
 
       window.location.href = "/user/login"
 
-      setTimeout(() => {
-        isLoggingOut = false
-      }, 1000)
+      isLoggingOut = false
     }
 
     return Promise.reject(error)

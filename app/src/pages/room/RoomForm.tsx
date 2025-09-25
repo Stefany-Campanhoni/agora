@@ -15,6 +15,10 @@ export function RoomForm() {
     if (id) {
       setIsEditMode(true)
       loadRoom(parseInt(id, 10))
+    } else {
+      setIsEditMode(false)
+      setInitialData({})
+      setIsLoading(false)
     }
   }, [id])
 

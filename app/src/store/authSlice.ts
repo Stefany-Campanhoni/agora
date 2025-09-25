@@ -1,4 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
+import { persistReducer } from "redux-persist"
+import storage from "redux-persist/lib/storage"
 
 export type UserRole = "ADMIN" | "USER"
 
@@ -38,4 +40,10 @@ const authSlice = createSlice({
 
 export const { login, logout } = authSlice.actions
 
-export default authSlice.reducer
+const persistConfig = {
+  key: "auth",
+  storage,
+  whitelist: ["token", "isAuthenticated", "role"],
+}
+
+export default persistReducer(persistConfig, authSlice.reducer)

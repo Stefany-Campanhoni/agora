@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { Form } from "react-bootstrap"
 import { useForm } from "react-hook-form"
 import type { RoomRequest } from "../../../api/room/room.responses"
@@ -27,15 +28,35 @@ export function RoomForm({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<RoomFormData>({
     defaultValues: {
-      name: initialData.name || "",
-      description: initialData.description || "",
-      capacity: initialData.capacity || 1,
-      location: initialData.location || "",
+      name: "",
+      description: "",
+      capacity: 1,
+      location: "",
     },
   })
+
+  // Reset form values when mode changes or initialData changes
+  useEffect(() => {
+    if (mode === "edit" && initialData && Object.keys(initialData).length > 0) {
+      reset({
+        name: initialData.name || "",
+        description: initialData.description || "",
+        capacity: initialData.capacity || 1,
+        location: initialData.location || "",
+      })
+    } else if (mode === "create") {
+      reset({
+        name: "",
+        description: "",
+        capacity: 1,
+        location: "",
+      })
+    }
+  }, [initialData, mode, reset])
 
   const handleFormSubmit = (data: RoomFormData) => {
     const submitData: RoomRequest = {
