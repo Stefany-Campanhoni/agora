@@ -1,8 +1,17 @@
 import { useEffect, useState } from "react"
-import { Badge, Button, Card, Col, Row, Spinner } from "react-bootstrap"
+import {
+  Badge,
+  Button,
+  Card,
+  Col,
+  Container,
+  Row,
+  Spinner,
+} from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { deleteRoom, getAllRooms } from "../../api/room/room.api"
 import type { RoomResponse } from "../../api/room/room.responses"
+import "./RoomList.css"
 
 export function RoomList() {
   const navigate = useNavigate()
@@ -17,7 +26,7 @@ export function RoomList() {
   const loadRooms = async () => {
     try {
       setIsLoading(true)
-      const response = await getAllRooms()
+      const response = await getAllRooms(false)
       setRooms(response.rooms)
     } catch (error) {
       console.error("Erro ao carregar salas:", error)
@@ -49,28 +58,28 @@ export function RoomList() {
 
   if (isLoading) {
     return (
-      <div className="text-center p-4">
+      <Container className="rooms-container d-flex justify-content-center align-items-center">
         <Spinner
           animation="border"
           role="status"
         >
           <span className="visually-hidden">Carregando...</span>
         </Spinner>
-      </div>
+      </Container>
     )
   }
 
   return (
-    <div className="p-4">
-      <Row>
+    <Container className="rooms-container">
+      <Row className="rooms-grid g-4 justify-content-center">
         {rooms.map((room) => (
           <Col
             key={room.id}
             md={6}
             lg={4}
-            className="mb-4"
+            className="d-flex"
           >
-            <Card className="h-100">
+            <Card className="flex-grow-1 h-100">
               <Card.Body className="d-flex flex-column">
                 <div className="flex-grow-1">
                   <Card.Title className="d-flex justify-content-between align-items-start">
@@ -79,12 +88,15 @@ export function RoomList() {
                       bg="secondary"
                       className="ms-2"
                     >
-                      {room.capacity} {room.capacity === 1 ? "pessoa" : "pessoas"}
+                      {room.capacity}{" "}
+                      {room.capacity === 1 ? "pessoa" : "pessoas"}
                     </Badge>
                   </Card.Title>
 
                   {room.description && (
-                    <Card.Text className="text-muted">{room.description}</Card.Text>
+                    <Card.Text className="text-muted">
+                      {room.description}
+                    </Card.Text>
                   )}
 
                   <div className="mb-3">
@@ -150,6 +162,6 @@ export function RoomList() {
           </Col>
         ))}
       </Row>
-    </div>
+    </Container>
   )
 }

@@ -1,7 +1,8 @@
-import Button from "react-bootstrap/Button"
 import Modal from "react-bootstrap/Modal"
-import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../hooks/useAuth"
+import { ModalAuthContent } from "./ModalAuthContent"
 import "./UserModal.css"
+import { ModalManagementContent } from "./ModalManagementContent"
 
 type UserModalProps = {
   onHide: () => void
@@ -9,17 +10,7 @@ type UserModalProps = {
 }
 
 export function UserModal(props: UserModalProps) {
-  const navigate = useNavigate()
-
-  const handleLogin = () => {
-    navigate("/user/login")
-    props.onHide()
-  }
-
-  const handleRegister = () => {
-    navigate("/user/register")
-    props.onHide()
-  }
+  const { isAuthenticated } = useAuth()
 
   return (
     <Modal
@@ -58,23 +49,12 @@ export function UserModal(props: UserModalProps) {
           Acesso do Usuário
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body className="user-modal-body">
-        <p className="user-modal-text">Escolha uma opção para continuar:</p>
-      </Modal.Body>
-      <Modal.Footer className="user-modal-footer">
-        <Button
-          className="user-modal-btn login-btn"
-          onClick={handleLogin}
-        >
-          Fazer Login
-        </Button>
-        <Button
-          className="user-modal-btn register-btn"
-          onClick={handleRegister}
-        >
-          Registrar-se
-        </Button>
-      </Modal.Footer>
+
+      {!isAuthenticated ? (
+        <ModalAuthContent onHide={props.onHide} />
+      ) : (
+        <ModalManagementContent />
+      )}
     </Modal>
   )
 }

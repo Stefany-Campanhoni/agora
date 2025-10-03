@@ -1,10 +1,22 @@
-import { apiClient } from ".."
-import type { RoomListResponse, RoomRequest, RoomResponse } from "./room.responses"
+import axios from "axios"
+import { apiClient, API_URL } from ".."
+import type {
+  RoomListResponse,
+  RoomRequest,
+  RoomResponse,
+} from "./room.responses"
 
 const URI = `/rooms`
 
-export async function getAllRooms(): Promise<RoomListResponse> {
-  const res = await apiClient.get<RoomListResponse>(URI)
+export async function getAllRooms(
+  useApiClient: boolean = true,
+): Promise<RoomListResponse> {
+  if (useApiClient) {
+    const res = await apiClient.get<RoomListResponse>(URI)
+    return res.data
+  }
+
+  const res = await axios.get<RoomListResponse>(API_URL + URI)
   return res.data
 }
 
@@ -18,7 +30,10 @@ export async function createRoom(data: RoomRequest): Promise<RoomResponse> {
   return res.data
 }
 
-export async function updateRoom(id: number, data: RoomRequest): Promise<RoomResponse> {
+export async function updateRoom(
+  id: number,
+  data: RoomRequest,
+): Promise<RoomResponse> {
   const res = await apiClient.put<RoomResponse>(`${URI}/${id}`, data)
   return res.data
 }

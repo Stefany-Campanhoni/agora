@@ -13,9 +13,14 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
   background-color: #fffbeb !important;
+  display: block;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }

@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom"
 import { loginUser } from "../../api/user/user.api"
-import { LoginForm, type LoginFormData } from "../../components/form/user/LoginForm"
+import {
+  LoginForm,
+  type LoginFormData,
+} from "../../components/form/user/LoginForm"
 import { useAuth } from "../../hooks/useAuth"
 
 export function UserLogin() {
@@ -20,7 +23,7 @@ export function UserLogin() {
   }
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <LoginForm onSubmit={handleLogin} />
     </div>
   )

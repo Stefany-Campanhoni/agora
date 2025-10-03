@@ -12,6 +12,8 @@ export function useAuth() {
 
   const handleLogin = (token: string) => {
     const decodedToken = jwtDecode<DecodedToken>(token)
+    console.log(decodedToken)
+
     const role = decodedToken.scope.includes("ADMIN") ? "ADMIN" : "USER"
 
     dispatch(login({ token, role }))
