@@ -7,6 +7,8 @@ import com.stefanycampanhoni.agora.repositories.UserRepository;
 import com.stefanycampanhoni.agora.security.AuthService;
 import com.stefanycampanhoni.agora.security.Token;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -51,11 +53,6 @@ public class UserService {
 
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(UserNotFoundException::new);
-    }
-
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
     }
 }

@@ -6,6 +6,7 @@ import com.stefanycampanhoni.agora.controllers.dtos.user.UserRequest;
 import com.stefanycampanhoni.agora.controllers.dtos.user.UserResponse;
 import com.stefanycampanhoni.agora.controllers.mappers.AuthMapper;
 import com.stefanycampanhoni.agora.controllers.mappers.UserMapper;
+import com.stefanycampanhoni.agora.models.User;
 import com.stefanycampanhoni.agora.security.Token;
 import com.stefanycampanhoni.agora.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -46,10 +48,10 @@ public class UserController {
         return ResponseEntity.ok(authMapper.toResponse(token));
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Obter Usuário por ID", description = "Retorna os detalhes de um usuário específico pelo ID")
-    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
-        UserResponse response = userMapper.toUserResponse(userService.getUserById(id));
+    @GetMapping("/me")
+    @Operation(summary = "Obter Usuário autenticado", description = "Retorna os detalhes do usuário autenticado atualmente")
+    public ResponseEntity<UserResponse> getUserById(@AuthenticationPrincipal User user) {
+        UserResponse response = userMapper.toUserResponse(userService.getUserByEmail(user.getEmail()));
         return ResponseEntity.ok(response);
     }
 }
