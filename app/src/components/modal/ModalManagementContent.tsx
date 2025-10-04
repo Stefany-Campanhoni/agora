@@ -1,17 +1,59 @@
 import { Button, Modal } from "react-bootstrap"
+import { useEffect, useState } from "react"
+import type { UserResponse } from "../../api/user/user.responses"
+import { loadUser } from "../../api/user/user.api"
+import "./ModalManagementContent.css"
 import { useAuth } from "../../hooks/useAuth"
+import { useNavigate } from "react-router-dom"
 
 export function ModalManagementContent() {
-  const {} = useAuth()
+  const [user, setUser] = useState<UserResponse | null>(null)
+  const { logout, isAdmin } = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const userData = await loadUser()
+        setUser(userData)
+      } catch (error) {
+        navigate(-1)
+      }
+    })()
+  }, [])
 
   return (
     <>
       <Modal.Body className="user-modal-body">
-        <p className="user-modal-text">Escolha uma opção para continuar:</p>
+        {user ? (
+          <div className="user-info">
+            <p>
+              <strong>Nome:</strong> {user.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {user.email}
+            </p>
+          </div>
+        ) : (
+          <p>Estou de olho ein 👀</p>
+        )}
       </Modal.Body>
       <Modal.Footer className="user-modal-footer">
-        <Button className="user-modal-btn login-btn">Fazer Login</Button>
-        <Button className="user-modal-btn register-btn">Registrar-se</Button>
+        {isAdmin && (
+          <Button
+            className="user-modal-btn logout-btn"
+            onClick={() => navigate("/admin")}
+          >
+            Area Admin
+          </Button>
+        )}
+
+        <Button
+          className="user-modal-btn logout-btn"
+          onClick={() => logout()}
+        >
+          Sair
+        </Button>
       </Modal.Footer>
     </>
   )

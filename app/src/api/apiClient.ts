@@ -1,6 +1,6 @@
 import axios, { type AxiosError, type AxiosResponse } from "axios"
 import { persistor, store } from "../store"
-import { logout } from "../store/authSlice"
+import { logout } from "../store/slices/authSlice"
 
 export const API_URL = "http://localhost:8080"
 

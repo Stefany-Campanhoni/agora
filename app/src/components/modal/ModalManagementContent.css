@@ -1,0 +1,39 @@
+/* Styles for ModalManagementContent component */
+
+.user-info {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.user-info p {
+  color: #462500;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.user-info strong {
+  color: #794000;
+  font-weight: 600;
+}
+
+/* Logout button specific styles */
+.logout-btn {
+  background-color: #794000 !important;
+  border-color: #8b4500 !important;
+  color: #fffbeb !important;
+}
+
+.logout-btn:hover {
+  background-color: #8b4500 !important;
+  border-color: #a05000 !important;
+  color: #fffbeb !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(121, 64, 0, 0.3) !important;
+}
+
+.logout-btn:active {
+  background-color: #5f3300 !important;
+  border-color: #794000 !important;
+  transform: translateY(0) !important;
+}

@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode"
-import { login, logout, type UserRole } from "../store/authSlice"
+import { login, logout, type UserRole } from "../store/slices/authSlice"
 import { useAppDispatch, useAppSelector } from "../store/hooks"
 
 interface DecodedToken {

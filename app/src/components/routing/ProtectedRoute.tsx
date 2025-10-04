@@ -17,3 +17,20 @@ export function ProtectedRoute() {
 
   return <Outlet />
 }
+
+export function AdminRoute() {
+  const { isAuthenticated, isAdmin } = useAuth()
+  const location = useLocation()
+
+  if (isAuthenticated && isAdmin) {
+    return <Outlet />
+  }
+
+  return (
+    <Navigate
+      to="/user/login"
+      replace
+      state={{ from: location.pathname + location.search }}
+    />
+  )
+}

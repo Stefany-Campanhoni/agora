@@ -1,10 +1,20 @@
-import { configureStore } from "@reduxjs/toolkit"
-import { persistStore } from "redux-persist"
-import authReducer from "./authSlice"
+import { configureStore, type Reducer } from "@reduxjs/toolkit"
+import { persistStore, persistReducer } from "redux-persist"
+import storage from "redux-persist/lib/storage"
+import authReducer from "./slices/authSlice"
+import modalReducer from "./slices/modalSlice"
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
+    auth: persistReducer(
+      {
+        key: "auth",
+        storage,
+        whitelist: ["token", "isAuthenticated", "role"],
+      },
+      authReducer,
+    ) as Reducer,
+    modal: modalReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

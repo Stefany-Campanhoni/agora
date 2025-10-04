@@ -1,19 +1,21 @@
-import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import Nav from "react-bootstrap/Nav"
 import { useLocation, useNavigate } from "react-router-dom"
 import logo from "../../assets/logo.png"
 import { useAuth } from "../../hooks/useAuth"
 import { UserModal } from "../modal/UserModal"
+import { toggleModal, selectIsModalOpen } from "../../store/slices/modalSlice"
 import "./header.css"
 
 export function Header() {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const dispatch = useDispatch()
+  const isModalOpen = useSelector(selectIsModalOpen)
   const navigate = useNavigate()
   const location = useLocation()
   const { isAdmin } = useAuth()
 
   const handleUserIconClick = () => {
-    setIsModalOpen((prev) => !prev)
+    dispatch(toggleModal())
   }
 
   return (
