@@ -32,20 +32,23 @@ function App() {
           path="home"
           element={<Home />}
         />
-        <Route
-          path="rooms"
-          element={<UserRoomList />}
-        />
 
-        <Route element={<ProtectedRoute />}>
+        <Route path="rooms">
           <Route
-            path="rooms/create"
-            element={<RoomForm />}
+            index
+            element={<UserRoomList />}
           />
-          <Route
-            path="rooms/edit/:id"
-            element={<RoomForm />}
-          />
+
+          <Route element={<ProtectedRoute />}>
+            <Route
+              path="create"
+              element={<RoomForm />}
+            />
+            <Route
+              path="edit/:id"
+              element={<RoomForm />}
+            />
+          </Route>
         </Route>
       </Route>
 
