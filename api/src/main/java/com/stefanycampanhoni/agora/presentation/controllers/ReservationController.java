@@ -1,0 +1,47 @@
+package com.stefanycampanhoni.agora.presentation.controllers;
+
+import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationListResponse;
+import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationRequest;
+import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationResponse;
+import com.stefanycampanhoni.agora.application.mappers.ReservationMapper;
+import com.stefanycampanhoni.agora.domain.entities.User;
+import com.stefanycampanhoni.agora.application.services.ReservationService;
+import com.stefanycampanhoni.agora.application.services.RoomService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping(path = "/reservations")
+public class ReservationController {
+
+    @Autowired
+    private ReservationService service;
+
+    @Autowired
+    private ReservationMapper reservationMapper;
+
+    @GetMapping
+    public ResponseEntity<ReservationListResponse> getAllReservations() {
+        ReservationListResponse reservations = service.getAllReservations();
+        return ResponseEntity.ok(reservations);
+    }
+
+    @PostMapping
+    public ResponseEntity<ReservationResponse> createReservation(@RequestBody ReservationRequest reservationRequest,
+                                                                 @AuthenticationPrincipal User currentUser) {
+        var createdReservation = service.createReservation(reservationRequest, currentUser, reservationRequest.roomId());
+        return ResponseEntity.ok(createdReservation);
+    }
+
+    @PostMapping(path = "/validate")
+    public ResponseEntity<Boolean> validateReservation(@RequestBody ReservationRequest reservationRequest) {
+        boolean isValidReservation = service.isValidReservation(reservationMapper.toReservation(reservationRequest));
+        return ResponseEntity.ok(isValidReservation);
+    }
+}

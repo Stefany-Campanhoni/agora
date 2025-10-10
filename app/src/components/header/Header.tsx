@@ -1,21 +1,17 @@
-import { useDispatch, useSelector } from "react-redux"
 import Nav from "react-bootstrap/Nav"
 import { useLocation, useNavigate } from "react-router-dom"
 import logo from "../../assets/logo.png"
-import { useAuth } from "../../hooks/useAuth"
+import { useModal } from "../../hooks/useModal"
 import { UserModal } from "../modal/UserModal"
-import { toggleModal, selectIsModalOpen } from "../../store/slices/modalSlice"
 import "./header.css"
 
 export function Header() {
-  const dispatch = useDispatch()
-  const isModalOpen = useSelector(selectIsModalOpen)
+  const { isModalOpen, toggleModal } = useModal()
   const navigate = useNavigate()
   const location = useLocation()
-  const { isAdmin } = useAuth()
 
   const handleUserIconClick = () => {
-    dispatch(toggleModal())
+    toggleModal()
   }
 
   return (
@@ -56,16 +52,6 @@ export function Header() {
               Salas Disponíveis
             </Nav.Link>
           </Nav.Item>
-          {isAdmin && (
-            <Nav.Item>
-              <Nav.Link
-                eventKey="/rooms/create"
-                className="nav-link text-light"
-              >
-                Criar Sala
-              </Nav.Link>
-            </Nav.Item>
-          )}
         </Nav>
         <div
           className="user-icon"

@@ -5,10 +5,11 @@ import { BasicLayout } from "./layouts/BasicLayout"
 import { UserLayout } from "./layouts/UserLayout"
 import { Home } from "./pages/Home"
 import { RoomForm } from "./pages/room/RoomForm"
-import { RoomList } from "./pages/room/RoomList"
+import { AdminRoomList } from "./pages/room/list/AdminRoomList"
 import { UserLogin } from "./pages/user/UserLogin"
 import { UserRegistration } from "./pages/user/UserRegistration"
 import { AdminLayout } from "./layouts/AdminLayout"
+import { UserRoomList } from "./pages/room/list/UserRoomList"
 
 function App() {
   return (
@@ -33,7 +34,7 @@ function App() {
         />
         <Route
           path="rooms"
-          element={<RoomList />}
+          element={<UserRoomList />}
         />
 
         <Route element={<ProtectedRoute />}>
@@ -69,7 +70,7 @@ function App() {
         >
           <Route
             path="rooms"
-            element={<RoomList />}
+            element={<AdminRoomList />}
           />
         </Route>
       </Route>
