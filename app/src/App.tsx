@@ -10,6 +10,7 @@ import { UserLogin } from "./pages/user/UserLogin"
 import { UserRegistration } from "./pages/user/UserRegistration"
 import { AdminLayout } from "./layouts/AdminLayout"
 import { UserRoomList } from "./pages/room/list/UserRoomList"
+import { UserList } from "./pages/user/UserList"
 
 function App() {
   return (
@@ -74,6 +75,10 @@ function App() {
           <Route
             path="rooms"
             element={<AdminRoomList />}
+          />
+          <Route
+            path="users"
+            element={<UserList />}
           />
         </Route>
       </Route>
