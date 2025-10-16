@@ -1,6 +1,7 @@
 package com.stefanycampanhoni.agora.presentation.controllers;
 
 import com.stefanycampanhoni.agora.application.dtos.TokenResponse;
+import com.stefanycampanhoni.agora.application.dtos.user.UserListResponse;
 import com.stefanycampanhoni.agora.application.dtos.user.UserLoginRequest;
 import com.stefanycampanhoni.agora.application.dtos.user.UserRequest;
 import com.stefanycampanhoni.agora.application.dtos.user.UserResponse;
@@ -52,6 +53,12 @@ public class UserController {
     @Operation(summary = "Obter Usuário autenticado", description = "Retorna os detalhes do usuário autenticado atualmente")
     public ResponseEntity<UserResponse> getUserById(@AuthenticationPrincipal User user) {
         UserResponse response = userService.getUserByEmail(user.getEmail());
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<UserListResponse> getAllUsers() {
+        UserListResponse response = userService.getAllUsers();
         return ResponseEntity.ok(response);
     }
 }

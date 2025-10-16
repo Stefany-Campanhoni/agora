@@ -1,6 +1,7 @@
 package com.stefanycampanhoni.agora.application.services;
 
 import com.stefanycampanhoni.agora.application.dtos.TokenResponse;
+import com.stefanycampanhoni.agora.application.dtos.user.UserListResponse;
 import com.stefanycampanhoni.agora.application.dtos.user.UserLoginRequest;
 import com.stefanycampanhoni.agora.application.dtos.user.UserRequest;
 import com.stefanycampanhoni.agora.application.dtos.user.UserResponse;
@@ -14,6 +15,8 @@ import com.stefanycampanhoni.agora.infra.security.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -67,5 +70,12 @@ public class UserService {
     private User getUserByEmailEntity(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    public UserListResponse getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(userMapper::toUserResponse)
+                .collect(userMapper.toUserListResponse());
     }
 }
