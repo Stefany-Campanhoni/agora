@@ -1,22 +1,20 @@
 package com.stefanycampanhoni.agora.application.services;
 
 import com.stefanycampanhoni.agora.application.dtos.TokenResponse;
-import com.stefanycampanhoni.agora.application.dtos.user.UserListResponse;
-import com.stefanycampanhoni.agora.application.dtos.user.UserLoginRequest;
-import com.stefanycampanhoni.agora.application.dtos.user.UserRequest;
-import com.stefanycampanhoni.agora.application.dtos.user.UserResponse;
+import com.stefanycampanhoni.agora.application.dtos.user.*;
 import com.stefanycampanhoni.agora.application.exceptions.user.InvalidCredentialsException;
 import com.stefanycampanhoni.agora.application.exceptions.user.UserNotFoundException;
 import com.stefanycampanhoni.agora.application.mappers.AuthMapper;
+import com.stefanycampanhoni.agora.application.mappers.CustomUserMapper;
 import com.stefanycampanhoni.agora.application.mappers.UserMapper;
 import com.stefanycampanhoni.agora.domain.entities.User;
 import com.stefanycampanhoni.agora.domain.repositories.UserRepository;
 import com.stefanycampanhoni.agora.infra.security.AuthService;
+import org.apache.commons.lang3.StringUtils;
+import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -32,6 +30,9 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private CustomUserMapper customUserMapper;
 
     @Autowired
     private AuthMapper authMapper;
@@ -77,5 +78,23 @@ public class UserService {
                 .stream()
                 .map(userMapper::toUserResponse)
                 .collect(userMapper.toUserListResponse());
+    }
+
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new UserNotFoundException();
+        }
+        userRepository.deleteById(id);
+    }
+
+    public UserResponse updateUser(User user, UserEditRequest userRequest) {
+        customUserMapper.updateUserFromRequest(userRequest, user);
+        userRepository.save(user);
+        return userMapper.toUserResponse(user);
+    }
+
+    @Named("stringsNotBlank")
+    public boolean isNotBlank(String str) {
+        return StringUtils.isNotBlank(str);
     }
 }
