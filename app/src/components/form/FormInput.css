@@ -1,0 +1,49 @@
+.form-input-group {
+  margin-bottom: 20px;
+}
+
+.form-input-label {
+  color: #462500 !important;
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+  display: block;
+}
+
+.form-input-control {
+  border: 2px solid #d4c5a9 !important;
+  border-radius: 8px !important;
+  padding: 12px 15px !important;
+  font-size: 1rem !important;
+  width: 100%;
+  transition: all 0.3s ease !important;
+  background-color: #fefcf8 !important;
+}
+
+.form-input-control:focus {
+  border-color: #794000 !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 0 0 0.2rem rgba(121, 64, 0, 0.15) !important;
+  outline: none;
+}
+
+.form-input-control.is-invalid {
+  border-color: #dc3545 !important;
+}
+
+.form-input-control:disabled {
+  background-color: #e9ecef;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-input-feedback {
+  color: #dc3545 !important;
+  font-size: 0.875rem !important;
+  margin-top: 5px !important;
+  display: block !important;
+}
+
+.form-input-control::placeholder {
+  color: #a89984;
+  opacity: 0.7;
+}

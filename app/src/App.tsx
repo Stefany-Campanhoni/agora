@@ -11,6 +11,7 @@ import { UserRegistration } from "./pages/user/UserRegistration"
 import { AdminLayout } from "./layouts/AdminLayout"
 import { UserRoomList } from "./pages/room/list/UserRoomList"
 import { UserList } from "./pages/user/UserList"
+import { UserEdit } from "./pages/user/UserEdit"
 
 function App() {
   return (
@@ -64,6 +65,11 @@ function App() {
         <Route
           path="login"
           element={<UserLogin />}
+        />
+
+        <Route
+          path="edit"
+          element={<UserEdit />}
         />
       </Route>
 
