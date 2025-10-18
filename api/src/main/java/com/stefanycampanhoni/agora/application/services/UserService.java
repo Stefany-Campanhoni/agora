@@ -8,6 +8,7 @@ import com.stefanycampanhoni.agora.application.mappers.AuthMapper;
 import com.stefanycampanhoni.agora.application.mappers.CustomUserMapper;
 import com.stefanycampanhoni.agora.application.mappers.UserMapper;
 import com.stefanycampanhoni.agora.domain.entities.User;
+import com.stefanycampanhoni.agora.domain.enums.user.Role;
 import com.stefanycampanhoni.agora.domain.repositories.UserRepository;
 import com.stefanycampanhoni.agora.infra.security.AuthService;
 import org.apache.commons.lang3.StringUtils;
@@ -96,5 +97,16 @@ public class UserService {
     @Named("stringsNotBlank")
     public boolean isNotBlank(String str) {
         return StringUtils.isNotBlank(str);
+    }
+
+    public Boolean canEditUser(User currentUser, UserRequest userRequest) {
+        if (currentUser == null || userRequest == null) {
+            return false;
+        }
+
+        return userRepository.findByEmail(userRequest.email())
+                .map(user -> currentUser.getId().equals(user.getId()) ||
+                        currentUser.getRole().equals(Role.ADMIN))
+                .orElse(false);
     }
 }

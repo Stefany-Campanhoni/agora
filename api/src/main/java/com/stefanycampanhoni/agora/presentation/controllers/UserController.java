@@ -71,4 +71,10 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/can-edit")
+    public ResponseEntity<Boolean> canEditUser(@AuthenticationPrincipal User currentUser,
+                                               @RequestBody UserRequest userRequest) {
+        return ResponseEntity.ok(userService.canEditUser(currentUser, userRequest));
+    }
+
 }

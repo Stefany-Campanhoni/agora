@@ -1,10 +1,10 @@
-import { Button, Modal } from "react-bootstrap"
 import { useEffect, useState } from "react"
-import type { UserResponse } from "../../api/user/user.responses"
-import { loadUser } from "../../api/user/user.api"
-import "./ModalManagementContent.css"
-import { useAuth } from "../../hooks/useAuth"
+import { Button, Modal } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
+import { loadUser } from "../../api/user/user.api"
+import type { UserResponse } from "../../api/user/user.responses"
+import { useAuth } from "../../hooks/useAuth"
+import "./ModalManagementContent.css"
 
 export function ModalManagementContent() {
   const [user, setUser] = useState<UserResponse | null>(null)
@@ -41,19 +41,29 @@ export function ModalManagementContent() {
       <Modal.Footer className="user-modal-footer">
         {isAdmin && (
           <Button
-            className="user-modal-btn logout-btn"
+            className="user-modal-btn custom-btn"
             onClick={() => navigate("/admin")}
           >
             Area Admin
           </Button>
         )}
 
-        <Button
-          className="user-modal-btn logout-btn"
-          onClick={() => logout()}
-        >
-          Sair
-        </Button>
+        {user && (
+          <>
+            <Button
+              className="user-modal-btn custom-btn"
+              onClick={() => navigate("user/edit", { state: { user } })}
+            >
+              Editar Perfil
+            </Button>
+            <Button
+              className="user-modal-btn custom-btn"
+              onClick={() => logout()}
+            >
+              Sair
+            </Button>
+          </>
+        )}
       </Modal.Footer>
     </>
   )

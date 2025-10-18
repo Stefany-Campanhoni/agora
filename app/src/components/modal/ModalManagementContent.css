@@ -17,14 +17,13 @@
   font-weight: 600;
 }
 
-/* Logout button specific styles */
-.logout-btn {
+.custom-btn {
   background-color: #794000 !important;
   border-color: #8b4500 !important;
   color: #fffbeb !important;
 }
 
-.logout-btn:hover {
+.custom-btn:hover {
   background-color: #8b4500 !important;
   border-color: #a05000 !important;
   color: #fffbeb !important;
@@ -32,7 +31,7 @@
   box-shadow: 0 4px 12px rgba(121, 64, 0, 0.3) !important;
 }
 
-.logout-btn:active {
+.custom-btn:active {
   background-color: #5f3300 !important;
   border-color: #794000 !important;
   transform: translateY(0) !important;
