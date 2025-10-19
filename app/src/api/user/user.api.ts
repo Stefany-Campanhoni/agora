@@ -1,6 +1,7 @@
 import { apiClient } from ".."
-import type { LoginFormData } from "../../components/form/user/LoginForm"
-import type { RegisterFormData } from "../../components/form/user/RegisterForm"
+import type { EditFormData } from "../../pages/user/UserEdit"
+import type { LoginFormData } from "../../pages/user/UserLogin"
+import type { RegisterFormData } from "../../pages/user/UserRegistration"
 import type { LoginResponse, UserListResponse, UserResponse } from "./user.responses"
 
 const URI = `/users`
@@ -29,5 +30,15 @@ export async function getAllUsers(): Promise<UserListResponse> {
 
 export async function canEditUser(user: UserResponse): Promise<boolean> {
   const res = await apiClient.post<boolean>(`${URI}/can-edit`, user)
+  return res.data
+}
+
+export async function updateUser(user: EditFormData): Promise<UserResponse> {
+  const res = await apiClient.put<UserResponse>(`${URI}/me`, user)
+
+  if (res.status !== 200) {
+    throw new Error("Erro ao atualizar usuário")
+  }
+
   return res.data
 }

@@ -89,22 +89,21 @@ public class UserService {
     }
 
     public UserResponse updateUser(User user, UserEditRequest userRequest) {
+        if (!canEditUser(user, userRequest.email())) {
+            throw new InvalidCredentialsException("You do not have permission to edit this user.");
+        }
+
         customUserMapper.updateUserFromRequest(userRequest, user);
         userRepository.save(user);
         return userMapper.toUserResponse(user);
     }
 
-    @Named("stringsNotBlank")
-    public boolean isNotBlank(String str) {
-        return StringUtils.isNotBlank(str);
-    }
-
-    public Boolean canEditUser(User currentUser, UserRequest userRequest) {
-        if (currentUser == null || userRequest == null) {
+    public boolean canEditUser(User currentUser, String email) {
+        if (currentUser == null || email == null) {
             return false;
         }
 
-        return userRepository.findByEmail(userRequest.email())
+        return userRepository.findByEmail(email)
                 .map(user -> currentUser.getId().equals(user.getId()) ||
                         currentUser.getRole().equals(Role.ADMIN))
                 .orElse(false);

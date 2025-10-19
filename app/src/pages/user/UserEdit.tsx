@@ -1,25 +1,79 @@
 import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
 import { useLocation, useNavigate } from "react-router-dom"
-import { canEditUser } from "../../api/user/user.api"
+import { canEditUser, updateUser } from "../../api/user/user.api"
 import type { UserResponse } from "../../api/user/user.responses"
+import { Alert } from "../../components/alert/Alert"
+import { BaseForm } from "../../components/form/BaseForm"
+import { FormInput } from "../../components/form/FormInput"
+
+export type EditFormData = {
+  name: string
+}
 
 export function UserEdit() {
-  const [user, setUser] = useState<UserResponse>(null!)
+  const [isLoading, setIsLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const location = useLocation()
   const navigate = useNavigate()
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<EditFormData>({ defaultValues: { name: "" } })
 
   useEffect(() => {
     const currentUser = location.state?.user as UserResponse
     const canEdit = canEditUser(currentUser)
     if (!currentUser || !canEdit) navigate(-1)
-    setUser(currentUser)
+
+    setValue("name", currentUser.name)
+    setIsLoading(false)
   }, [])
 
-  if (!user) return <div>No user in navigation state</div>
+  const handleFormSubmit = async (data: EditFormData) => {
+    setIsLoading(true)
+    try {
+      await updateUser(data)
+      navigate(-1)
+    } catch (error) {
+      console.error("Erro ao atualizar usuário:", error)
+      setErrorMessage("Ocorreu um erro ao editar. Por favor, tente novamente mais tarde.")
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
-    <div>
-      Edit user: {user.name} ({user.email})
+    <div style={{ width: "100%" }}>
+      {errorMessage && (
+        <Alert
+          message={errorMessage}
+          type="error"
+          onClose={() => setErrorMessage(null)}
+        />
+      )}
+      <BaseForm
+        title="Editar Usuário"
+        onSubmit={handleSubmit(handleFormSubmit)}
+        submitText="Salvar"
+        isLoading={isLoading}
+      >
+        <FormInput
+          label="Nome"
+          type="text"
+          placeholder="Digite seu nome completo"
+          register={register("name", {
+            required: "Nome é obrigatório",
+            minLength: {
+              value: 2,
+              message: "Nome deve ter pelo menos 2 caracteres",
+            },
+          })}
+          error={errors.name}
+        />
+      </BaseForm>
     </div>
   )
 }

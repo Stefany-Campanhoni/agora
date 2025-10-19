@@ -64,7 +64,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/me")
     public ResponseEntity<UserResponse> updateUser(@AuthenticationPrincipal User currentUser,
                                                    @RequestBody UserEditRequest userRequest) {
         UserResponse response = userService.updateUser(currentUser, userRequest);
@@ -74,7 +74,7 @@ public class UserController {
     @PostMapping("/can-edit")
     public ResponseEntity<Boolean> canEditUser(@AuthenticationPrincipal User currentUser,
                                                @RequestBody UserRequest userRequest) {
-        return ResponseEntity.ok(userService.canEditUser(currentUser, userRequest));
+        return ResponseEntity.ok(userService.canEditUser(currentUser, userRequest.email()));
     }
 
 }
