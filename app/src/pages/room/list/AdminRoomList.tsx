@@ -1,13 +1,5 @@
 import { useEffect, useState } from "react"
-import {
-  Badge,
-  Button,
-  Card,
-  Col,
-  Container,
-  Row,
-  Spinner,
-} from "react-bootstrap"
+import { Badge, Button, Card, Col, Container, Row, Spinner } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { deleteRoom, getAllRooms } from "../../../api/room/room.api"
 import type { RoomResponse } from "../../../api/room/room.responses"
@@ -37,7 +29,7 @@ export function AdminRoomList() {
   }
 
   const handleEdit = (id: number) => {
-    navigate(`/rooms/edit/${id}`)
+    navigate(`edit/${id}`)
   }
 
   const handleDelete = async (id: number, name: string) => {
@@ -88,15 +80,12 @@ export function AdminRoomList() {
                       bg="secondary"
                       className="ms-2"
                     >
-                      {room.capacity}{" "}
-                      {room.capacity === 1 ? "pessoa" : "pessoas"}
+                      {room.capacity} {room.capacity === 1 ? "pessoa" : "pessoas"}
                     </Badge>
                   </Card.Title>
 
                   {room.description && (
-                    <Card.Text className="text-muted">
-                      {room.description}
-                    </Card.Text>
+                    <Card.Text className="text-muted">{room.description}</Card.Text>
                   )}
 
                   <div className="mb-3">

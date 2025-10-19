@@ -1,17 +1,17 @@
 import { Navigate, Route, Routes } from "react-router-dom"
 import "./App.css"
 import { AdminRoute, ProtectedRoute } from "./components/routing/ProtectedRoute"
+import { AdminLayout } from "./layouts/AdminLayout"
 import { BasicLayout } from "./layouts/BasicLayout"
 import { UserLayout } from "./layouts/UserLayout"
 import { Home } from "./pages/Home"
 import { RoomForm } from "./pages/room/RoomForm"
 import { AdminRoomList } from "./pages/room/list/AdminRoomList"
+import { UserRoomList } from "./pages/room/list/UserRoomList"
+import { UserEdit } from "./pages/user/UserEdit"
+import { UserList } from "./pages/user/UserList"
 import { UserLogin } from "./pages/user/UserLogin"
 import { UserRegistration } from "./pages/user/UserRegistration"
-import { AdminLayout } from "./layouts/AdminLayout"
-import { UserRoomList } from "./pages/room/list/UserRoomList"
-import { UserList } from "./pages/user/UserList"
-import { UserEdit } from "./pages/user/UserEdit"
 
 function App() {
   return (
@@ -46,10 +46,6 @@ function App() {
               path="create"
               element={<RoomForm />}
             />
-            <Route
-              path="edit/:id"
-              element={<RoomForm />}
-            />
           </Route>
         </Route>
       </Route>
@@ -78,10 +74,17 @@ function App() {
           path="/admin"
           element={<AdminLayout />}
         >
-          <Route
-            path="rooms"
-            element={<AdminRoomList />}
-          />
+          <Route path="rooms">
+            <Route
+              index
+              element={<AdminRoomList />}
+            />
+            <Route
+              path="edit/:id"
+              element={<RoomForm />}
+            />
+          </Route>
+
           <Route
             path="users"
             element={<UserList />}
