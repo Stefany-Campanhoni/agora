@@ -1,9 +1,9 @@
 import { Badge, Button, Card } from "react-bootstrap"
-import type { RoomResponse } from "../../api/room/room.responses"
+import type { Room } from "../../api/room/room.types"
 import "./RoomCard.css"
 
 interface RoomCardProps {
-  room: RoomResponse
+  room: Room
   onReserve?: (room: number) => void
 }
 

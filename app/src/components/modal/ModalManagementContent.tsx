@@ -2,12 +2,12 @@ import { useEffect, useState } from "react"
 import { Button, Modal } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { loadUser } from "../../api/user/user.api"
-import type { UserResponse } from "../../api/user/user.responses"
+import type { User } from "../../api/user/user.types"
 import { useAuth } from "../../hooks/useAuth"
 import "./ModalManagementContent.css"
 
 export function ModalManagementContent() {
-  const [user, setUser] = useState<UserResponse | null>(null)
+  const [user, setUser] = useState<User | null>(null)
   const { logout, isAdmin } = useAuth()
   const navigate = useNavigate()
 

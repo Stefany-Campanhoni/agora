@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { registerUser } from "../../api/user/user.api"
 import { BaseForm } from "../../components/form/BaseForm"
-import { FormInput } from "../../components/form/FormInput"
+import { FormInput } from "../../components/form/inputs/FormInput"
 import { useAuth } from "../../hooks/useAuth"
 
 export type RegisterFormData = {

@@ -1,4 +1,4 @@
-export type RoomResponse = {
+export type Room = {
   id: number
   name: string
   description: string
@@ -6,8 +6,8 @@ export type RoomResponse = {
   location: string
 }
 
-export type RoomListResponse = {
-  rooms: RoomResponse[]
+export type RoomList = {
+  rooms: Room[]
 }
 
 export type RoomRequest = {

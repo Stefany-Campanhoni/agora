@@ -2,12 +2,12 @@ import { useEffect, useState } from "react"
 import { Badge, Button, Card, Col, Container, Row, Spinner } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { deleteRoom, getAllRooms } from "../../../api/room/room.api"
-import type { RoomResponse } from "../../../api/room/room.responses"
+import type { Room } from "../../../api/room/room.types"
 import "./RoomList.css"
 
 export function AdminRoomList() {
   const navigate = useNavigate()
-  const [rooms, setRooms] = useState<RoomResponse[]>([])
+  const [rooms, setRooms] = useState<Room[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [deletingId, setDeletingId] = useState<number | null>(null)
 

@@ -2,10 +2,10 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useLocation, useNavigate } from "react-router-dom"
 import { canEditUser, updateUser } from "../../api/user/user.api"
-import type { UserResponse } from "../../api/user/user.responses"
+import type { User } from "../../api/user/user.types"
 import { Alert } from "../../components/alert/Alert"
 import { BaseForm } from "../../components/form/BaseForm"
-import { FormInput } from "../../components/form/FormInput"
+import { FormInput } from "../../components/form/inputs/FormInput"
 
 export type EditFormData = {
   name: string
@@ -24,7 +24,7 @@ export function UserEdit() {
   } = useForm<EditFormData>({ defaultValues: { name: "" } })
 
   useEffect(() => {
-    const currentUser = location.state?.user as UserResponse
+    const currentUser = location.state?.user as User
     const canEdit = canEditUser(currentUser)
     if (!currentUser || !canEdit) navigate(-1)
 

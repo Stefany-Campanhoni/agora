@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { loginUser } from "../../api/user/user.api"
 import { Alert } from "../../components/alert/Alert"
 import { BaseForm } from "../../components/form/BaseForm"
-import { FormInput } from "../../components/form/FormInput"
+import { FormInput } from "../../components/form/inputs/FormInput"
 import { useAuth } from "../../hooks/useAuth"
 
 export type LoginFormData = {

@@ -3,9 +3,9 @@ import { Form } from "react-bootstrap"
 import { useForm } from "react-hook-form"
 import { useNavigate, useParams } from "react-router-dom"
 import { createRoom, getRoomById, updateRoom } from "../../../api/room/room.api"
-import type { RoomRequest, RoomResponse } from "../../../api/room/room.responses"
+import type { Room, RoomRequest } from "../../../api/room/room.types"
 import { BaseForm } from "../../../components/form/BaseForm"
-import { FormInput } from "../../../components/form/FormInput"
+import { FormInput } from "../../../components/form/inputs/FormInput"
 import "./CreateRoomForm.css"
 
 export type RoomFormData = {
@@ -19,7 +19,7 @@ export function RoomForm() {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const [isLoading, setIsLoading] = useState(false)
-  const [initialData, setInitialData] = useState<Partial<RoomResponse>>({})
+  const [initialData, setInitialData] = useState<Partial<Room>>({})
   const [isEditMode, setIsEditMode] = useState(false)
   const {
     register,

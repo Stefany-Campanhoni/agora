@@ -2,12 +2,12 @@ import { useEffect, useState } from "react"
 import { Col, Container, Row, Spinner } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { getAllRooms } from "../../../api/room/room.api"
-import type { RoomResponse } from "../../../api/room/room.responses"
+import type { Room } from "../../../api/room/room.types"
 import { RoomCard } from "../../../components/room/RoomCard"
 import "./RoomList.css"
 
 export function UserRoomList() {
-  const [rooms, setRooms] = useState<RoomResponse[]>([])
+  const [rooms, setRooms] = useState<Room[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
 
