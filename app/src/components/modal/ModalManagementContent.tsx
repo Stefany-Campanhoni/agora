@@ -39,17 +39,17 @@ export function ModalManagementContent() {
         )}
       </Modal.Body>
       <Modal.Footer className="user-modal-footer">
-        {isAdmin && (
-          <Button
-            className="user-modal-btn custom-btn"
-            onClick={() => navigate("/admin")}
-          >
-            Area Admin
-          </Button>
-        )}
-
         {user && (
           <>
+            {isAdmin && (
+              <Button
+                className="user-modal-btn custom-btn"
+                onClick={() => navigate("/admin")}
+              >
+                Area Admin
+              </Button>
+            )}
+
             <Button
               className="user-modal-btn custom-btn"
               onClick={() => navigate("user/edit", { state: { user } })}

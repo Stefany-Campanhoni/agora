@@ -5,7 +5,8 @@ import { AdminLayout } from "./layouts/AdminLayout"
 import { BasicLayout } from "./layouts/BasicLayout"
 import { UserLayout } from "./layouts/UserLayout"
 import { Home } from "./pages/Home"
-import { RoomForm } from "./pages/room/RoomForm"
+import { RoomForm } from "./pages/room/forms/CreateRoomForm"
+import { ReservateRoomForm } from "./pages/room/forms/ReserveRoomForm"
 import { AdminRoomList } from "./pages/room/list/AdminRoomList"
 import { UserRoomList } from "./pages/room/list/UserRoomList"
 import { UserEdit } from "./pages/user/UserEdit"
@@ -40,7 +41,10 @@ function App() {
             index
             element={<UserRoomList />}
           />
-
+          <Route
+            path=":id/reserve"
+            element={<ReservateRoomForm />}
+          />
           <Route element={<ProtectedRoute />}>
             <Route
               path="create"

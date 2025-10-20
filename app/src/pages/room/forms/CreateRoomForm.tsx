@@ -2,11 +2,11 @@ import { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
 import { useForm } from "react-hook-form"
 import { useNavigate, useParams } from "react-router-dom"
-import { createRoom, getRoomById, updateRoom } from "../../api/room/room.api"
-import type { RoomRequest, RoomResponse } from "../../api/room/room.responses"
-import { BaseForm } from "../../components/form/BaseForm"
-import { FormInput } from "../../components/form/FormInput"
-import "./RoomForm.css"
+import { createRoom, getRoomById, updateRoom } from "../../../api/room/room.api"
+import type { RoomRequest, RoomResponse } from "../../../api/room/room.responses"
+import { BaseForm } from "../../../components/form/BaseForm"
+import { FormInput } from "../../../components/form/FormInput"
+import "./CreateRoomForm.css"
 
 export type RoomFormData = {
   name: string

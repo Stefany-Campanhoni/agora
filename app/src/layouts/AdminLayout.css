@@ -145,8 +145,13 @@
 }
 
 .admin-content-area {
+  background-color: #fffbeb !important;
   padding: 2rem;
   flex: 1;
+}
+
+.admin-topbar {
+  background-color: #fcf2dd !important;
 }
 
 .admin-breadcrumb {
