@@ -6,7 +6,6 @@ import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationRespo
 import com.stefanycampanhoni.agora.application.mappers.ReservationMapper;
 import com.stefanycampanhoni.agora.domain.entities.User;
 import com.stefanycampanhoni.agora.application.services.ReservationService;
-import com.stefanycampanhoni.agora.application.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,6 +28,12 @@ public class ReservationController {
     @GetMapping
     public ResponseEntity<ReservationListResponse> getAllReservations() {
         ReservationListResponse reservations = service.getAllReservations();
+        return ResponseEntity.ok(reservations);
+    }
+
+    @GetMapping(path = "/me")
+    public ResponseEntity<ReservationListResponse> getUserReservations() {
+        ReservationListResponse reservations = service.getAllUserReservations();
         return ResponseEntity.ok(reservations);
     }
 

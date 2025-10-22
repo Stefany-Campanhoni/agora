@@ -8,7 +8,9 @@ import com.stefanycampanhoni.agora.domain.entities.Reservation;
 import com.stefanycampanhoni.agora.domain.entities.Room;
 import com.stefanycampanhoni.agora.domain.entities.User;
 import com.stefanycampanhoni.agora.domain.repositories.ReservationRepository;
+import com.stefanycampanhoni.agora.infra.security.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -61,5 +63,14 @@ public class ReservationService {
                 .anyMatch(existingReservation ->
                         start.isBefore(existingReservation.getEndTime()) &&
                                 end.isAfter(existingReservation.getStartTime()));
+    }
+
+    public ReservationListResponse getAllUserReservations() {
+        User currentUser = UserContext.getCurrentUser();
+        return repository.findByReservedBy(currentUser).stream()
+                .map(mapper::toReservationResponse)
+                .collect(ReservationListResponse::new,
+                        (list, reservation) -> list.items().add(reservation),
+                        (list1, list2) -> list1.items().addAll(list2.items()));
     }
 }
