@@ -4,9 +4,11 @@ import logo from "../../assets/logo.png"
 import { useModal } from "../../hooks/useModal"
 import { UserModal } from "../modal/UserModal"
 import "./header.css"
+import { useAuth } from "../../hooks/useAuth"
 
 export function Header() {
   const { isModalOpen, toggleModal } = useModal()
+  const { isAuthenticated } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -52,6 +54,16 @@ export function Header() {
               Salas Disponíveis
             </Nav.Link>
           </Nav.Item>
+          {isAuthenticated && (
+            <Nav.Item>
+              <Nav.Link
+                eventKey="/reservations"
+                className="nav-link text-light"
+              >
+                Minhas Reservas
+              </Nav.Link>
+            </Nav.Item>
+          )}
         </Nav>
         <div
           className="user-icon"

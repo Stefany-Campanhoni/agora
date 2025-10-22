@@ -22,6 +22,7 @@ apiClient.interceptors.request.use(
     } else if (headers && headers.Authorization) {
       delete headers.Authorization
     }
+    config.url = config.url?.replaceAll("//", "/")
 
     return config
   },

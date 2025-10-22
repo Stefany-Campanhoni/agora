@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import { Button, Modal } from "react-bootstrap"
+import { Button, Col, Container, Modal, Row } from "react-bootstrap"
+import { FaCog, FaEnvelope, FaShieldAlt, FaSignOutAlt, FaUser } from "react-icons/fa"
 import { useNavigate } from "react-router-dom"
 import { loadUser } from "../../api/user/user.api"
 import type { User } from "../../api/user/user.types"
@@ -26,16 +27,54 @@ export function ModalManagementContent() {
     <>
       <Modal.Body className="user-modal-body">
         {user ? (
-          <div className="user-info">
-            <p>
-              <strong>Nome:</strong> {user.name}
-            </p>
-            <p>
-              <strong>Email:</strong> {user.email}
-            </p>
-          </div>
+          <Container
+            fluid
+            className="user-info-container"
+          >
+            <Row className="mb-4">
+              <Col
+                xs={12}
+                className="text-center"
+              >
+                <div className="user-avatar">
+                  <FaUser className="avatar-icon" />
+                </div>
+                <h5 className="user-name mt-3">{user.name}</h5>
+              </Col>
+            </Row>
+
+            <Row className="user-details">
+              <Col
+                xs={12}
+                className="mb-3"
+              >
+                <div className="info-item">
+                  <div className="info-icon">
+                    <FaUser />
+                  </div>
+                  <div className="info-content">
+                    <p className="info-label">Nome</p>
+                    <p className="info-value">{user.name}</p>
+                  </div>
+                </div>
+              </Col>
+              <Col xs={12}>
+                <div className="info-item">
+                  <div className="info-icon">
+                    <FaEnvelope />
+                  </div>
+                  <div className="info-content">
+                    <p className="info-label">Email</p>
+                    <p className="info-value">{user.email}</p>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </Container>
         ) : (
-          <p>Estou de olho ein 👀</p>
+          <div className="loading-container">
+            <p className="loading-text">Estou de olho ein 👀</p>
+          </div>
         )}
       </Modal.Body>
       <Modal.Footer className="user-modal-footer">
@@ -43,23 +82,26 @@ export function ModalManagementContent() {
           <>
             {isAdmin && (
               <Button
-                className="user-modal-btn custom-btn"
+                className="modal-btn admin-btn"
                 onClick={() => navigate("/admin")}
               >
-                Area Admin
+                <FaShieldAlt className="btn-icon" />
+                Área Admin
               </Button>
             )}
 
             <Button
-              className="user-modal-btn custom-btn"
+              className="modal-btn edit-btn"
               onClick={() => navigate("user/edit", { state: { user } })}
             >
+              <FaCog className="btn-icon" />
               Editar Perfil
             </Button>
             <Button
-              className="user-modal-btn custom-btn"
+              className="modal-btn logout-btn"
               onClick={() => logout()}
             >
+              <FaSignOutAlt className="btn-icon" />
               Sair
             </Button>
           </>
