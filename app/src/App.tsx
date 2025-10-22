@@ -12,6 +12,7 @@ import { UserEdit } from "./pages/user/UserEdit"
 import { UserList } from "./pages/user/UserList"
 import { UserLogin } from "./pages/user/UserLogin"
 import { UserRegistration } from "./pages/user/UserRegistration"
+import { UserReservations } from "./pages/reservation/UserReservations"
 
 function App() {
   return (
@@ -33,6 +34,16 @@ function App() {
         <Route
           path="home"
           element={<Home />}
+        />
+
+        <Route
+          path="reservations"
+          element={
+            <>
+              <ProtectedRoute />
+              <UserReservations />
+            </>
+          }
         />
 
         <Route path="rooms">
