@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate, useParams } from "react-router-dom"
-import { reserve } from "../../../api/reservation/reservation.api"
-import type { ReservationRequest } from "../../../api/reservation/reservation.types"
-import { getRoomById } from "../../../api/room/room.api"
-import type { Room } from "../../../api/room/room.types"
-import { BaseForm } from "../../../components/form/BaseForm"
-import { FormInput } from "../../../components/form/inputs/FormInput"
+import type { Room } from "../../api/room/room.types"
+import { getRoomById } from "../../api/room/room.api"
+import { reserve } from "../../api/reservation/reservation.api"
+import type { ReservationRequest } from "../../api/reservation/reservation.types"
+import { BaseForm } from "../../components/form/BaseForm"
+import { FormInput } from "../../components/form/inputs/FormInput"
 import "./ReservationForm.css"
+import { DatePicker } from "../../components/pickers/DatePicker"
 
 export type ReservationFormData = {
   startDate: string
@@ -18,12 +19,15 @@ export type ReservationFormData = {
 
 export function ReserveRoomForm() {
   const [room, setRoom] = useState<Room>(null!)
+  const [disabledDates, setDisabledDates] = useState<string[]>([])
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<ReservationFormData>({
     defaultValues: {
       startDate: "",
@@ -43,6 +47,33 @@ export function ReserveRoomForm() {
         navigate(-1)
       }
     })()
+  }, [id])
+
+  // Busca datas indisponíveis (mockadas por enquanto)
+  useEffect(() => {
+    // TODO: Substituir por chamada real ao endpoint
+    // const fetchDisabledDates = async () => {
+    //   const response = await fetch(`/api/rooms/${id}/unavailable-dates`)
+    //   const data = await response.json()
+    //   setDisabledDates(data.dates)
+    // }
+    // fetchDisabledDates()
+
+    // Dados mockados: datas indisponíveis
+    const today = new Date()
+    const mockedDisabledDates: string[] = []
+
+    // Adiciona algumas datas específicas como indisponíveis
+    for (let i = 2; i <= 20; i += 3) {
+      const date = new Date(today)
+      date.setDate(today.getDate() + i)
+      mockedDisabledDates.push(date.toISOString().split("T")[0])
+    }
+
+    // Adiciona 25 de outubro como exemplo
+    mockedDisabledDates.push("2025-10-25")
+
+    setDisabledDates(mockedDisabledDates)
   }, [id])
 
   async function submitReservation(reservationFormData: ReservationFormData) {
@@ -94,11 +125,15 @@ export function ReserveRoomForm() {
             <h3>Período de Reserva</h3>
             <div className="datetime-group">
               <div className="datetime-row">
-                <FormInput
+                <DatePicker
                   label="Data de Início"
-                  type="date"
-                  register={register("startDate", { required: "Data de início é obrigatória" })}
+                  name="startDate"
+                  control={control}
                   error={errors.startDate}
+                  disabledDates={disabledDates}
+                  minDate={new Date()}
+                  required
+                  placeholder="Selecione a data de início"
                 />
                 <FormInput
                   label="Hora de Início"
@@ -109,11 +144,19 @@ export function ReserveRoomForm() {
               </div>
 
               <div className="datetime-row">
-                <FormInput
+                <DatePicker
                   label="Data de Término"
-                  type="date"
-                  register={register("endDate", { required: "Data de término é obrigatória" })}
+                  name="endDate"
+                  control={control}
                   error={errors.endDate}
+                  disabledDates={disabledDates}
+                  minDate={
+                    watch("startDate")
+                      ? new Date(new Date(watch("startDate")).getTime() + 24 * 60 * 60 * 1000)
+                      : new Date()
+                  }
+                  required
+                  placeholder="Selecione a data de término"
                 />
                 <FormInput
                   label="Hora de Término"

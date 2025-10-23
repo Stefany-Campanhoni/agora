@@ -1,0 +1,326 @@
+/* ========================================
+   Container e Labels
+   ======================================== */
+.picker-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.picker-label {
+  color: #462500;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: block;
+  font-size: 0.95rem;
+}
+
+/* ========================================
+   Input Customizado
+   ======================================== */
+.date-picker-wrapper {
+  width: 100%;
+}
+
+.date-picker-control {
+  width: 100%;
+  background: #fffaf2;
+  border: 1px solid #d4c5a9;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #462500;
+  transition: all 0.2s ease;
+  height: 44px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.date-picker-control:hover {
+  border-color: #c4b599;
+}
+
+.date-picker-control:focus {
+  border-color: #794000;
+  box-shadow: 0 4px 18px rgba(121, 64, 0, 0.12);
+  outline: none;
+  background: #fff;
+}
+
+.date-picker-control.is-invalid {
+  border-color: #dc3545;
+}
+
+.date-picker-control.is-invalid:focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.15);
+}
+
+/* ========================================
+   Mensagens de Erro e Hints
+   ======================================== */
+.picker-error {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.35rem;
+  display: block;
+}
+
+.picker-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.hint-icon {
+  font-size: 1rem;
+}
+
+.hint-text {
+  color: #856404;
+  font-weight: 500;
+}
+
+/* ========================================
+   Customização do React-DatePicker
+   ======================================== */
+
+/* Calendário principal */
+.react-datepicker {
+  font-family: inherit;
+  border: 1px solid #d4c5a9;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.react-datepicker__triangle {
+  display: none;
+}
+
+/* Header do calendário */
+.react-datepicker__header {
+  background: #fffaf2;
+  border-bottom: 1px solid #d4c5a9;
+  padding: 1rem;
+}
+
+.react-datepicker__current-month {
+  color: #462500;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Dias da semana */
+.react-datepicker__day-names {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 0.5rem;
+}
+
+.react-datepicker__day-name {
+  color: #794000;
+  font-weight: 600;
+  font-size: 0.85rem;
+  width: 2.2rem;
+  line-height: 2.2rem;
+  margin: 0.2rem;
+}
+
+/* Corpo do calendário */
+.react-datepicker__month {
+  margin: 0.5rem;
+}
+
+.react-datepicker__week {
+  display: flex;
+  justify-content: space-around;
+}
+
+/* Dias */
+.react-datepicker__day {
+  width: 2.2rem;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  margin: 0.2rem;
+  color: #462500;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.react-datepicker__day:hover {
+  background: #f5e6d3;
+  border-radius: 50%;
+}
+
+/* Dia selecionado */
+.react-datepicker__day--selected {
+  background: #794000 !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.react-datepicker__day--selected:hover {
+  background: #5a3000 !important;
+}
+
+/* Dia atual */
+.react-datepicker__day--today {
+  font-weight: 600;
+  color: #794000;
+  border: 2px solid #794000;
+}
+
+.react-datepicker__day--today:hover {
+  background: #f5e6d3;
+}
+
+/* Dias fora do mês */
+.react-datepicker__day--outside-month {
+  color: #c4b599;
+  cursor: not-allowed;
+}
+
+.react-datepicker__day--outside-month:hover {
+  background: transparent;
+}
+
+/* ========================================
+   DIAS DESABILITADOS - Principal Feature
+   ======================================== */
+.react-datepicker__day--disabled,
+.disabled-date {
+  position: relative;
+  background: #f8f9fa !important;
+  color: #adb5bd !important;
+  cursor: not-allowed !important;
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.react-datepicker__day--disabled:hover,
+.disabled-date:hover {
+  background: #e9ecef !important;
+}
+
+/* Marca visual extra para datas desabilitadas */
+.disabled-date::after {
+  content: "🚫";
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  font-size: 0.6rem;
+  opacity: 0.7;
+}
+
+/* ========================================
+   Dropdowns (Mês e Ano)
+   ======================================== */
+.react-datepicker__month-dropdown,
+.react-datepicker__year-dropdown {
+  background: #fff;
+  border: 1px solid #d4c5a9;
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.react-datepicker__month-option,
+.react-datepicker__year-option {
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.react-datepicker__month-option:hover,
+.react-datepicker__year-option:hover {
+  background: #f5e6d3;
+}
+
+.react-datepicker__month-option--selected,
+.react-datepicker__year-option--selected {
+  background: #794000;
+  color: #fff;
+}
+
+/* ========================================
+   Navegação (Setas)
+   ======================================== */
+.react-datepicker__navigation {
+  top: 1rem;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: transparent;
+}
+
+.react-datepicker__navigation:hover {
+  background: #f5e6d3;
+  border-radius: 50%;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: #794000;
+  border-width: 2px 2px 0 0;
+  width: 8px;
+  height: 8px;
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+@media (max-width: 576px) {
+  .react-datepicker {
+    font-size: 0.9rem;
+  }
+
+  .react-datepicker__day,
+  .react-datepicker__day-name {
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    margin: 0.15rem;
+  }
+
+  .hint-text {
+    font-size: 0.8rem;
+  }
+}
+
+/* ========================================
+   Animações
+   ======================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.react-datepicker {
+  animation: fadeIn 0.2s ease;
+}
+
+/* ========================================
+   Acessibilidade
+   ======================================== */
+.react-datepicker__day:focus {
+  outline: 2px solid #794000;
+  outline-offset: 2px;
+}
+
+.date-picker-control:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #e9ecef;
+}

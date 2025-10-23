@@ -6,7 +6,6 @@ import { BasicLayout } from "./layouts/BasicLayout"
 import { UserLayout } from "./layouts/UserLayout"
 import { Home } from "./pages/Home"
 import { RoomForm } from "./pages/room/forms/CreateRoomForm"
-import { ReserveRoomForm } from "./pages/room/forms/ReservationForm"
 import { AdminRoomList } from "./pages/room/list/AdminRoomList"
 import { UserRoomList } from "./pages/room/list/UserRoomList"
 import { UserEdit } from "./pages/user/UserEdit"
@@ -14,6 +13,7 @@ import { UserList } from "./pages/user/UserList"
 import { UserLogin } from "./pages/user/UserLogin"
 import { UserRegistration } from "./pages/user/UserRegistration"
 import { UserReservations } from "./pages/reservation/UserReservations"
+import { ReserveRoomForm } from "./pages/reservation/ReservationForm"
 
 function App() {
   return (
