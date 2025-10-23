@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useLocation, useNavigate } from "react-router-dom"
-import { canEditUser, updateUser } from "../../api/user/user.api"
-import type { User } from "../../api/user/user.types"
 import { Alert } from "../../components/alert/Alert"
 import { BaseForm } from "../../components/form/BaseForm"
 import { FormInput } from "../../components/form/inputs/FormInput"
+import { canEditUser, updateUser } from "../../service/user/user.api"
+import type { User } from "../../service/user/user.types"
 
 export type EditFormData = {
   name: string

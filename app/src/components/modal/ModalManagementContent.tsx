@@ -2,9 +2,9 @@ import { useEffect, useState } from "react"
 import { Button, Col, Container, Modal, Row } from "react-bootstrap"
 import { FaCog, FaEnvelope, FaShieldAlt, FaSignOutAlt, FaUser } from "react-icons/fa"
 import { useNavigate } from "react-router-dom"
-import { loadUser } from "../../api/user/user.api"
-import type { User } from "../../api/user/user.types"
 import { useAuth } from "../../hooks/useAuth"
+import { loadUser } from "../../service/user/user.api"
+import type { User } from "../../service/user/user.types"
 import "./ModalManagementContent.css"
 
 export function ModalManagementContent() {

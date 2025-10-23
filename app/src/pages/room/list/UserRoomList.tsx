@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { Col, Container, Row, Spinner } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
-import { getAllRooms } from "../../../api/room/room.api"
-import type { Room } from "../../../api/room/room.types"
 import { RoomCard } from "../../../components/room/RoomCard"
+import { getAllRooms } from "../../../service/room/room.api"
+import type { Room } from "../../../service/room/room.types"
 import "./RoomList.css"
 
 export function UserRoomList() {

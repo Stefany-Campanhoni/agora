@@ -3,6 +3,7 @@ package com.stefanycampanhoni.agora.application.mappers;
 import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationListResponse;
 import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationRequest;
 import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationResponse;
+import com.stefanycampanhoni.agora.application.dtos.reservation.SimpleReservationResponse;
 import com.stefanycampanhoni.agora.domain.entities.Reservation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,6 +17,8 @@ public interface ReservationMapper {
     @Mapping(target = "reservedBy", ignore = true)
     @Mapping(target = "room", ignore = true)
     Reservation toReservation(ReservationRequest reservationRequest);
+
+    SimpleReservationResponse toSimpleReservationResponse(Reservation reservation);
 
     ReservationResponse toReservationResponse(Reservation reservation);
 

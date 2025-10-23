@@ -2,10 +2,10 @@ import { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
 import { useForm } from "react-hook-form"
 import { useNavigate, useParams } from "react-router-dom"
-import { createRoom, getRoomById, updateRoom } from "../../../api/room/room.api"
-import type { Room, RoomRequest } from "../../../api/room/room.types"
 import { BaseForm } from "../../../components/form/BaseForm"
 import { FormInput } from "../../../components/form/inputs/FormInput"
+import { createRoom, getRoomById, updateRoom } from "../../../service/room/room.api"
+import type { Room, RoomRequest } from "../../../service/room/room.types"
 import "./CreateRoomForm.css"
 
 export type RoomFormData = {

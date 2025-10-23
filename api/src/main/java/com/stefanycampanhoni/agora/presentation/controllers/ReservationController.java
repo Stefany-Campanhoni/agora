@@ -3,6 +3,7 @@ package com.stefanycampanhoni.agora.presentation.controllers;
 import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationListResponse;
 import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationRequest;
 import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationResponse;
+import com.stefanycampanhoni.agora.application.dtos.reservation.SimpleReservationResponse;
 import com.stefanycampanhoni.agora.application.mappers.ReservationMapper;
 import com.stefanycampanhoni.agora.domain.entities.User;
 import com.stefanycampanhoni.agora.application.services.ReservationService;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/reservations")
 public class ReservationController {
@@ -26,8 +29,8 @@ public class ReservationController {
     private ReservationMapper reservationMapper;
 
     @GetMapping
-    public ResponseEntity<ReservationListResponse> getAllReservations() {
-        ReservationListResponse reservations = service.getAllReservations();
+    public ResponseEntity<List<SimpleReservationResponse>> getAllReservations() {
+        var reservations = service.getAllReservations();
         return ResponseEntity.ok(reservations);
     }
 

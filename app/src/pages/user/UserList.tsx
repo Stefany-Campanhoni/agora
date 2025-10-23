@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { getAllUsers } from "../../api/user/user.api"
-import type { User } from "../../api/user/user.types"
 import { CustomTable } from "../../components/table/CustomTable"
+import { getAllUsers } from "../../service/user/user.api"
+import type { User } from "../../service/user/user.types"
 
 export function UserList() {
   const [users, setUsers] = useState<User[]>([])

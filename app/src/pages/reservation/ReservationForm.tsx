@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate, useParams } from "react-router-dom"
-import type { Room } from "../../api/room/room.types"
-import { getRoomById } from "../../api/room/room.api"
-import { reserve } from "../../api/reservation/reservation.api"
-import type { ReservationRequest } from "../../api/reservation/reservation.types"
 import { BaseForm } from "../../components/form/BaseForm"
-import { FormInput } from "../../components/form/inputs/FormInput"
-import "./ReservationForm.css"
 import { DatePicker } from "../../components/pickers/DatePicker"
+import { TimePicker } from "../../components/pickers/TimePicker"
+import { getAllReservations, reserve } from "../../service/reservation/reservation.api"
+import {
+  CLOSING_TIME,
+  getDisabledDates,
+  getDisabledTimes,
+  OPENING_TIME,
+} from "../../service/reservation/reservation.service"
+import type { ReservationRequest } from "../../service/reservation/reservation.types"
+import { getRoomById } from "../../service/room/room.api"
+import type { Room } from "../../service/room/room.types"
+import "./ReservationForm.css"
 
 export type ReservationFormData = {
   startDate: string
@@ -20,11 +26,12 @@ export type ReservationFormData = {
 export function ReserveRoomForm() {
   const [room, setRoom] = useState<Room>(null!)
   const [disabledDates, setDisabledDates] = useState<string[]>([])
+  const [disabledTimes, setDisabledTimes] = useState<string[]>([])
+
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const {
     control,
-    register,
     handleSubmit,
     formState: { errors },
     watch,
@@ -38,42 +45,25 @@ export function ReserveRoomForm() {
   })
 
   useEffect(() => {
-    if (!id) navigate(-1)
+    if (!id) {
+      navigate(-1)
+    }
+
     ;(async () => {
       try {
         const roomData = await getRoomById(parseInt(id!, 10))
         setRoom(roomData)
+
+        const allReservations = await getAllReservations()
+        const disabledDatesData = getDisabledDates(allReservations)
+        const disabledTimesData = getDisabledTimes(allReservations)
+        setDisabledDates(disabledDatesData)
+        setDisabledTimes(disabledTimesData)
       } catch (error) {
+        console.error("Erro ao carregar dados da sala:", error)
         navigate(-1)
       }
     })()
-  }, [id])
-
-  // Busca datas indisponíveis (mockadas por enquanto)
-  useEffect(() => {
-    // TODO: Substituir por chamada real ao endpoint
-    // const fetchDisabledDates = async () => {
-    //   const response = await fetch(`/api/rooms/${id}/unavailable-dates`)
-    //   const data = await response.json()
-    //   setDisabledDates(data.dates)
-    // }
-    // fetchDisabledDates()
-
-    // Dados mockados: datas indisponíveis
-    const today = new Date()
-    const mockedDisabledDates: string[] = []
-
-    // Adiciona algumas datas específicas como indisponíveis
-    for (let i = 2; i <= 20; i += 3) {
-      const date = new Date(today)
-      date.setDate(today.getDate() + i)
-      mockedDisabledDates.push(date.toISOString().split("T")[0])
-    }
-
-    // Adiciona 25 de outubro como exemplo
-    mockedDisabledDates.push("2025-10-25")
-
-    setDisabledDates(mockedDisabledDates)
   }, [id])
 
   async function submitReservation(reservationFormData: ReservationFormData) {
@@ -86,7 +76,6 @@ export function ReserveRoomForm() {
       startDateTime: startDateTime.toISOString(),
       endDateTime: endDateTime.toISOString(),
     }
-
     try {
       await reserve(reservationData)
     } catch (error) {
@@ -135,11 +124,16 @@ export function ReserveRoomForm() {
                   required
                   placeholder="Selecione a data de início"
                 />
-                <FormInput
+                <TimePicker
                   label="Hora de Início"
-                  type="time"
-                  register={register("startTime", { required: "Hora de início é obrigatória" })}
+                  name="startTime"
+                  control={control}
                   error={errors.startTime}
+                  disabledTimes={disabledTimes}
+                  minTime={new Date(`1970-01-01T${OPENING_TIME}`)}
+                  maxTime={new Date(`1970-01-01T${CLOSING_TIME}`)}
+                  required
+                  placeholder="Selecione a hora de início"
                 />
               </div>
 
@@ -158,11 +152,16 @@ export function ReserveRoomForm() {
                   required
                   placeholder="Selecione a data de término"
                 />
-                <FormInput
+                <TimePicker
                   label="Hora de Término"
-                  type="time"
-                  register={register("endTime", { required: "Hora de término é obrigatória" })}
+                  name="endTime"
+                  control={control}
                   error={errors.endTime}
+                  disabledTimes={disabledTimes}
+                  minTime={new Date(`1970-01-01T${OPENING_TIME}`)}
+                  maxTime={new Date(`1970-01-01T${CLOSING_TIME}`)}
+                  required
+                  placeholder="Selecione a hora de término"
                 />
               </div>
             </div>

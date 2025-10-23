@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { Badge, Button, Card, Col, Container, Row, Spinner } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
-import { deleteRoom, getAllRooms } from "../../../api/room/room.api"
-import type { Room } from "../../../api/room/room.types"
+import { deleteRoom, getAllRooms } from "../../../service/room/room.api"
+import type { Room } from "../../../service/room/room.types"
 import "./RoomList.css"
 
 export function AdminRoomList() {

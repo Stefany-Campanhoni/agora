@@ -3,6 +3,7 @@ package com.stefanycampanhoni.agora.application.services;
 import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationListResponse;
 import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationRequest;
 import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationResponse;
+import com.stefanycampanhoni.agora.application.dtos.reservation.SimpleReservationResponse;
 import com.stefanycampanhoni.agora.application.mappers.ReservationMapper;
 import com.stefanycampanhoni.agora.domain.entities.Reservation;
 import com.stefanycampanhoni.agora.domain.entities.Room;
@@ -14,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ReservationService {
@@ -27,9 +29,10 @@ public class ReservationService {
     @Autowired
     private ReservationMapper mapper;
 
-    public ReservationListResponse getAllReservations() {
-        var reservations = repository.findAll();
-        return mapper.toReservationListResponse(reservations);
+    public List<SimpleReservationResponse> getAllReservations() {
+        return repository.findAll().stream()
+                .map(mapper::toSimpleReservationResponse)
+                .toList();
     }
 
     public ReservationResponse createReservation(ReservationRequest request, User user, Long roomId) {

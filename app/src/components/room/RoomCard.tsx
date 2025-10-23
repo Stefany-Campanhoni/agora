@@ -1,5 +1,5 @@
 import { Badge, Button, Card } from "react-bootstrap"
-import type { Room } from "../../api/room/room.types"
+import type { Room } from "../../service/room/room.types"
 import "./RoomCard.css"
 
 interface RoomCardProps {

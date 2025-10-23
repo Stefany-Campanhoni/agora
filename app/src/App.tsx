@@ -5,6 +5,8 @@ import { AdminLayout } from "./layouts/AdminLayout"
 import { BasicLayout } from "./layouts/BasicLayout"
 import { UserLayout } from "./layouts/UserLayout"
 import { Home } from "./pages/Home"
+import { ReserveRoomForm } from "./pages/reservation/ReservationForm"
+import { UserReservations } from "./pages/reservation/UserReservations"
 import { RoomForm } from "./pages/room/forms/CreateRoomForm"
 import { AdminRoomList } from "./pages/room/list/AdminRoomList"
 import { UserRoomList } from "./pages/room/list/UserRoomList"
@@ -12,8 +14,6 @@ import { UserEdit } from "./pages/user/UserEdit"
 import { UserList } from "./pages/user/UserList"
 import { UserLogin } from "./pages/user/UserLogin"
 import { UserRegistration } from "./pages/user/UserRegistration"
-import { UserReservations } from "./pages/reservation/UserReservations"
-import { ReserveRoomForm } from "./pages/reservation/ReservationForm"
 
 function App() {
   return (
@@ -56,7 +56,7 @@ function App() {
             path=":id/reserve"
             element={<ReserveRoomForm />}
           />
-          <Route element={<ProtectedRoute />}>
+          <Route element={<AdminRoute />}>
             <Route
               path="create"
               element={<RoomForm />}

@@ -1,5 +1,10 @@
 import { apiClient } from "../apiClient"
-import type { Reservation, ReservationList, ReservationRequest } from "./reservation.types"
+import type {
+  Reservation,
+  ReservationList,
+  ReservationRequest,
+  SimpleReservation,
+} from "./reservation.types"
 
 const URI = `/reservations`
 
@@ -15,5 +20,10 @@ export async function reserve(reservation: ReservationRequest): Promise<Reservat
     throw new Error("Erro ao criar reserva")
   }
 
+  return res.data
+}
+
+export async function getAllReservations(): Promise<SimpleReservation[]> {
+  const res = await apiClient.get<SimpleReservation[]>(URI)
   return res.data
 }

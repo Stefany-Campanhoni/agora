@@ -18,3 +18,8 @@ export type ReservationRequest = {
   startDateTime: string
   endDateTime: string
 }
+
+export type SimpleReservation = {
+  startTime: string
+  endTime: string
+}
