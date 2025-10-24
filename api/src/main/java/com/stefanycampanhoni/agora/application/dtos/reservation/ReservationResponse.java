@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 public record ReservationResponse(
         Long id,
         RoomResponse room,
-        LocalDateTime startTime,
-        LocalDateTime endTime,
+        LocalDateTime startDateTime,
+        LocalDateTime endDateTime,
         UserResponse reservedBy
 ) {
 }

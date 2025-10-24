@@ -4,8 +4,8 @@ import type { User } from "../user/user.types"
 export type Reservation = {
   id: number
   room: Room
-  startTime: string
-  endTime: string
+  startDateTime: string
+  endDateTime: string
   reservedBy: User
 }
 
@@ -20,6 +20,6 @@ export type ReservationRequest = {
 }
 
 export type SimpleReservation = {
-  startTime: string
-  endTime: string
+  startDateTime: string
+  endDateTime: string
 }

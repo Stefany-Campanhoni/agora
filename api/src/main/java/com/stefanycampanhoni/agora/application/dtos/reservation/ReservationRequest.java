@@ -9,9 +9,9 @@ public record ReservationRequest(
         Long roomId,
 
         @NotNull
-        LocalDateTime startTime,
+        LocalDateTime startDateTime,
 
         @NotNull
-        LocalDateTime endTime
+        LocalDateTime endDateTime
 ) {
 }

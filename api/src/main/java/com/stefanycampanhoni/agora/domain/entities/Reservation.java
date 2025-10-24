@@ -27,11 +27,11 @@ public class Reservation {
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 
-    @Column(name = "start_time", nullable = false)
-    private LocalDateTime startTime;
+    @Column(name = "start_datetime", nullable = false)
+    private LocalDateTime startDateTime;
 
-    @Column(name = "end_time", nullable = false)
-    private LocalDateTime endTime;
+    @Column(name = "end_datetime", nullable = false)
+    private LocalDateTime endDateTime;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
