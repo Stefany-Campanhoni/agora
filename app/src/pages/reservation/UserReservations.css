@@ -1,0 +1,385 @@
+.user-reservations-container {
+  padding: 40px 20px;
+  max-width: 1200px;
+  min-height: calc(100vh - 200px);
+}
+
+.reservations-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.reservations-header h2 {
+  color: #462500;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.reservations-subtitle {
+  color: #794000;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.reservations-loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: #794000;
+  font-size: 1.2rem;
+}
+
+.reservations-grid {
+  display: flex;
+  width: 100%;
+  gap: 24px;
+  margin-bottom: 40px;
+  justify-content: center;
+}
+
+.reservation-card {
+  border: 2px solid #462500;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(70, 37, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 100% !important;
+}
+
+.reservation-card-title {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reservation-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(70, 37, 0, 0.15);
+}
+
+.reservation-card .card-body {
+  padding: 24px;
+}
+
+.reservation-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 36px;
+  gap: 35px;
+}
+
+.reservation-card-badge {
+  display: flex;
+  align-items: center;
+  height: 35px;
+  border-radius: 10px;
+  align-self: center;
+}
+
+.reservation-room-name {
+  color: #462500;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+}
+
+.reservation-description {
+  color: #794000;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Flight Ticket Style */
+.reservation-ticket {
+  background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+  border: 2px dashed #462500;
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 16px;
+}
+
+.ticket-route {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.ticket-time-block {
+  flex: 1;
+  text-align: center;
+}
+
+.ticket-time {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #462500;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.ticket-date {
+  font-size: 0.95rem;
+  color: #794000;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.ticket-year {
+  font-size: 0.85rem;
+  color: #794000;
+  margin-top: 4px;
+}
+
+.ticket-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1.5;
+  max-width: 180px;
+  margin: 0 10px;
+}
+
+.connector-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #462500;
+  flex-shrink: 0;
+}
+
+.connector-line {
+  flex: 1;
+  height: 2px;
+  background-color: #462500;
+}
+
+.connector-arrow {
+  color: #462500;
+  display: flex;
+  align-items: center;
+}
+
+.ticket-divider {
+  height: 2px;
+  background: repeating-linear-gradient(to right,
+      #462500 0px,
+      #462500 10px,
+      transparent 10px,
+      transparent 20px);
+  margin: 24px 0;
+  opacity: 0.3;
+}
+
+.ticket-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.ticket-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.ticket-info-item svg {
+  color: #462500;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ticket-label {
+  font-size: 0.75rem;
+  color: #794000;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.ticket-value {
+  font-size: 0.95rem;
+  color: #462500;
+  font-weight: 600;
+}
+
+.reservation-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reservation-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #794000;
+  font-size: 0.95rem;
+}
+
+.reservation-period {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.period-label {
+  font-weight: 600;
+  color: #462500;
+  font-size: 0.85rem;
+}
+
+.detail-icon {
+  color: #462500;
+  flex-shrink: 0;
+}
+
+.reservations-empty {
+  text-align: center;
+  padding: 80px 20px;
+  background-color: #fff;
+  border: 2px solid #462500;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(70, 37, 0, 0.08);
+}
+
+.empty-icon {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.reservations-empty h4 {
+  color: #462500;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.reservations-empty p {
+  color: #794000;
+  font-size: 1.1rem;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Badge customization */
+.reservation-card .badge {
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .user-reservations-container {
+    padding: 24px 16px;
+  }
+
+  .reservations-header h2 {
+    font-size: 2rem;
+  }
+
+  .reservations-subtitle {
+    font-size: 1rem;
+  }
+
+  .reservations-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .reservation-room-name {
+    font-size: 1.3rem;
+  }
+
+  .reservation-card .card-body {
+    padding: 20px;
+  }
+
+  .ticket-route {
+    gap: 12px;
+  }
+
+  .ticket-time {
+    font-size: 1.6rem;
+  }
+
+  .ticket-date {
+    font-size: 0.85rem;
+  }
+
+  .ticket-connector {
+    max-width: 120px;
+    gap: 6px;
+  }
+
+  .connector-arrow svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .ticket-info {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .reservation-ticket {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 520px) {
+  .reservations-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .reservation-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .empty-icon {
+    font-size: 4rem;
+  }
+
+  .reservations-empty h4 {
+    font-size: 1.5rem;
+  }
+
+  .reservations-empty p {
+    font-size: 1rem;
+  }
+
+  .ticket-time {
+    font-size: 1.4rem;
+  }
+
+  .ticket-date {
+    font-size: 0.8rem;
+  }
+
+  .ticket-connector {
+    max-width: 80px;
+  }
+
+  .connector-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .reservation-ticket {
+    padding: 16px;
+  }
+}

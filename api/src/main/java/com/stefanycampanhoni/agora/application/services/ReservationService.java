@@ -35,7 +35,8 @@ public class ReservationService {
                 .toList();
     }
 
-    public ReservationResponse createReservation(ReservationRequest request, User user, Long roomId) {
+    public ReservationResponse createReservation(ReservationRequest request, Long roomId) {
+        var user = UserContext.getCurrentUser();
         var reservation = mapper.toReservation(request);
 
         Room room = roomService.getRoomById(roomId);
@@ -50,8 +51,8 @@ public class ReservationService {
     }
 
     public boolean isValidReservation(Reservation reservation) {
-        LocalDateTime start = reservation.getStartTime();
-        LocalDateTime end = reservation.getEndTime();
+        LocalDateTime start = reservation.getStartDateTime();
+        LocalDateTime end = reservation.getEndDateTime();
         Room room = reservation.getRoom();
 
         if (start.isAfter(end) || start.isEqual(end)) {
@@ -64,8 +65,8 @@ public class ReservationService {
     private boolean isOverlapping(LocalDateTime start, LocalDateTime end, Room room) {
         return repository.findByRoom(room).stream()
                 .anyMatch(existingReservation ->
-                        start.isBefore(existingReservation.getEndTime()) &&
-                                end.isAfter(existingReservation.getStartTime()));
+                        start.isBefore(existingReservation.getEndDateTime()) &&
+                                end.isAfter(existingReservation.getStartDateTime()));
     }
 
     public ReservationListResponse getAllUserReservations() {

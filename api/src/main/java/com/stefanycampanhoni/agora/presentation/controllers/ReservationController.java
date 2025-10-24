@@ -8,6 +8,7 @@ import com.stefanycampanhoni.agora.application.mappers.ReservationMapper;
 import com.stefanycampanhoni.agora.domain.entities.User;
 import com.stefanycampanhoni.agora.application.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,10 +42,9 @@ public class ReservationController {
     }
 
     @PostMapping
-    public ResponseEntity<ReservationResponse> createReservation(@RequestBody ReservationRequest reservationRequest,
-                                                                 @AuthenticationPrincipal User currentUser) {
-        var createdReservation = service.createReservation(reservationRequest, currentUser, reservationRequest.roomId());
-        return ResponseEntity.ok(createdReservation);
+    public ResponseEntity<ReservationResponse> createReservation(@RequestBody ReservationRequest reservationRequest) {
+        var createdReservation = service.createReservation(reservationRequest, reservationRequest.roomId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdReservation);
     }
 
     @PostMapping(path = "/validate")
