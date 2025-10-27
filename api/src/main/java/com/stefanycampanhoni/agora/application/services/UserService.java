@@ -108,4 +108,8 @@ public class UserService {
                         currentUser.getRole().equals(Role.ADMIN))
                 .orElse(false);
     }
+
+    public Long countUsers() {
+        return userRepository.count();
+    }
 }

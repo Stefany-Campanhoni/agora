@@ -77,4 +77,8 @@ public class ReservationService {
                         (list, reservation) -> list.items().add(reservation),
                         (list1, list2) -> list1.items().addAll(list2.items()));
     }
+
+    public Long countReservations() {
+        return repository.count();
+    }
 }

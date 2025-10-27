@@ -1,6 +1,7 @@
 import axios, { type AxiosError, type AxiosResponse } from "axios"
 import { persistor, store } from "../store"
 import { logout } from "../store/slices/authSlice"
+import { publishUpdateMessage } from "./websocket/websocket"
 
 export const API_URL = "http://localhost:8080"
 
@@ -33,6 +34,18 @@ apiClient.interceptors.request.use(
 
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
+    try {
+      const status = response.status
+      const method = response.config.method
+
+      const isSuccessfulDelete = method?.toLocaleLowerCase() === "delete" && status === 204
+      if (status === 201 || isSuccessfulDelete) {
+        publishUpdateMessage()
+      }
+    } catch (error) {
+      console.error("Erro ao publicar notificação WebSocket:", error)
+    }
+
     return response
   },
   async (error: AxiosError) => {

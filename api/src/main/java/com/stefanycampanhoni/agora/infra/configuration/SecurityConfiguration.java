@@ -43,6 +43,9 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/rooms").permitAll()
                         .requestMatchers(HttpMethod.GET, "/rooms/**").permitAll()
 
+                        // WebSocket
+                        .requestMatchers("/ws/**").permitAll()
+
                         // Room endpoints - only admins can manage rooms
                         .requestMatchers(HttpMethod.POST, "/rooms").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/rooms/**").hasRole("ADMIN")

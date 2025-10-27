@@ -61,4 +61,8 @@ public class RoomService {
         }
         repository.deleteById(id);
     }
+
+    public long countRooms() {
+        return repository.count();
+    }
 }

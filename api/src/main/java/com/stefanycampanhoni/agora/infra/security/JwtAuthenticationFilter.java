@@ -28,6 +28,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        // Skip JWT validation for WebSocket endpoints
+        String requestPath = request.getRequestURI();
+        if (requestPath.startsWith("/ws")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String token = this.recoverToken(request);
 
         if (token != null) {

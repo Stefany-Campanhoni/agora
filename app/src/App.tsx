@@ -4,6 +4,7 @@ import { AdminRoute, ProtectedRoute } from "./components/routing/ProtectedRoute"
 import { AdminLayout } from "./layouts/AdminLayout"
 import { BasicLayout } from "./layouts/BasicLayout"
 import { UserLayout } from "./layouts/UserLayout"
+import { Dashboard } from "./pages/dashboard/Dashboard"
 import { Home } from "./pages/Home"
 import { ReserveRoomForm } from "./pages/reservation/ReservationForm"
 import { UserReservations } from "./pages/reservation/UserReservations"
@@ -89,6 +90,10 @@ function App() {
           path="/admin"
           element={<AdminLayout />}
         >
+          <Route
+            path="dashboard"
+            element={<Dashboard />}
+          />
           <Route path="rooms">
             <Route
               index

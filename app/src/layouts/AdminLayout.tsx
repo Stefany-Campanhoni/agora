@@ -1,10 +1,10 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import { Breadcrumb } from "react-bootstrap"
-import { useModal } from "../hooks/useModal"
-import { UserModal } from "../components/modal/UserModal"
+import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import logo from "../assets/logo.png"
-import "./AdminLayout.css"
+import { UserModal } from "../components/modal/UserModal"
 import { useAuth } from "../hooks/useAuth"
+import { useModal } from "../hooks/useModal"
+import "./AdminLayout.css"
 
 export function AdminLayout() {
   const navigate = useNavigate()
@@ -59,13 +59,13 @@ export function AdminLayout() {
           <nav className="admin-sidebar-nav">
             <div className="admin-nav-item">
               <a
-                href="/admin"
+                href="/admin/dashboard"
                 className={`admin-nav-link ${
-                  location.pathname === "/admin" ? "active" : ""
+                  location.pathname === "/admin/dashboard" ? "active" : ""
                 }`}
                 onClick={(e) => {
                   e.preventDefault()
-                  navigate("/admin")
+                  navigate("/admin/dashboard")
                 }}
               >
                 <span className="admin-nav-icon">📊</span>
@@ -76,9 +76,7 @@ export function AdminLayout() {
             <div className="admin-nav-item">
               <a
                 href="/admin/rooms"
-                className={`admin-nav-link ${
-                  isActive("/admin/rooms") ? "active" : ""
-                }`}
+                className={`admin-nav-link ${isActive("/admin/rooms") ? "active" : ""}`}
                 onClick={(e) => {
                   e.preventDefault()
                   navigate("/admin/rooms")
@@ -92,9 +90,7 @@ export function AdminLayout() {
             <div className="admin-nav-item">
               <a
                 href="/admin/users"
-                className={`admin-nav-link ${
-                  isActive("/admin/users") ? "active" : ""
-                }`}
+                className={`admin-nav-link ${isActive("/admin/users") ? "active" : ""}`}
                 onClick={(e) => {
                   e.preventDefault()
                   navigate("/admin/users")
