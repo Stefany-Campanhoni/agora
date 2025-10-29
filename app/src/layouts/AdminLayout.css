@@ -144,14 +144,16 @@
   height: 24px;
 }
 
+.admin-topbar {
+  background-color: #fcf2dd !important;
+  height: auto;
+}
+
 .admin-content-area {
   background-color: #fffbeb !important;
   padding: 2rem;
-  flex: 1;
-}
-
-.admin-topbar {
-  background-color: #fcf2dd !important;
+  height: calc(100dvh - var(--topbar-height, 80px));
+  overflow-y: auto;
 }
 
 .admin-breadcrumb {

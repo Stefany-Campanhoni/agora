@@ -1,0 +1,339 @@
+.dashboard-container {
+  padding: 2rem;
+  background-color: #fffbeb;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
+}
+
+.dashboard-loading,
+.dashboard-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  flex-direction: column;
+  gap: 1rem;
+  color: #5f3300;
+  font-size: 1.1rem;
+}
+
+.dashboard-grid {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.dashboard-col {
+  flex: 1 1 360px;
+  max-width: 420px;
+  min-width: 320px;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-col {
+    flex: 1 1 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-col {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+  border: 2px solid #462500;
+  background-color: #ffffff;
+  height: 100%;
+  box-shadow: 0 4px 8px rgba(70, 37, 0, 0.1);
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(70, 37, 0, 0.15);
+}
+
+.dashboard-card-body {
+  padding: 1.5rem;
+}
+
+.dashboard-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-card-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.users-icon {
+  background: linear-gradient(135deg, #794000, #8b4500);
+}
+
+.rooms-icon {
+  background: linear-gradient(135deg, #c9a87c, #d4b896);
+  color: #462500;
+}
+
+.reservations-icon {
+  background: linear-gradient(135deg, #5f3300, #6b4a2a);
+}
+
+.dashboard-card-title-group {
+  flex: 1;
+}
+
+.dashboard-card-label {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #5f3300;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-card-value {
+  margin: 0.25rem 0 0 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #462500;
+}
+
+.dashboard-card-progress {
+  margin-top: 1rem;
+}
+
+/* Progress Bar Customization */
+.progress {
+  background-color: rgba(70, 37, 0, 0.08);
+  height: 8px;
+  border-radius: 10px;
+}
+
+.progress-bar {
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.users-progress .progress-bar {
+  background: linear-gradient(90deg, #794000, #8b4500);
+}
+
+.rooms-progress .progress-bar {
+  background: linear-gradient(90deg, #c9a87c, #d4b896);
+  color: #462500;
+}
+
+.reservations-progress .progress-bar {
+  background: linear-gradient(90deg, #5f3300, #6b4a2a);
+}
+
+/* Summary Section */
+.dashboard-summary {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.dashboard-summary-col {
+  flex: 1 1 480px;
+  max-width: 560px;
+  min-width: 320px;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-summary-col {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-summary-col {
+    max-width: 100%;
+  }
+}
+
+.dashboard-summary-card {
+  min-width: 400px !important;
+  border: 2px solid #462500;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(70, 37, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.dashboard-summary-card:hover {
+  box-shadow: 0 8px 16px rgba(70, 37, 0, 0.15);
+}
+
+.summary-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #462500;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #c9a87c;
+}
+
+/* Statistics */
+.summary-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.summary-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #fffbeb;
+  border-left: 4px solid #794000;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.summary-stat-item:hover {
+  background-color: #fdf6e3;
+  padding-left: 1.25rem;
+}
+
+.summary-stat-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #5f3300;
+}
+
+.summary-stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #462500;
+}
+
+/* Distribution Chart */
+.distribution-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.distribution-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.distribution-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #5f3300;
+}
+
+.distribution-percentage {
+  font-size: 0.85rem;
+  color: #794000;
+  font-weight: 700;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .dashboard-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+  }
+
+  .dashboard-title {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-card-header {
+    gap: 1rem;
+  }
+
+  .dashboard-card-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .dashboard-card-value {
+    font-size: 1.5rem;
+  }
+
+  .summary-stat-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .summary-stat-value {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 0.75rem;
+  }
+
+  .dashboard-title {
+    font-size: 1.25rem;
+  }
+
+  .dashboard-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .dashboard-card-label {
+    font-size: 0.75rem;
+  }
+
+  .dashboard-card-value {
+    font-size: 1.25rem;
+  }
+
+  .summary-title {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+}
