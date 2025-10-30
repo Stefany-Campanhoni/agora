@@ -77,4 +77,10 @@ public class UserController {
         return ResponseEntity.ok(userService.canEditUser(currentUser, userRequest.email()));
     }
 
+    @PostMapping("/password/reset")
+    public ResponseEntity<Void> resetPassword(@RequestBody String email) {
+        userService.resetPassword(email);
+        return ResponseEntity.noContent().build();
+    }
+
 }

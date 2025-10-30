@@ -9,10 +9,9 @@ import com.stefanycampanhoni.agora.application.mappers.CustomUserMapper;
 import com.stefanycampanhoni.agora.application.mappers.UserMapper;
 import com.stefanycampanhoni.agora.domain.entities.User;
 import com.stefanycampanhoni.agora.domain.enums.user.Role;
+import com.stefanycampanhoni.agora.domain.interfaces.IEmailService;
 import com.stefanycampanhoni.agora.domain.repositories.UserRepository;
 import com.stefanycampanhoni.agora.infra.security.AuthService;
-import org.apache.commons.lang3.StringUtils;
-import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +36,9 @@ public class UserService {
 
     @Autowired
     private AuthMapper authMapper;
+
+    @Autowired
+    private IEmailService emailService;
 
     public TokenResponse register(UserRequest request) {
         if (userRepository.existsByEmail(request.email())) {
@@ -111,5 +113,22 @@ public class UserService {
 
     public Long countUsers() {
         return userRepository.count();
+    }
+
+    public void resetPassword(String email) {
+        final String subject = "Password Reset";
+        final String content = "To reset your password, please click the following link: [reset link here]";
+
+        emailService.sendSimpleEmail(email, subject, content);
+    }
+
+    private String generateRandomCode(int length) {
+        String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+        StringBuilder code = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            code.append(chars.charAt((int) (Math.random() * chars.length())));
+        }
+        return code.toString();
     }
 }
