@@ -2,6 +2,7 @@ package com.stefanycampanhoni.agora.application.services;
 
 import com.stefanycampanhoni.agora.application.dtos.TokenResponse;
 import com.stefanycampanhoni.agora.application.dtos.user.*;
+import com.stefanycampanhoni.agora.application.exceptions.BadRequestException;
 import com.stefanycampanhoni.agora.application.exceptions.user.InvalidCredentialsException;
 import com.stefanycampanhoni.agora.application.exceptions.user.UserNotFoundException;
 import com.stefanycampanhoni.agora.application.mappers.AuthMapper;
@@ -14,6 +15,7 @@ import com.stefanycampanhoni.agora.infra.security.AuthService;
 import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,9 @@ public class UserService {
 
     @Autowired
     private AuthMapper authMapper;
+
+    @Value("${admin.secret}")
+    private String adminSecret;
 
     public TokenResponse register(UserRequest request) {
         if (userRepository.existsByEmail(request.email())) {
@@ -111,5 +116,23 @@ public class UserService {
 
     public Long countUsers() {
         return userRepository.count();
+    }
+
+    public UserResponse createAdminUser(AdminRequest adminRequest) {
+        if (!adminRequest.secret().equalsIgnoreCase(adminSecret)) {
+            throw new BadRequestException("Error creating admin user.");
+        }
+        if (userRepository.existsByEmail(adminRequest.email())) {
+            throw new BadRequestException("Email already in use.");
+        }
+
+        var user = new User();
+        user.setName("Admin");
+        user.setEmail(adminRequest.email());
+        user.setPassword(passwordEncoder.encode(adminRequest.password()));
+        user.setRole(Role.ADMIN);
+        userRepository.save(user);
+
+        return userMapper.toUserResponse(user);
     }
 }
