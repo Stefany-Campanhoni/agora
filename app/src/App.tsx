@@ -15,6 +15,7 @@ import { UserEdit } from "./pages/user/UserEdit"
 import { UserList } from "./pages/user/UserList"
 import { UserLogin } from "./pages/user/UserLogin"
 import { UserRegistration } from "./pages/user/UserRegistration"
+import { ResetPassword } from "./pages/user/ResetPassword"
 
 function App() {
   return (
@@ -78,10 +79,13 @@ function App() {
           path="login"
           element={<UserLogin />}
         />
-
         <Route
           path="edit"
           element={<UserEdit />}
+        />
+        <Route
+          path="password/reset"
+          element={<ResetPassword />}
         />
       </Route>
 

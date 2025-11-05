@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
+import java.util.Base64;
+
 @Service
 public class UserService {
 
@@ -39,6 +42,9 @@ public class UserService {
 
     @Autowired
     private IEmailService emailService;
+
+    @Autowired
+    private ResetPasswordService resetPasswordService;
 
     public TokenResponse register(UserRequest request) {
         if (userRepository.existsByEmail(request.email())) {
@@ -117,18 +123,23 @@ public class UserService {
 
     public void resetPassword(String email) {
         final String subject = "Password Reset";
-        final String content = "To reset your password, please click the following link: [reset link here]";
+        final StringBuilder content = new StringBuilder("To reset your password, please click the following link: ");
+        final String link = "http://localhost:5137/user/password/reset?token=%s";
 
-        emailService.sendSimpleEmail(email, subject, content);
+        userRepository.findByEmail(email).ifPresent(user -> {
+            String token = generateToken();
+
+            resetPasswordService.saveRegistry(user, token);
+            content.append(link.formatted(token));
+
+            emailService.sendSimpleEmail(email, subject, content.toString());
+        });
     }
 
-    private String generateRandomCode(int length) {
-        String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-        StringBuilder code = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            code.append(chars.charAt((int) (Math.random() * chars.length())));
-        }
-        return code.toString();
+    private String generateToken() {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[16];
+        random.nextBytes(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 }
