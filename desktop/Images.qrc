@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/Images">
+        <file>Images/mail.png</file>
+        <file>Images/senhas.png</file>
+        <file>Images/trancar.png</file>
+    </qresource>
+</RCC>

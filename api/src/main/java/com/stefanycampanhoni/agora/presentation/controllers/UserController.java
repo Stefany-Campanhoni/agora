@@ -77,6 +77,12 @@ public class UserController {
         return ResponseEntity.ok(userService.canEditUser(currentUser, userRequest.email()));
     }
 
+    @PostMapping("/admin/register")
+    public ResponseEntity<UserResponse> createAdminUser(@RequestBody AdminRequest adminRequest) {
+        UserResponse response = userService.createAdminUser(adminRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
     @PostMapping("/password/reset")
     public ResponseEntity<Void> resetPassword(@RequestBody String email) {
         userService.resetPassword(email);
