@@ -45,12 +45,6 @@ public class UserService {
     @Value("${admin.secret}")
     private String adminSecret;
 
-    @Autowired
-    private IEmailService emailService;
-
-    @Autowired
-    private ResetPasswordService resetPasswordService;
-
     public TokenResponse register(UserRequest request) {
         if (userRepository.existsByEmail(request.email())) {
             throw new InvalidCredentialsException("Email already in use.");
@@ -142,27 +136,5 @@ public class UserService {
         userRepository.save(user);
 
         return userMapper.toUserResponse(user);
-    }
-
-    public void resetPassword(String email) {
-        final String subject = "Password Reset";
-        final StringBuilder content = new StringBuilder("To reset your password, please click the following link: ");
-        final String link = "http://localhost:5137/user/password/reset?token=%s";
-
-        userRepository.findByEmail(email).ifPresent(user -> {
-            String token = generateToken();
-
-            resetPasswordService.saveRegistry(user, token);
-            content.append(link.formatted(token));
-
-            emailService.sendSimpleEmail(email, subject, content.toString());
-        });
-    }
-
-    private String generateToken() {
-        SecureRandom random = new SecureRandom();
-        byte[] bytes = new byte[16];
-        random.nextBytes(bytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 }

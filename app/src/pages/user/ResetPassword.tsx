@@ -3,6 +3,7 @@ import { FormInput } from "../../components/form/inputs/FormInput"
 import { useForm } from "react-hook-form"
 import { BaseForm } from "../../components/form/BaseForm"
 import { useState } from "react"
+import { resetPassword } from "../../service/user/user.api"
 
 export type ResetPasswordFormData = {
   password: string
@@ -25,11 +26,11 @@ export function ResetPassword() {
     return <div>Invalid or missing token.</div>
   }
 
-  const onSubmit = (data: ResetPasswordFormData) => {
+  const onSubmit = async (data: ResetPasswordFormData) => {
     setIsLoading(true)
     try {
-      console.log("New password data:", data)
-      console.log("Resetting password with token:", token)
+      await resetPassword(data, token)
+      alert("Password reset successfully.")
     } catch (err) {
       console.error("Error resetting password:", err)
       alert("Error resetting password.")

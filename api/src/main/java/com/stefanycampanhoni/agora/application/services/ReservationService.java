@@ -11,7 +11,6 @@ import com.stefanycampanhoni.agora.domain.entities.User;
 import com.stefanycampanhoni.agora.domain.repositories.ReservationRepository;
 import com.stefanycampanhoni.agora.infra.security.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
