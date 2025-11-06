@@ -89,13 +89,13 @@ public class UserController {
 
     @PostMapping("/password/reset")
     public ResponseEntity<Void> sendResetPasswordEmail(@RequestBody String email) {
-        resetPasswordService.resetPassword(email);
+        resetPasswordService.sendResetPasswordEmail(email);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/password/reset")
-    public ResponseEntity<Void> resetPassword(@RequestBody String email) {
-        resetPasswordService.resetPassword(email);
+    public ResponseEntity<Void> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
+        resetPasswordService.resetPassword(resetPasswordRequest);
         return ResponseEntity.noContent().build();
     }
 

@@ -1,5 +1,6 @@
 package com.stefanycampanhoni.agora.application.services;
 
+import com.stefanycampanhoni.agora.application.dtos.user.ResetPasswordRequest;
 import com.stefanycampanhoni.agora.domain.entities.ResetPassword;
 import com.stefanycampanhoni.agora.domain.entities.User;
 import com.stefanycampanhoni.agora.domain.interfaces.IEmailService;
@@ -32,10 +33,10 @@ public class ResetPasswordService {
     @Value("${app.base-url}")
     private String appBaseUrl;
 
-    public void resetPassword(String email) {
+    public void sendResetPasswordEmail(String email) {
         final String subject = "Password Reset";
         final StringBuilder content = new StringBuilder("To reset your password, please click the following link: ");
-        final String link = appBaseUrl + "user/password/reset?token=%s";
+        final String link = appBaseUrl + "user/password/reset?token=%s&email=" + email;
 
         userRepository.findByEmail(email).ifPresent(user -> {
             String token = this.generateToken();
@@ -46,6 +47,11 @@ public class ResetPasswordService {
             emailService.sendSimpleEmail(email, subject, content.toString());
         });
     }
+
+    public void resetPassword(ResetPasswordRequest request) {
+
+    }
+
 
     private void saveRegistry(User user, String token) {
         ResetPassword resetPassword = ResetPassword.builder()

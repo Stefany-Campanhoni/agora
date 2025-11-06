@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form"
 import { BaseForm } from "../../components/form/BaseForm"
 import { useState } from "react"
 import { resetPassword } from "../../service/user/user.api"
+import type { ResetPasswordPayload } from "../../service/user/user.types"
 
 export type ResetPasswordFormData = {
   password: string
@@ -14,6 +15,7 @@ export function ResetPassword() {
   const [isLoading, setIsLoading] = useState(false)
   const [searchParams] = useSearchParams()
   const token = searchParams.get("token")
+  const email = searchParams.get("email")
   const {
     register,
     handleSubmit,
@@ -29,7 +31,12 @@ export function ResetPassword() {
   const onSubmit = async (data: ResetPasswordFormData) => {
     setIsLoading(true)
     try {
-      await resetPassword(data, token)
+      const payload: ResetPasswordPayload = {
+        newPassword: data.password,
+        email: email || "",
+        token: token || "",
+      }
+      await resetPassword(payload)
       alert("Password reset successfully.")
     } catch (err) {
       console.error("Error resetting password:", err)
