@@ -16,3 +16,7 @@ export type User = {
 export type UserList = {
   users: User[]
 }
+
+export type ForgotPasswordPayload = {
+  email: string
+}

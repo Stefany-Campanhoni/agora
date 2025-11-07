@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { FormInput } from "../../components/form/inputs/FormInput"
 import { useForm } from "react-hook-form"
 import { BaseForm } from "../../components/form/BaseForm"
@@ -13,6 +13,7 @@ export type ResetPasswordFormData = {
 
 export function ResetPassword() {
   const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const token = searchParams.get("token")
   const email = searchParams.get("email")
@@ -38,6 +39,7 @@ export function ResetPassword() {
       }
       await resetPassword(payload)
       alert("Password reset successfully.")
+      navigate("/login")
     } catch (err) {
       console.error("Error resetting password:", err)
       alert("Error resetting password.")

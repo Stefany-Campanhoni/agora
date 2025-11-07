@@ -1,6 +1,8 @@
 package com.stefanycampanhoni.agora.application.services;
 
 import com.stefanycampanhoni.agora.application.dtos.user.ResetPasswordRequest;
+import com.stefanycampanhoni.agora.application.exceptions.BadRequestException;
+import com.stefanycampanhoni.agora.application.exceptions.user.ResetPasswordException;
 import com.stefanycampanhoni.agora.domain.entities.ResetPassword;
 import com.stefanycampanhoni.agora.domain.entities.User;
 import com.stefanycampanhoni.agora.domain.interfaces.IEmailService;
@@ -8,6 +10,7 @@ import com.stefanycampanhoni.agora.domain.repositories.ResetPasswordRepository;
 import com.stefanycampanhoni.agora.domain.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -30,6 +33,9 @@ public class ResetPasswordService {
     @Autowired
     private IEmailService emailService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Value("${app.base-url}")
     private String appBaseUrl;
 
@@ -49,9 +55,24 @@ public class ResetPasswordService {
     }
 
     public void resetPassword(ResetPasswordRequest request) {
+        String hashedToken = this.getHashSha256(request.token());
 
+        ResetPassword resetPassword = repository.findByHashToken(hashedToken)
+                .orElseThrow(ResetPasswordException::new);
+
+        if (resetPassword.getWasUsed()
+                || !resetPassword.getGeneratedFor().getEmail().equals(request.email())
+                || resetPassword.getExpirationDateTime().isBefore(LocalDateTime.now())) {
+            throw new ResetPasswordException();
+        }
+
+        User user = resetPassword.getGeneratedFor();
+        user.setPassword(passwordEncoder.encode(request.newPassword()));
+        userRepository.save(user);
+
+        resetPassword.setWasUsed(true);
+        repository.save(resetPassword);
     }
-
 
     private void saveRegistry(User user, String token) {
         ResetPassword resetPassword = ResetPassword.builder()
