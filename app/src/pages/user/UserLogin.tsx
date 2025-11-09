@@ -56,6 +56,19 @@ export function UserLogin() {
         onSubmit={handleSubmit(handleLogin)}
         submitText="Entrar"
         isLoading={isLoading}
+        footerContent={
+          <div className="base-form-footer">
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault()
+                handleForgotPassword()
+              }}
+            >
+              Esqueci minha senha
+            </a>
+          </div>
+        }
       >
         <FormInput
           label="Email"
@@ -84,18 +97,6 @@ export function UserLogin() {
           })}
           error={errors.password}
         />
-
-        <div className="base-form-footer">
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault()
-              handleForgotPassword()
-            }}
-          >
-            Esqueci minha senha
-          </a>
-        </div>
       </BaseForm>
     </div>
   )

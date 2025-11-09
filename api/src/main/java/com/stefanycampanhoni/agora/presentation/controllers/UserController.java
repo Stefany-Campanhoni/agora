@@ -88,10 +88,10 @@ public class UserController {
     }
 
     @PostMapping("/password/reset")
-    public ResponseEntity<Void> sendResetPasswordEmail(@RequestBody Object obj) {
-        if (obj instanceof String email) {
-            resetPasswordService.sendResetPasswordEmail(email);
-        } else if (obj instanceof ResetPasswordRequest request) {
+    public ResponseEntity<Void> sendResetPasswordEmail(@RequestBody ResetPasswordRequest request) {
+        if (request.isEmailRequest()) {
+            resetPasswordService.sendResetPasswordEmail(request.email());
+        } else if (request.isResetRequest()) {
             resetPasswordService.resetPassword(request);
         } else {
             return ResponseEntity.badRequest().build();
