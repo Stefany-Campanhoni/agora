@@ -4,41 +4,41 @@ import { useNavigate } from "react-router-dom"
 import { Alert } from "../../components/alert/Alert"
 import { BaseForm } from "../../components/form/BaseForm"
 import { FormInput } from "../../components/form/inputs/FormInput"
-import { useAuth } from "../../hooks/useAuth"
-import { loginUser } from "../../service/user/user.api"
+import { forgotPassword } from "../../service/user/user.api"
 
-export type LoginFormData = {
+export type ForgotPasswordFormData = {
   email: string
-  password: string
 }
 
-export function UserLogin() {
+export function ForgotPassword() {
   const [isLoading, setIsLoading] = useState(false)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const { login } = useAuth()
   const navigate = useNavigate()
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>()
+  } = useForm<ForgotPasswordFormData>()
 
-  const handleLogin = async (data: LoginFormData) => {
+  const handleForgotPassword = async (data: ForgotPasswordFormData) => {
     setIsLoading(true)
+    setErrorMessage(null)
+    setSuccessMessage(null)
     try {
-      const { token } = await loginUser(data)
-
-      login(token)
-      navigate("/home")
+      await forgotPassword(data)
+      setSuccessMessage(
+        "Email enviado com sucesso! Verifique sua caixa de entrada para instruções de reset de senha.",
+      )
+      setTimeout(() => {
+        navigate("/user/login")
+      }, 3000)
     } catch (err) {
-      setErrorMessage("Erro ao logar usuário.")
+      console.error("Erro ao enviar email de reset:", err)
+      setErrorMessage("Erro ao enviar email de reset. Tente novamente.")
     } finally {
       setIsLoading(false)
     }
-  }
-
-  const handleForgotPassword = () => {
-    navigate("/user/forgot-password")
   }
 
   return (
@@ -51,24 +51,19 @@ export function UserLogin() {
         />
       )}
 
+      {successMessage && (
+        <Alert
+          message={successMessage}
+          type="success"
+          onClose={() => setSuccessMessage(null)}
+        />
+      )}
+
       <BaseForm
-        title="Entrar"
-        onSubmit={handleSubmit(handleLogin)}
-        submitText="Entrar"
+        title="Esqueci Minha Senha"
+        onSubmit={handleSubmit(handleForgotPassword)}
+        submitText="Enviar Email"
         isLoading={isLoading}
-        footerContent={
-          <div className="base-form-footer">
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault()
-                handleForgotPassword()
-              }}
-            >
-              Esqueci minha senha
-            </a>
-          </div>
-        }
       >
         <FormInput
           label="Email"
@@ -82,20 +77,6 @@ export function UserLogin() {
             },
           })}
           error={errors.email}
-        />
-
-        <FormInput
-          label="Senha"
-          type="password"
-          placeholder="Digite sua senha"
-          register={register("password", {
-            required: "Senha é obrigatória",
-            minLength: {
-              value: 6,
-              message: "Senha deve ter pelo menos 6 caracteres",
-            },
-          })}
-          error={errors.password}
         />
       </BaseForm>
     </div>

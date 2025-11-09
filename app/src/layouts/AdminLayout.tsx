@@ -1,4 +1,4 @@
-import { Breadcrumb } from "react-bootstrap"
+import { useEffect, useRef } from "react"
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import logo from "../assets/logo.png"
 import { UserModal } from "../components/modal/UserModal"
@@ -11,6 +11,20 @@ export function AdminLayout() {
   const location = useLocation()
   const { isModalOpen, toggleModal } = useModal()
   const { logout } = useAuth()
+  const topbarRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const updateTopbarHeight = () => {
+      if (topbarRef.current) {
+        const height = topbarRef.current.offsetHeight
+        document.documentElement.style.setProperty("--topbar-height", `${height}px`)
+      }
+    }
+
+    updateTopbarHeight()
+    window.addEventListener("resize", updateTopbarHeight)
+    return () => window.removeEventListener("resize", updateTopbarHeight)
+  }, [])
 
   const handleLogout = () => {
     logout()
@@ -27,16 +41,12 @@ export function AdminLayout() {
 
   const getPageTitle = () => {
     if (location.pathname.includes("/admin/rooms")) return "Gerenciar Salas"
-    return "Dashboard"
+    if (location.pathname.includes("/admin/users")) return "Gerenciar Usuários"
+    return "Painel de Administração"
   }
 
-  const getBreadcrumbs = () => {
-    const paths = location.pathname.split("/").filter(Boolean)
-    return paths.map((path, index) => ({
-      name: path.charAt(0).toUpperCase() + path.slice(1),
-      path: "/" + paths.slice(0, index + 1).join("/"),
-      active: index === paths.length - 1,
-    }))
+  if (location.pathname === "/admin" || location.pathname === "/admin/") {
+    navigate("/admin/dashboard", { replace: true })
   }
 
   return (
@@ -130,7 +140,10 @@ export function AdminLayout() {
         {/* Main Content */}
         <div className="admin-main-content">
           {/* Topbar */}
-          <header className="admin-topbar">
+          <header
+            className="admin-topbar"
+            ref={topbarRef}
+          >
             <h2 className="admin-topbar-title">{getPageTitle()}</h2>
 
             <div className="admin-topbar-actions">
@@ -159,22 +172,8 @@ export function AdminLayout() {
             </div>
           </header>
 
-          {/* Breadcrumb */}
+          {/* Page Content */}
           <div className="admin-content-area">
-            <Breadcrumb className="admin-breadcrumb">
-              {getBreadcrumbs().map((crumb, index) => (
-                <Breadcrumb.Item
-                  key={index}
-                  active={crumb.active}
-                  onClick={() => !crumb.active && navigate(crumb.path)}
-                  style={{ cursor: crumb.active ? "default" : "pointer" }}
-                >
-                  {crumb.name}
-                </Breadcrumb.Item>
-              ))}
-            </Breadcrumb>
-
-            {/* Page Content */}
             <Outlet />
           </div>
         </div>

@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users/admin/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users/password/reset").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs").permitAll()
                         .requestMatchers(HttpMethod.GET, "/rooms").permitAll()
                         .requestMatchers(HttpMethod.GET, "/rooms/**").permitAll()

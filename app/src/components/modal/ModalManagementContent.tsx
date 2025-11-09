@@ -6,10 +6,12 @@ import { useAuth } from "../../hooks/useAuth"
 import { loadUser } from "../../service/user/user.api"
 import type { User } from "../../service/user/user.types"
 import "./ModalManagementContent.css"
+import { useModal } from "../../hooks/useModal"
 
 export function ModalManagementContent() {
   const [user, setUser] = useState<User | null>(null)
   const { logout, isAdmin } = useAuth()
+  const { toggleModal } = useModal()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -83,7 +85,10 @@ export function ModalManagementContent() {
             {isAdmin && (
               <Button
                 className="modal-btn admin-btn"
-                onClick={() => navigate("/admin")}
+                onClick={() => {
+                  toggleModal()
+                  navigate("/admin/dashboard")
+                }}
               >
                 <FaShieldAlt className="btn-icon" />
                 Área Admin

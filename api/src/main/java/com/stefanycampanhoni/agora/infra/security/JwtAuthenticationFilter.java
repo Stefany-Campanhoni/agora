@@ -25,16 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
-                                    FilterChain filterChain)
-            throws ServletException, IOException {
-
-        // Skip JWT validation for WebSocket endpoints
-        String requestPath = request.getRequestURI();
-        if (requestPath.startsWith("/ws")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
+                                    FilterChain filterChain) throws ServletException, IOException {
         String token = this.recoverToken(request);
 
         if (token != null) {
@@ -67,3 +58,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return authHeader.replace("Bearer ", "");
     }
 }
+
+

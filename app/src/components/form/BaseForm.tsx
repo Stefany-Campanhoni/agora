@@ -10,6 +10,7 @@ interface BaseFormProps {
   submitText: string
   isLoading?: boolean
   showBackButton?: boolean
+  footerContent?: ReactNode
 }
 
 export function BaseForm({
@@ -19,6 +20,7 @@ export function BaseForm({
   submitText,
   isLoading = false,
   showBackButton = true,
+  footerContent,
 }: BaseFormProps) {
   const navigate = useNavigate()
 
@@ -71,6 +73,7 @@ export function BaseForm({
               {isLoading ? "Carregando..." : submitText}
             </Button>
           </Form>
+          {footerContent}
         </Card.Body>
       </Card>
     </div>

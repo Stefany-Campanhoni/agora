@@ -4,6 +4,7 @@ import com.stefanycampanhoni.agora.application.dtos.TokenResponse;
 import com.stefanycampanhoni.agora.application.dtos.user.*;
 import com.stefanycampanhoni.agora.application.mappers.AuthMapper;
 import com.stefanycampanhoni.agora.application.mappers.UserMapper;
+import com.stefanycampanhoni.agora.application.services.ResetPasswordService;
 import com.stefanycampanhoni.agora.domain.entities.User;
 import com.stefanycampanhoni.agora.application.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +23,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ResetPasswordService resetPasswordService;
 
     @Autowired
     private UserMapper userMapper;
@@ -83,4 +87,16 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PostMapping("/password/reset")
+    public ResponseEntity<Void> sendResetPasswordEmail(@RequestBody ResetPasswordRequest request) {
+        if (request.isEmailRequest()) {
+            resetPasswordService.sendResetPasswordEmail(request.email());
+        } else if (request.isResetRequest()) {
+            resetPasswordService.resetPassword(request);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.noContent().build();
+    }
 }

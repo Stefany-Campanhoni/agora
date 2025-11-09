@@ -6,6 +6,9 @@ import { publishUpdateMessage } from "./websocket/websocket"
 export const API_URL = "http://localhost:8080"
 
 export const apiClient = axios.create({
+  headers: {
+    "Content-Type": "application/json",
+  },
   baseURL: API_URL,
 })
 

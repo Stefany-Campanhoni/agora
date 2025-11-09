@@ -2,7 +2,13 @@ import { apiClient } from ".."
 import type { EditFormData } from "../../pages/user/UserEdit"
 import type { LoginFormData } from "../../pages/user/UserLogin"
 import type { RegisterFormData } from "../../pages/user/UserRegistration"
-import type { LoginResponse, User, UserList } from "./user.types"
+import type {
+  ForgotPasswordPayload,
+  LoginResponse,
+  ResetPasswordPayload,
+  User,
+  UserList,
+} from "./user.types"
 
 const URI = `/users`
 
@@ -41,4 +47,20 @@ export async function updateUser(user: EditFormData): Promise<User> {
   }
 
   return res.data
+}
+
+export async function resetPassword(resetPasswordFormData: ResetPasswordPayload) {
+  const res = await apiClient.post(`${URI}/password/reset`, resetPasswordFormData)
+
+  if (res.status !== 204) {
+    throw new Error("Erro ao resetar a senha")
+  }
+}
+
+export async function forgotPassword(data: ForgotPasswordPayload) {
+  const res = await apiClient.post(`${URI}/password/reset`, data)
+
+  if (res.status !== 204) {
+    throw new Error("Erro ao enviar email de reset")
+  }
 }

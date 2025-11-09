@@ -10,14 +10,16 @@ import com.stefanycampanhoni.agora.application.mappers.CustomUserMapper;
 import com.stefanycampanhoni.agora.application.mappers.UserMapper;
 import com.stefanycampanhoni.agora.domain.entities.User;
 import com.stefanycampanhoni.agora.domain.enums.user.Role;
+import com.stefanycampanhoni.agora.domain.interfaces.IEmailService;
 import com.stefanycampanhoni.agora.domain.repositories.UserRepository;
 import com.stefanycampanhoni.agora.infra.security.AuthService;
-import org.apache.commons.lang3.StringUtils;
-import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.security.SecureRandom;
+import java.util.Base64;
 
 @Service
 public class UserService {
