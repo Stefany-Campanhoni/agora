@@ -4,6 +4,7 @@ import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationListR
 import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationRequest;
 import com.stefanycampanhoni.agora.application.dtos.reservation.ReservationResponse;
 import com.stefanycampanhoni.agora.application.dtos.reservation.SimpleReservationResponse;
+import com.stefanycampanhoni.agora.application.exceptions.BadRequestException;
 import com.stefanycampanhoni.agora.application.mappers.ReservationMapper;
 import com.stefanycampanhoni.agora.domain.entities.Reservation;
 import com.stefanycampanhoni.agora.domain.entities.Room;
@@ -43,7 +44,7 @@ public class ReservationService {
         reservation.setReservedBy(user);
 
         if (!isValidReservation(reservation)) {
-            throw new IllegalArgumentException("Invalid reservation: Time slot is either invalid or overlaps with an existing reservation.");
+            throw new BadRequestException("Invalid reservation: Time slot is either invalid or overlaps with an existing reservation.");
         }
 
         return mapper.toReservationResponse(repository.save(reservation));

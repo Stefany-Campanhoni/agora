@@ -1,9 +1,9 @@
-import { useCallback, useMemo, forwardRef } from "react"
-import { Form } from "react-bootstrap"
-import { type FieldError, type Control, Controller } from "react-hook-form"
-import ReactDatePicker, { registerLocale } from "react-datepicker"
 import { ptBR } from "date-fns/locale/pt-BR"
+import { forwardRef, useCallback, useMemo } from "react"
+import { Form } from "react-bootstrap"
+import ReactDatePicker, { registerLocale } from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
+import { type Control, Controller, type FieldError } from "react-hook-form"
 import "./DatePicker.css"
 
 registerLocale("pt-BR", ptBR)
@@ -21,6 +21,7 @@ export type DatePickerProps = {
   showTimeSelect?: boolean
   className?: string
   required?: boolean
+  onChange?: (date: string) => void
 }
 
 export function DatePicker({
@@ -36,6 +37,7 @@ export function DatePicker({
   showTimeSelect = false,
   className = "",
   required = false,
+  onChange,
 }: DatePickerProps) {
   const normalizedDisabledDates = useMemo(() => {
     return disabledDates.map((date) => {
@@ -106,7 +108,9 @@ export function DatePicker({
             selected={field.value ? new Date(field.value) : null}
             onChange={(date: Date | null) => {
               // Atualiza o valor no react-hook-form
-              field.onChange(date ? date.toISOString().split("T")[0] : "")
+              const dateStr = date ? date.toISOString().split("T")[0] : ""
+              field.onChange(dateStr)
+              if (onChange) onChange(dateStr)
             }}
             onBlur={field.onBlur}
             minDate={minDate}

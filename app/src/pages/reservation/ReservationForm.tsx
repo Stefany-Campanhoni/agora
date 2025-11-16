@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate, useParams } from "react-router-dom"
+import { Alert } from "../../components/alert/Alert"
 import { BaseForm } from "../../components/form/BaseForm"
 import { DatePicker } from "../../components/pickers/DatePicker"
 import { TimePicker } from "../../components/pickers/TimePicker"
-import { getAllReservations, reserve } from "../../service/reservation/reservation.api"
+import { reserve } from "../../service/reservation/reservation.api"
 import {
   CLOSING_TIME,
+  getAllReservationsDateTime,
   getDisabledDates,
-  getDisabledTimes,
   OPENING_TIME,
 } from "../../service/reservation/reservation.service"
 import type { ReservationRequest } from "../../service/reservation/reservation.types"
@@ -25,8 +26,14 @@ export type ReservationFormData = {
 
 export function ReserveRoomForm() {
   const [room, setRoom] = useState<Room>(null!)
+  const [displayError, setDisplayError] = useState<boolean>(false)
+  const [displayStartDisabledTimesHint, setDisplayStartDisabledTimesHint] = useState<boolean>(false)
+  const [displayEndDisabledTimesHint, setDisplayEndDisabledTimesHint] = useState<boolean>(false)
   const [disabledDates, setDisabledDates] = useState<string[]>([])
   const [disabledTimes, setDisabledTimes] = useState<string[]>([])
+  const [reservationsMap, setReservationsMap] = useState<Map<string, string[]>>(
+    new Map<string, string[]>(),
+  )
 
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
@@ -43,6 +50,12 @@ export function ReserveRoomForm() {
       endTime: "",
     },
   })
+  const watchStartDate = watch("startDate")
+  const watchEndDate = watch("endDate")
+
+  useEffect(() => {
+    console.log("startDate", watchStartDate)
+  }, [watchStartDate])
 
   useEffect(() => {
     if (!id) {
@@ -54,11 +67,19 @@ export function ReserveRoomForm() {
         const roomData = await getRoomById(parseInt(id!, 10))
         setRoom(roomData)
 
-        const allReservations = await getAllReservations()
-        const disabledDatesData = getDisabledDates(allReservations)
-        const disabledTimesData = getDisabledTimes(allReservations)
-        setDisabledDates(disabledDatesData)
-        setDisabledTimes(disabledTimesData)
+        const { allStartDateTime, allEndDateTime } = await getAllReservationsDateTime()
+        const disabledDates = getDisabledDates(allStartDateTime, allEndDateTime)
+
+        const allDateTimes = new Map<string, string[]>()
+        for (const [key, starts] of allStartDateTime.entries()) {
+          allDateTimes.set(key, [...(allDateTimes.get(key) ?? []), ...starts])
+        }
+        for (const [key, ends] of allEndDateTime.entries()) {
+          allDateTimes.set(key, [...(allDateTimes.get(key) ?? []), ...ends])
+        }
+
+        setReservationsMap(allDateTimes)
+        setDisabledDates(disabledDates)
       } catch (error) {
         console.error("Erro ao carregar dados da sala:", error)
         navigate(-1)
@@ -79,12 +100,21 @@ export function ReserveRoomForm() {
     try {
       await reserve(reservationData)
     } catch (error) {
-      console.error("Erro ao reservar sala:", error)
+      setDisplayError(true)
     }
   }
 
   return (
     <>
+      {displayError && (
+        <Alert
+          type="error"
+          onClose={() => setDisplayError(false)}
+        >
+          Não foi possível efetuar a reserva — o horário informado é inválido ou conflita com uma
+          reserva existente.
+        </Alert>
+      )}
       {room ? (
         <BaseForm
           title={`Reserve a sala ${room.name}!`}
@@ -123,17 +153,25 @@ export function ReserveRoomForm() {
                   minDate={new Date()}
                   required
                   placeholder="Selecione a data de início"
+                  onChange={(date) => {
+                    setDisplayStartDisabledTimesHint(true)
+                    setDisabledTimes(reservationsMap.get(date) || [])
+                  }}
                 />
                 <TimePicker
                   label="Hora de Início"
                   name="startTime"
                   control={control}
                   error={errors.startTime}
+                  displayDisabledHint={displayStartDisabledTimesHint}
                   disabledTimes={disabledTimes}
                   minTime={new Date(`1970-01-01T${OPENING_TIME}`)}
                   maxTime={new Date(`1970-01-01T${CLOSING_TIME}`)}
                   required
                   placeholder="Selecione a hora de início"
+                  onChange={() => {
+                    setDisplayStartDisabledTimesHint(false)
+                  }}
                 />
               </div>
 
@@ -144,24 +182,32 @@ export function ReserveRoomForm() {
                   control={control}
                   error={errors.endDate}
                   disabledDates={disabledDates}
-                  minDate={
-                    watch("startDate")
-                      ? new Date(new Date(watch("startDate")).getTime() + 24 * 60 * 60 * 1000)
-                      : new Date()
-                  }
+                  minDate={watchStartDate ? new Date(watchStartDate + "T00:00:00") : new Date()}
                   required
                   placeholder="Selecione a data de término"
+                  onChange={(date) => {
+                    setDisplayEndDisabledTimesHint(true)
+                    setDisabledTimes(reservationsMap.get(date) || [])
+                  }}
                 />
                 <TimePicker
                   label="Hora de Término"
                   name="endTime"
                   control={control}
                   error={errors.endTime}
+                  displayDisabledHint={displayEndDisabledTimesHint}
                   disabledTimes={disabledTimes}
-                  minTime={new Date(`1970-01-01T${OPENING_TIME}`)}
+                  minTime={
+                    watchEndDate === watchStartDate && watch("startTime")
+                      ? new Date(`1970-01-01T${watch("startTime")}`)
+                      : new Date(`1970-01-01T${OPENING_TIME}`)
+                  }
                   maxTime={new Date(`1970-01-01T${CLOSING_TIME}`)}
                   required
                   placeholder="Selecione a hora de término"
+                  onChange={() => {
+                    setDisplayEndDisabledTimesHint(false)
+                  }}
                 />
               </div>
             </div>

@@ -13,6 +13,7 @@ export type TimePickerProps = {
   name: string
   control: Control<any>
   error?: FieldError
+  displayDisabledHint?: boolean
   disabledTimes?: (string | Date)[]
   minTime?: Date
   maxTime?: Date
@@ -21,6 +22,7 @@ export type TimePickerProps = {
   timeIntervals?: number
   className?: string
   required?: boolean
+  onChange?: (time: string) => void
 }
 
 export function TimePicker({
@@ -28,6 +30,7 @@ export function TimePicker({
   name,
   control,
   error,
+  displayDisabledHint = true,
   disabledTimes = [],
   minTime,
   maxTime,
@@ -36,13 +39,13 @@ export function TimePicker({
   timeIntervals = 30,
   className = "",
   required = false,
+  onChange,
 }: TimePickerProps) {
   const normalizedDisabledTimes = useMemo(() => {
     return disabledTimes.map((time) => {
       if (time instanceof Date) {
         return time
       }
-      // Assume time is in HH:mm format
       const [hours, minutes] = time.split(":").map(Number)
       const date = new Date()
       date.setHours(hours, minutes, 0, 0)
@@ -108,13 +111,14 @@ export function TimePicker({
           <ReactDatePicker
             selected={field.value ? new Date(`2000-01-01T${field.value}`) : null}
             onChange={(date: Date | null) => {
-              // Format time as HH:mm
               if (date) {
                 const hours = String(date.getHours()).padStart(2, "0")
                 const minutes = String(date.getMinutes()).padStart(2, "0")
                 field.onChange(`${hours}:${minutes}`)
+                if (onChange) onChange(`${hours}:${minutes}`)
               } else {
                 field.onChange("")
+                if (onChange) onChange("")
               }
             }}
             onBlur={field.onBlur}
@@ -144,7 +148,7 @@ export function TimePicker({
             </Form.Control.Feedback>
           )}
 
-          {normalizedDisabledTimes.length > 0 && (
+          {normalizedDisabledTimes.length > 0 && displayDisabledHint && (
             <div className="picker-hint">
               <span className="hint-icon">ℹ️</span>
               <span className="hint-text">

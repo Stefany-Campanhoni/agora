@@ -1,8 +1,19 @@
+import { useEffect } from "react"
 import { useAuth } from "../hooks/useAuth"
+import { loadUser } from "../service/user/user.api"
 import "./Home.css"
 
 export function Home() {
   const { isAuthenticated, token, logout } = useAuth()
+
+  // Use effect to check if the token is valid
+  // If not, remove it from the state
+  useEffect(() => {
+    if (!token) return
+    ;(async () => {
+      await loadUser()
+    })()
+  }, [])
 
   return isAuthenticated ? (
     <div className="home-page">

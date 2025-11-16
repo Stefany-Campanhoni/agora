@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react"
 import { Col, Container, Row, Spinner } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
+import { Alert } from "../../../components/alert/Alert"
 import { RoomCard } from "../../../components/room/RoomCard"
+import { useAuth } from "../../../hooks/useAuth"
 import { getAllRooms } from "../../../service/room/room.api"
 import type { Room } from "../../../service/room/room.types"
 import "./RoomList.css"
@@ -9,7 +11,9 @@ import "./RoomList.css"
 export function UserRoomList() {
   const [rooms, setRooms] = useState<Room[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [displayWarning, setDisplayWarning] = useState(false)
   const navigate = useNavigate()
+  const { isAuthenticated } = useAuth()
 
   useEffect(() => {
     loadRooms()
@@ -42,11 +46,27 @@ export function UserRoomList() {
   }
 
   const handleReserve = (roomId: number) => {
+    if (!isAuthenticated) {
+      setDisplayWarning(true)
+      return
+    }
+
     navigate(`${roomId}/reserve`)
   }
 
   return (
     <Container className="rooms-container">
+      {displayWarning && (
+        <Alert
+          type="warning"
+          onClose={() => setDisplayWarning(false)}
+        >
+          Você precisa estar logado para reservar uma sala.
+          <br />
+          Clique aqui para <a href="/user/login">fazer login</a>.
+        </Alert>
+      )}
+
       <Row className="rooms-grid g-4 justify-content-center">
         {rooms.map((room) => (
           <Col

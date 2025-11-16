@@ -58,7 +58,9 @@ apiClient.interceptors.response.use(
       store.dispatch(logout())
       await persistor.flush()
 
-      window.location.href = "/user/login"
+      if (!window.location.href.includes("/home")) {
+        window.location.href = "/user/login"
+      }
 
       isLoggingOut = false
     }

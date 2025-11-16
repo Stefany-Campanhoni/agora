@@ -4,11 +4,12 @@ import "./Alert.css"
 export type AlertType = "error" | "success" | "warning"
 
 export type AlertProps = {
-  message: string
+  message?: string
   type?: AlertType
   onClose: () => void
   autoClose?: boolean
   autoCloseDuration?: number
+  children?: React.ReactNode
 }
 
 export function Alert({
@@ -17,6 +18,7 @@ export function Alert({
   onClose,
   autoClose = true,
   autoCloseDuration = 5000,
+  children,
 }: AlertProps) {
   useEffect(() => {
     if (autoClose) {
@@ -123,7 +125,7 @@ export function Alert({
     <div className={`alert alert-${type}`}>
       <div className="alert-content">
         <div className="alert-icon-wrapper">{getIcon()}</div>
-        <p className="alert-message">{message}</p>
+        <p className="alert-message">{message ? message : children}</p>
         <button
           className="alert-close-btn"
           onClick={onClose}
