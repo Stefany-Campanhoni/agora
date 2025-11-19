@@ -11,15 +11,13 @@ RUN chmod +x gradlew
 FROM base AS deps
 WORKDIR /build
 COPY build.gradle settings.gradle ./
-RUN --mount=type=cache,target=/root/.gradle \
-    ./gradlew dependencies --no-daemon
+RUN ./gradlew dependencies --no-daemon
 
 # Stage 3: Build the application
 FROM deps AS package
 WORKDIR /build
 COPY src src/
-RUN --mount=type=cache,target=/root/.gradle \
-    ./gradlew bootJar --no-daemon && \
+RUN ./gradlew bootJar --no-daemon && \
     mv build/libs/*.jar build/libs/app.jar
 
 # Stage 4: Extract layers for optimization
