@@ -17,7 +17,6 @@ RUN --mount=type=cache,target=/root/.gradle \
 # Build application
 COPY src src/
 RUN --mount=type=cache,target=/root/.gradle \
-    --mount=type=cache,target=/build/build \
     ./gradlew bootJar --no-daemon && \
     mv build/libs/*.jar build/libs/app.jar
 
