@@ -53,10 +53,6 @@ export function ReserveRoomForm() {
   const watchStartDate = watch("startDate")
 
   useEffect(() => {
-    console.log("startDate", watchStartDate)
-  }, [watchStartDate])
-
-  useEffect(() => {
     if (!id) {
       navigate(-1)
     }

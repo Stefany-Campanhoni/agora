@@ -105,10 +105,14 @@ export function DatePicker({
           {label && <Form.Label className="picker-label">{label}</Form.Label>}
 
           <ReactDatePicker
-            selected={field.value ? new Date(field.value) : null}
+            selected={field.value ? new Date(field.value + "T00:00:00") : null}
             onChange={(date: Date | null) => {
-              // Atualiza o valor no react-hook-form
-              const dateStr = date ? date.toISOString().split("T")[0] : ""
+              // Atualiza o valor no react-hook-form usando a data local
+              const dateStr = date
+                ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(
+                    date.getDate(),
+                  ).padStart(2, "0")}`
+                : ""
               field.onChange(dateStr)
               if (onChange) onChange(dateStr)
             }}
