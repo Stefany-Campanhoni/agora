@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Col, Container, Row, Spinner } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
-import { Alert } from "../../../components/alert/Alert"
+import { Alert, type AlertType } from "../../../components/alert/Alert"
 import { RoomCard } from "../../../components/room/RoomCard"
 import { useAuth } from "../../../hooks/useAuth"
 import { getAllRooms } from "../../../service/room/room.api"
@@ -12,6 +12,7 @@ export function UserRoomList() {
   const [rooms, setRooms] = useState<Room[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [displayWarning, setDisplayWarning] = useState(false)
+  const [alert, setAlert] = useState<{ message: string; type: AlertType } | null>(null)
   const navigate = useNavigate()
   const { isAuthenticated } = useAuth()
 
@@ -26,7 +27,7 @@ export function UserRoomList() {
       setRooms(response.rooms)
     } catch (error) {
       console.error("Erro ao carregar salas:", error)
-      alert("Erro ao carregar salas.")
+      setAlert({ message: "Erro ao carregar salas.", type: "error" })
     } finally {
       setIsLoading(false)
     }
@@ -56,6 +57,13 @@ export function UserRoomList() {
 
   return (
     <Container className="rooms-container">
+      {alert && (
+        <Alert
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert(null)}
+        />
+      )}
       {displayWarning && (
         <Alert
           type="warning"

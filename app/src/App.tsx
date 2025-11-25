@@ -11,12 +11,12 @@ import { UserReservations } from "./pages/reservation/UserReservations"
 import { RoomForm } from "./pages/room/forms/CreateRoomForm"
 import { AdminRoomList } from "./pages/room/list/AdminRoomList"
 import { UserRoomList } from "./pages/room/list/UserRoomList"
+import { ForgotPassword } from "./pages/user/ForgotPassword"
+import { ResetPassword } from "./pages/user/ResetPassword"
 import { UserEdit } from "./pages/user/UserEdit"
 import { UserList } from "./pages/user/UserList"
 import { UserLogin } from "./pages/user/UserLogin"
 import { UserRegistration } from "./pages/user/UserRegistration"
-import { ResetPassword } from "./pages/user/ResetPassword"
-import { ForgotPassword } from "./pages/user/ForgotPassword"
 
 function App() {
   return (
@@ -59,12 +59,6 @@ function App() {
             path=":id/reserve"
             element={<ReserveRoomForm />}
           />
-          <Route element={<AdminRoute />}>
-            <Route
-              path="create"
-              element={<RoomForm />}
-            />
-          </Route>
         </Route>
       </Route>
 
@@ -107,6 +101,10 @@ function App() {
             <Route
               index
               element={<AdminRoomList />}
+            />
+            <Route
+              path="create"
+              element={<RoomForm />}
             />
             <Route
               path="edit/:id"

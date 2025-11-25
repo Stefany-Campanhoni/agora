@@ -19,38 +19,38 @@ services:
       timeout: 5s
       retries: 5
 
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: final
-    container_name: agora-api
-    restart: unless-stopped
-    ports:
-      - "8080:8080"
-    env_file:
-      - .env
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/agora
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
-
-      SPRING_MAIL_USERNAME: ${MAIL_USERNAME}
-      SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD}
-
-      JWT_SECRET: ${JWT_SECRET}
-      ADMIN_SECRET: ${ADMIN_SECRET}
-
-      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:5173/}
-    depends_on:
-      db:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+#  api:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#      target: final
+#    container_name: agora-api
+#    restart: unless-stopped
+#    ports:
+#      - "8080:8080"
+#    env_file:
+#      - .env
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/agora
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
+#
+#      SPRING_MAIL_USERNAME: ${MAIL_USERNAME}
+#      SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD}
+#
+#      JWT_SECRET: ${JWT_SECRET}
+#      ADMIN_SECRET: ${ADMIN_SECRET}
+#
+#      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:5173/}
+#    depends_on:
+#      db:
+#        condition: service_healthy
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 3
+#      start_period: 40s
 
   api-dev:
     build:
@@ -60,7 +60,7 @@ services:
     container_name: agora-api-dev
     restart: unless-stopped
     ports:
-      - "8081:8080"
+      - "8080:8080"
       - "5005:5005" # Debug port
     env_file:
       - .env

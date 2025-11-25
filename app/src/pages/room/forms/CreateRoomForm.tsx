@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
 import { useForm } from "react-hook-form"
 import { useNavigate, useParams } from "react-router-dom"
+import { Alert, type AlertType } from "../../../components/alert/Alert"
 import { BaseForm } from "../../../components/form/BaseForm"
 import { FormInput } from "../../../components/form/inputs/FormInput"
 import { createRoom, getRoomById, updateRoom } from "../../../service/room/room.api"
@@ -21,6 +22,7 @@ export function RoomForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [initialData, setInitialData] = useState<Partial<Room>>({})
   const [isEditMode, setIsEditMode] = useState(false)
+  const [alert, setAlert] = useState<{ message: string; type: AlertType } | null>(null)
   const {
     register,
     handleSubmit,
@@ -77,7 +79,7 @@ export function RoomForm() {
       setInitialData(room)
     } catch (error) {
       console.error("Erro ao carregar sala:", error)
-      alert("Erro ao carregar dados da sala")
+      setAlert({ message: "Erro ao carregar dados da sala", type: "error" })
       navigate("/rooms")
     } finally {
       setIsLoading(false)
@@ -90,16 +92,16 @@ export function RoomForm() {
 
       if (isEditMode && id) {
         await updateRoom(parseInt(id, 10), data)
-        alert("Sala atualizada com sucesso!")
+        setAlert({ message: "Sala atualizada com sucesso!", type: "success" })
       } else {
         await createRoom(data)
-        alert("Sala criada com sucesso!")
+        setAlert({ message: "Sala criada com sucesso!", type: "success" })
       }
 
-      navigate("/rooms")
+      setTimeout(() => navigate("/rooms"), 2000)
     } catch (error) {
       console.error("Erro ao salvar sala:", error)
-      alert("Erro ao salvar sala. Tente novamente.")
+      setAlert({ message: "Erro ao salvar sala. Tente novamente.", type: "error" })
     } finally {
       setIsLoading(false)
     }
@@ -110,6 +112,13 @@ export function RoomForm() {
 
   return (
     <div className="room-form-container">
+      {alert && (
+        <Alert
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert(null)}
+        />
+      )}
       <BaseForm
         title={title}
         onSubmit={handleSubmit(handleFormSubmit)}

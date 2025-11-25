@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Button } from "react-bootstrap"
 import { useForm } from "react-hook-form"
 import { useNavigate, useSearchParams } from "react-router-dom"
+import { Alert, type AlertType } from "../../components/alert/Alert"
 import { BaseForm } from "../../components/form/BaseForm"
 import { FormInput } from "../../components/form/inputs/FormInput"
 import { resetPassword } from "../../service/user/user.api"
@@ -15,6 +16,7 @@ export type ResetPasswordFormData = {
 export function ResetPassword() {
   const [isLoading, setIsLoading] = useState(false)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [alert, setAlert] = useState<{ message: string; type: AlertType } | null>(null)
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const token = searchParams.get("token")
@@ -43,7 +45,7 @@ export function ResetPassword() {
       setSuccessMessage("Senha resetada com sucesso!")
     } catch (err) {
       console.error("Error resetting password:", err)
-      alert("Error resetting password.")
+      setAlert({ message: "Error resetting password.", type: "error" })
     } finally {
       setIsLoading(false)
     }
@@ -51,6 +53,13 @@ export function ResetPassword() {
 
   return (
     <div style={{ width: "100%" }}>
+      {alert && (
+        <Alert
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert(null)}
+        />
+      )}
       {successMessage ? (
         <div>
           <p>{successMessage}</p>

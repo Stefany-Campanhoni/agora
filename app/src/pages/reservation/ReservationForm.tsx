@@ -51,7 +51,6 @@ export function ReserveRoomForm() {
     },
   })
   const watchStartDate = watch("startDate")
-  const watchEndDate = watch("endDate")
 
   useEffect(() => {
     console.log("startDate", watchStartDate)
@@ -186,7 +185,9 @@ export function ReserveRoomForm() {
                   required
                   placeholder="Selecione a data de término"
                   onChange={(date) => {
-                    setDisplayEndDisabledTimesHint(true)
+                    if (disabledTimes.length > 0) {
+                      setDisplayEndDisabledTimesHint(true)
+                    }
                     setDisabledTimes(reservationsMap.get(date) || [])
                   }}
                 />
@@ -196,12 +197,8 @@ export function ReserveRoomForm() {
                   control={control}
                   error={errors.endTime}
                   displayDisabledHint={displayEndDisabledTimesHint}
-                  disabledTimes={disabledTimes}
-                  minTime={
-                    watchEndDate === watchStartDate && watch("startTime")
-                      ? new Date(`1970-01-01T${watch("startTime")}`)
-                      : new Date(`1970-01-01T${OPENING_TIME}`)
-                  }
+                  disabledTimes={[watch("startTime"), ...disabledTimes]}
+                  minTime={new Date(`1970-01-01T${watch("startTime")}`)}
                   maxTime={new Date(`1970-01-01T${CLOSING_TIME}`)}
                   required
                   placeholder="Selecione a hora de término"

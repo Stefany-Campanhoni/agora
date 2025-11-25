@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
+import { Alert, type AlertType } from "../../components/alert/Alert"
 import { BaseForm } from "../../components/form/BaseForm"
 import { FormInput } from "../../components/form/inputs/FormInput"
 import { useAuth } from "../../hooks/useAuth"
@@ -15,6 +16,7 @@ export type RegisterFormData = {
 
 export function UserRegistration() {
   const [isLoading, setIsLoading] = useState(false)
+  const [alert, setAlert] = useState<{ message: string; type: AlertType } | null>(null)
   const navigate = useNavigate()
   const { login } = useAuth()
   const {
@@ -33,7 +35,7 @@ export function UserRegistration() {
       navigate("/home")
     } catch (err) {
       console.error("Erro ao registrar usuário:", err)
-      alert("Erro ao registrar usuário.")
+      setAlert({ message: "Erro ao registrar usuário.", type: "error" })
     } finally {
       setIsLoading(false)
     }
@@ -41,6 +43,13 @@ export function UserRegistration() {
 
   return (
     <div style={{ width: "100%" }}>
+      {alert && (
+        <Alert
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert(null)}
+        />
+      )}
       <BaseForm
         title="Criar Conta"
         onSubmit={handleSubmit(handleRegister)}

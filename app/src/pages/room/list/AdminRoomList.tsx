@@ -1,156 +1,73 @@
 import { useEffect, useState } from "react"
-import { Badge, Button, Card, Col, Container, Row, Spinner } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
+import { Alert, type AlertType } from "../../../components/alert/Alert"
+import { CustomTable } from "../../../components/table/CustomTable"
 import { deleteRoom, getAllRooms } from "../../../service/room/room.api"
 import type { Room } from "../../../service/room/room.types"
-import "./RoomList.css"
 
 export function AdminRoomList() {
-  const navigate = useNavigate()
   const [rooms, setRooms] = useState<Room[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [deletingId, setDeletingId] = useState<number | null>(null)
+  const navigate = useNavigate()
+  const tableHeaders = ["Nome", "Descrição", "Localização", "Capacidade"]
+  const [alert, setAlert] = useState<{ message: string; type: AlertType } | null>(null)
+
+  function onEdit(item: object) {
+    const room = item as Room
+    navigate(`edit/${room.id}`)
+  }
+
+  async function onDelete(item: object) {
+    const room = item as Room
+    if (window.confirm(`Tem certeza que deseja excluir a sala "${room.name}"?`)) {
+      try {
+        await deleteRoom(room.id)
+        setAlert({ message: "Sala excluída com sucesso!", type: "success" })
+        await loadRooms()
+      } catch (error) {
+        console.error("Erro ao excluir sala:", error)
+        setAlert({ message: "Erro ao excluir sala.", type: "error" })
+      }
+    }
+  }
+
+  const loadRooms = async () => {
+    try {
+      const response = await getAllRooms(false)
+      setRooms(response.rooms)
+    } catch (error) {
+      console.error("Erro ao carregar salas:", error)
+      setAlert({ message: "Erro ao carregar salas.", type: "error" })
+    }
+  }
 
   useEffect(() => {
     loadRooms()
   }, [])
 
-  const loadRooms = async () => {
-    try {
-      setIsLoading(true)
-      const response = await getAllRooms(false)
-      setRooms(response.rooms)
-    } catch (error) {
-      console.error("Erro ao carregar salas:", error)
-      alert("Erro ao carregar salas.")
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleEdit = (id: number) => {
-    navigate(`edit/${id}`)
-  }
-
-  const handleDelete = async (id: number, name: string) => {
-    if (window.confirm(`Tem certeza que deseja excluir a sala "${name}"?`)) {
-      try {
-        setDeletingId(id)
-        await deleteRoom(id)
-        alert("Sala excluída com sucesso!")
-        await loadRooms()
-      } catch (error) {
-        console.error("Erro ao excluir sala:", error)
-        alert("Erro ao excluir sala.")
-      } finally {
-        setDeletingId(null)
-      }
-    }
-  }
-
-  if (isLoading) {
-    return (
-      <Container className="rooms-container d-flex justify-content-center align-items-center">
-        <Spinner
-          animation="border"
-          role="status"
-        >
-          <span className="visually-hidden">Carregando...</span>
-        </Spinner>
-      </Container>
-    )
-  }
-
   return (
-    <Container className="rooms-container">
-      <Row className="rooms-grid g-4 justify-content-center">
-        {rooms.map((room) => (
-          <Col
-            key={room.id}
-            md={6}
-            lg={4}
-            className="d-flex"
-          >
-            <Card className="flex-grow-1 h-100">
-              <Card.Body className="d-flex flex-column">
-                <div className="flex-grow-1">
-                  <Card.Title className="d-flex justify-content-between align-items-start">
-                    <span>{room.name}</span>
-                    <Badge
-                      bg="secondary"
-                      className="ms-2"
-                    >
-                      {room.capacity} {room.capacity === 1 ? "pessoa" : "pessoas"}
-                    </Badge>
-                  </Card.Title>
-
-                  {room.description && (
-                    <Card.Text className="text-muted">{room.description}</Card.Text>
-                  )}
-
-                  <div className="mb-3">
-                    <small className="text-muted">
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="me-1"
-                      >
-                        <path
-                          d="M21 10C21 17 12 23 12 23S3 17 3 10C3 7.61 3.95 5.32 5.64 3.64C7.32 1.95 9.61 1 12 1S16.68 1.95 18.36 3.64C20.05 5.32 21 7.61 21 10Z"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <circle
-                          cx="12"
-                          cy="10"
-                          r="3"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        />
-                      </svg>
-                      {room.location}
-                    </small>
-                  </div>
-                </div>
-
-                <div className="d-flex gap-2">
-                  <Button
-                    variant="outline-primary"
-                    size="sm"
-                    onClick={() => handleEdit(room.id)}
-                    className="flex-fill"
-                  >
-                    Editar
-                  </Button>
-                  <Button
-                    variant="outline-danger"
-                    size="sm"
-                    onClick={() => handleDelete(room.id, room.name)}
-                    disabled={deletingId === room.id}
-                    className="flex-fill"
-                  >
-                    {deletingId === room.id ? (
-                      <Spinner
-                        as="span"
-                        animation="border"
-                        size="sm"
-                        role="status"
-                      />
-                    ) : (
-                      "Excluir"
-                    )}
-                  </Button>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <>
+      {alert && (
+        <Alert
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert(null)}
+        />
+      )}
+      <div style={{ marginBottom: "1rem", textAlign: "right" }}>
+        <button
+          className="admin-logout-btn"
+          onClick={() => navigate("create")}
+          style={{ width: "auto", display: "inline-flex" }}
+        >
+          <span>Criar Nova Sala</span>
+        </button>
+      </div>
+      <CustomTable
+        data={rooms}
+        dataHeader={tableHeaders}
+        onEdit={onEdit}
+        onDelete={onDelete}
+      />
+    </>
   )
 }
