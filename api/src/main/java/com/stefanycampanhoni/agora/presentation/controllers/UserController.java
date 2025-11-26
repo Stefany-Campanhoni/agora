@@ -56,6 +56,7 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Listar usuários", description = "Retorna todos os usuários cadastrados (apenas administradores)")
     public ResponseEntity<UserListResponse> getAllUsers() {
         UserListResponse response = userService.getAllUsers();
         return ResponseEntity.ok(response);
@@ -63,12 +64,14 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Excluir usuário", description = "Remove um usuário do sistema (apenas administradores)")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/me")
+    @Operation(summary = "Atualizar usuário", description = "Atualiza os dados do usuário autenticado")
     public ResponseEntity<UserResponse> updateUser(@AuthenticationPrincipal User currentUser,
                                                    @RequestBody UserEditRequest userRequest) {
         UserResponse response = userService.updateUser(currentUser, userRequest);
@@ -76,18 +79,21 @@ public class UserController {
     }
 
     @PostMapping("/can-edit")
+    @Operation(summary = "Verificar permissão de edição", description = "Verifica se o usuário autenticado pode editar um usuário específico")
     public ResponseEntity<Boolean> canEditUser(@AuthenticationPrincipal User currentUser,
                                                @RequestBody UserRequest userRequest) {
         return ResponseEntity.ok(userService.canEditUser(currentUser, userRequest.email()));
     }
 
     @PostMapping("/admin/register")
+    @Operation(summary = "Registrar administrador", description = "Cria um novo usuário administrador")
     public ResponseEntity<UserResponse> createAdminUser(@RequestBody AdminRequest adminRequest) {
         UserResponse response = userService.createAdminUser(adminRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/password/reset")
+    @Operation(summary = "Redefinir senha", description = "Envia email de redefinição de senha ou redefine a senha do usuário")
     public ResponseEntity<Void> sendResetPasswordEmail(@RequestBody ResetPasswordRequest request) {
         if (request.isEmailRequest()) {
             resetPasswordService.sendResetPasswordEmail(request.email());
