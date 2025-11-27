@@ -5,7 +5,6 @@ import com.stefanycampanhoni.agora.application.dtos.user.*;
 import com.stefanycampanhoni.agora.application.mappers.AuthMapper;
 import com.stefanycampanhoni.agora.application.mappers.UserMapper;
 import com.stefanycampanhoni.agora.application.services.ResetPasswordService;
-import com.stefanycampanhoni.agora.domain.entities.User;
 import com.stefanycampanhoni.agora.application.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -49,8 +47,8 @@ public class UserController {
 
     @GetMapping("/me")
     @Operation(summary = "Obter Usuário autenticado", description = "Retorna os detalhes do usuário autenticado atualmente")
-    public ResponseEntity<UserResponse> getUserById(@AuthenticationPrincipal User user) {
-        UserResponse response = userService.getUserByEmail(user.getEmail());
+    public ResponseEntity<UserResponse> getUserById() {
+        UserResponse response = userService.getUserByEmail();
         return ResponseEntity.ok(response);
     }
 
@@ -72,17 +70,15 @@ public class UserController {
 
     @PutMapping("/me")
     @Operation(summary = "Atualizar usuário", description = "Atualiza os dados do usuário autenticado")
-    public ResponseEntity<UserResponse> updateUser(@AuthenticationPrincipal User currentUser,
-                                                   @RequestBody UserEditRequest userRequest) {
-        UserResponse response = userService.updateUser(currentUser, userRequest);
+    public ResponseEntity<UserResponse> updateUser(@RequestBody UserEditRequest userRequest) {
+        UserResponse response = userService.updateUser(userRequest);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/can-edit")
     @Operation(summary = "Verificar permissão de edição", description = "Verifica se o usuário autenticado pode editar um usuário específico")
-    public ResponseEntity<Boolean> canEditUser(@AuthenticationPrincipal User currentUser,
-                                               @RequestBody UserRequest userRequest) {
-        return ResponseEntity.ok(userService.canEditUser(currentUser, userRequest.email()));
+    public ResponseEntity<Boolean> canEditUser(@RequestBody UserRequest userRequest) {
+        return ResponseEntity.ok(userService.canEditUser(userRequest.email()));
     }
 
     @PostMapping("/admin/register")

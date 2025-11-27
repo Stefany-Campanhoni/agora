@@ -13,6 +13,7 @@ import com.stefanycampanhoni.agora.domain.enums.user.Role;
 import com.stefanycampanhoni.agora.domain.interfaces.IEmailService;
 import com.stefanycampanhoni.agora.domain.repositories.UserRepository;
 import com.stefanycampanhoni.agora.infra.security.AuthService;
+import com.stefanycampanhoni.agora.infra.security.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -70,7 +71,8 @@ public class UserService {
         return authMapper.toResponse(token);
     }
 
-    public UserResponse getUserByEmail(String email) {
+    public UserResponse getUserByEmail() {
+        var email = UserContext.getCurrentUser().getEmail();
         var user = userRepository.findByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
         return userMapper.toUserResponse(user);
@@ -95,8 +97,10 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public UserResponse updateUser(User user, UserEditRequest userRequest) {
-        if (!canEditUser(user, userRequest.email())) {
+    public UserResponse updateUser(UserEditRequest userRequest) {
+        var user = UserContext.getCurrentUser();
+
+        if (!canEditUser(userRequest.email())) {
             throw new InvalidCredentialsException("You do not have permission to edit this user.");
         }
 
@@ -105,7 +109,9 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
-    public boolean canEditUser(User currentUser, String email) {
+    public boolean canEditUser(String email) {
+        var currentUser = UserContext.getCurrentUser();
+
         if (currentUser == null || email == null) {
             return false;
         }
