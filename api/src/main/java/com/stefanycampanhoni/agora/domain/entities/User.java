@@ -28,6 +28,10 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
+    @Lob
+    @Column(name = "profile_picture", columnDefinition = "BYTEA")
+    private byte[] profilePicture;
+
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Role role = Role.USER;
