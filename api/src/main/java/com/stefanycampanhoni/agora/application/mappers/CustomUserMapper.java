@@ -12,6 +12,7 @@ public interface CustomUserMapper {
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "authorities", ignore = true)
+    @Mapping(target = "profilePicture", ignore = true)
     @BeanMapping(
             nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
             qualifiedByName = "isNotBlankCondition"

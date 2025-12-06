@@ -39,8 +39,10 @@ export async function canEditUser(user: User): Promise<boolean> {
   return res.data
 }
 
-export async function updateUser(user: EditFormData): Promise<User> {
-  const res = await apiClient.put<User>(`${URI}/me`, user)
+export async function updateUser(user: EditFormData, email: string): Promise<User> {
+  const body = { ...user, email }
+
+  const res = await apiClient.put<User>(`${URI}/me`, body)
 
   if (res.status !== 200) {
     throw new Error("Erro ao atualizar usuário")

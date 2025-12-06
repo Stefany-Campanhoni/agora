@@ -51,6 +51,7 @@ export function ReserveRoomForm() {
     },
   })
   const watchStartDate = watch("startDate")
+  const watchEndDate = watch("endDate")
 
   useEffect(() => {
     if (!id) {
@@ -89,14 +90,26 @@ export function ReserveRoomForm() {
     const endDateTime = new Date(`${reservationFormData.endDate}T${reservationFormData.endTime}`)
     const reservationData: ReservationRequest = {
       roomId: room.id,
-      startDateTime: startDateTime.toISOString(),
-      endDateTime: endDateTime.toISOString(),
+      startDateTime: getLocalISOString(startDateTime),
+      endDateTime: getLocalISOString(endDateTime),
     }
     try {
       await reserve(reservationData)
+      navigate(-1)
     } catch (error) {
       setDisplayError(true)
     }
+  }
+
+  function getLocalISOString(date: Date): string {
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, "0")
+    const day = String(date.getDate()).padStart(2, "0")
+    const hours = String(date.getHours()).padStart(2, "0")
+    const minutes = String(date.getMinutes()).padStart(2, "0")
+    const seconds = String(date.getSeconds()).padStart(2, "0")
+
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
   }
 
   return (
@@ -193,8 +206,13 @@ export function ReserveRoomForm() {
                   control={control}
                   error={errors.endTime}
                   displayDisabledHint={displayEndDisabledTimesHint}
-                  disabledTimes={[watch("startTime"), ...disabledTimes]}
-                  minTime={new Date(`1970-01-01T${watch("startTime")}`)}
+                  disabledTimes={disabledTimes}
+                  minTime={(() => {
+                    if (watchStartDate === watchEndDate) {
+                      return new Date(`1970-01-01T${watch("startTime")}`)
+                    }
+                    return new Date(`1970-01-01T${OPENING_TIME}`)
+                  })()}
                   maxTime={new Date(`1970-01-01T${CLOSING_TIME}`)}
                   required
                   placeholder="Selecione a hora de término"

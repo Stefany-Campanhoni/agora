@@ -6,6 +6,7 @@ import { BaseForm } from "../../components/form/BaseForm"
 import { FormInput } from "../../components/form/inputs/FormInput"
 import { canEditUser, updateUser } from "../../service/user/user.api"
 import type { User } from "../../service/user/user.types"
+import { useAuth } from "../../hooks/useAuth"
 
 export type EditFormData = {
   name: string
@@ -22,6 +23,7 @@ export function UserEdit() {
     setValue,
     formState: { errors },
   } = useForm<EditFormData>({ defaultValues: { name: "" } })
+  const { email } = useAuth()
 
   useEffect(() => {
     const currentUser = location.state?.user as User
@@ -35,7 +37,7 @@ export function UserEdit() {
   const handleFormSubmit = async (data: EditFormData) => {
     setIsLoading(true)
     try {
-      await updateUser(data)
+      await updateUser(data, email!)
       navigate(-1)
     } catch (error) {
       console.error("Erro ao atualizar usuário:", error)
