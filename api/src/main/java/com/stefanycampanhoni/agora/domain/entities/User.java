@@ -28,8 +28,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
-    @Lob
-    @Column(name = "profile_picture", columnDefinition = "BYTEA")
+    @Column(name = "profile_picture")
     private byte[] profilePicture;
 
     @Enumerated(EnumType.STRING)
