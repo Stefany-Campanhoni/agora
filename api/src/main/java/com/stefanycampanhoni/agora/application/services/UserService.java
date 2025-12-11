@@ -11,6 +11,7 @@ import com.stefanycampanhoni.agora.application.mappers.UserMapper;
 import com.stefanycampanhoni.agora.domain.entities.User;
 import com.stefanycampanhoni.agora.domain.enums.user.Role;
 import com.stefanycampanhoni.agora.domain.interfaces.IEmailService;
+import com.stefanycampanhoni.agora.domain.interfaces.IUserProfileService;
 import com.stefanycampanhoni.agora.domain.repositories.UserRepository;
 import com.stefanycampanhoni.agora.infra.security.AuthService;
 import com.stefanycampanhoni.agora.infra.security.UserContext;
@@ -43,6 +44,9 @@ public class UserService {
     @Autowired
     private AuthMapper authMapper;
 
+    @Autowired
+    private IUserProfileService userProfileService;
+
     @Value("${admin.secret}")
     private String adminSecret;
 
@@ -52,8 +56,11 @@ public class UserService {
         }
 
         var user = userMapper.toUser(request);
+        user.setProfilePicture(userProfileService.getProfilePicture(user.getName()));
+
         var originalPassword = request.password();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         userRepository.save(user);
 
         var loginRequest = new UserLoginRequest(request.email(), originalPassword);

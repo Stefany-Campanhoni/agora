@@ -39,7 +39,15 @@ export function ModalManagementContent() {
                 className="text-center"
               >
                 <div className="user-avatar">
-                  <FaUser className="avatar-icon" />
+                  {user.profilePicture ? (
+                    <img
+                      src={`data:image/png;base64,${user.profilePicture}`}
+                      alt={user.name}
+                      className="avatar-image"
+                    />
+                  ) : (
+                    <FaUser className="avatar-icon" />
+                  )}
                 </div>
                 <h5 className="user-name mt-3">{user.name}</h5>
               </Col>

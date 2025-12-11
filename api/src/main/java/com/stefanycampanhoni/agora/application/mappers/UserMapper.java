@@ -13,6 +13,7 @@ public interface UserMapper {
     @Mapping(source = "userRequest.password", target = "password")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "role", ignore = true)
+    @Mapping(target = "profilePicture", ignore = true)
     User toUser(UserRequest userRequest);
 
     UserResponse toUserResponse(User user);
