@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate, useParams } from "react-router-dom"
-import { Alert } from "../../components/alert/Alert"
-import { BaseForm } from "../../components/form/BaseForm"
-import { DatePicker } from "../../components/pickers/DatePicker"
-import { TimePicker } from "../../components/pickers/TimePicker"
-import { reserve } from "../../service/reservation/reservation.api"
+import { Loader2, Building, Users, MapPin } from "lucide-react"
+
+import { Alert } from "@/components/alert/Alert"
+import { BaseForm } from "@/components/form/BaseForm"
+import { DatePicker } from "@/components/pickers/DatePicker"
+import { TimePicker } from "@/components/pickers/TimePicker"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { reserve } from "@/service/reservation/reservation.api"
 import {
   CLOSING_TIME,
   getAllReservationsDateTime,
   getDisabledDates,
   OPENING_TIME,
-} from "../../service/reservation/reservation.service"
-import type { ReservationRequest } from "../../service/reservation/reservation.types"
-import { getRoomById } from "../../service/room/room.api"
-import type { Room } from "../../service/room/room.types"
-import "./ReservationForm.css"
+} from "@/service/reservation/reservation.service"
+import type { ReservationRequest } from "@/service/reservation/reservation.types"
+import { getRoomById } from "@/service/room/room.api"
+import type { Room } from "@/service/room/room.types"
 
 export type ReservationFormData = {
   startDate: string
@@ -112,6 +114,14 @@ export function ReserveRoomForm() {
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
   }
 
+  if (!room) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    )
+  }
+
   return (
     <>
       {displayError && (
@@ -123,112 +133,115 @@ export function ReserveRoomForm() {
           reserva existente.
         </Alert>
       )}
-      {room ? (
-        <BaseForm
-          title={`Reserve a sala ${room.name}!`}
-          onSubmit={handleSubmit(submitReservation)}
-          submitText="Reservar!"
-          showBackButton
-        >
-          <div className="room-info-card">
-            <h3>Informações da Sala</h3>
-            <div className="room-details">
-              <div className="room-detail-item">
-                <span className="detail-label">Descrição:</span>
-                <span className="detail-value">{room.description}</span>
-              </div>
-              <div className="room-detail-item">
-                <span className="detail-label">Capacidade:</span>
-                <span className="detail-value">{room.capacity} pessoas</span>
-              </div>
-              <div className="room-detail-item">
-                <span className="detail-label">Localização:</span>
-                <span className="detail-value">{room.location}</span>
-              </div>
+
+      <BaseForm
+        title={`Reserve a sala ${room.name}!`}
+        onSubmit={handleSubmit(submitReservation)}
+        submitText="Reservar!"
+        showBackButton
+      >
+        {/* Room Info Card */}
+        <Card className="mb-6 border-primary/20 bg-primary/5">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Building className="h-5 w-5 text-primary" />
+              Informações da Sala
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex items-start gap-2">
+              <span className="text-sm text-muted-foreground min-w-[90px]">Descrição:</span>
+              <span className="text-sm text-foreground">{room.description}</span>
             </div>
+            <div className="flex items-center gap-2">
+              <Users className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">Capacidade:</span>
+              <span className="text-sm text-foreground font-medium">{room.capacity} pessoas</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">Localização:</span>
+              <span className="text-sm text-foreground font-medium">{room.location}</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Reservation Period */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium text-foreground">Período de Reserva</h3>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <DatePicker
+              label="Data de Início"
+              name="startDate"
+              control={control}
+              error={errors.startDate}
+              disabledDates={disabledDates}
+              minDate={new Date()}
+              required
+              placeholder="Selecione a data de início"
+              onChange={(date) => {
+                setDisplayStartDisabledTimesHint(true)
+                setDisabledTimes(reservationsMap.get(date) || [])
+              }}
+            />
+            <TimePicker
+              label="Hora de Início"
+              name="startTime"
+              control={control}
+              error={errors.startTime}
+              displayDisabledHint={displayStartDisabledTimesHint}
+              disabledTimes={disabledTimes}
+              minTime={new Date(`1970-01-01T${OPENING_TIME}`)}
+              maxTime={new Date(`1970-01-01T${CLOSING_TIME}`)}
+              required
+              placeholder="Selecione a hora de início"
+              onChange={() => {
+                setDisplayStartDisabledTimesHint(false)
+              }}
+            />
           </div>
 
-          <div className="reservation-section">
-            <h3>Período de Reserva</h3>
-            <div className="datetime-group">
-              <div className="datetime-row">
-                <DatePicker
-                  label="Data de Início"
-                  name="startDate"
-                  control={control}
-                  error={errors.startDate}
-                  disabledDates={disabledDates}
-                  minDate={new Date()}
-                  required
-                  placeholder="Selecione a data de início"
-                  onChange={(date) => {
-                    setDisplayStartDisabledTimesHint(true)
-                    setDisabledTimes(reservationsMap.get(date) || [])
-                  }}
-                />
-                <TimePicker
-                  label="Hora de Início"
-                  name="startTime"
-                  control={control}
-                  error={errors.startTime}
-                  displayDisabledHint={displayStartDisabledTimesHint}
-                  disabledTimes={disabledTimes}
-                  minTime={new Date(`1970-01-01T${OPENING_TIME}`)}
-                  maxTime={new Date(`1970-01-01T${CLOSING_TIME}`)}
-                  required
-                  placeholder="Selecione a hora de início"
-                  onChange={() => {
-                    setDisplayStartDisabledTimesHint(false)
-                  }}
-                />
-              </div>
-
-              <div className="datetime-row">
-                <DatePicker
-                  label="Data de Término"
-                  name="endDate"
-                  control={control}
-                  error={errors.endDate}
-                  disabledDates={disabledDates}
-                  minDate={watchStartDate ? new Date(watchStartDate + "T00:00:00") : new Date()}
-                  required
-                  placeholder="Selecione a data de término"
-                  onChange={(date) => {
-                    if (disabledTimes.length > 0) {
-                      setDisplayEndDisabledTimesHint(true)
-                    }
-                    setDisabledTimes(reservationsMap.get(date) || [])
-                  }}
-                />
-                <TimePicker
-                  label="Hora de Término"
-                  name="endTime"
-                  control={control}
-                  error={errors.endTime}
-                  displayDisabledHint={displayEndDisabledTimesHint}
-                  disabledTimes={disabledTimes}
-                  minTime={(() => {
-                    if (watchStartDate === watchEndDate) {
-                      return new Date(`1970-01-01T${watch("startTime")}`)
-                    }
-                    return new Date(`1970-01-01T${OPENING_TIME}`)
-                  })()}
-                  maxTime={new Date(`1970-01-01T${CLOSING_TIME}`)}
-                  required
-                  placeholder="Selecione a hora de término"
-                  onChange={() => {
-                    setDisplayEndDisabledTimesHint(false)
-                  }}
-                />
-              </div>
-            </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <DatePicker
+              label="Data de Término"
+              name="endDate"
+              control={control}
+              error={errors.endDate}
+              disabledDates={disabledDates}
+              minDate={watchStartDate ? new Date(watchStartDate + "T00:00:00") : new Date()}
+              required
+              placeholder="Selecione a data de término"
+              onChange={(date) => {
+                if (disabledTimes.length > 0) {
+                  setDisplayEndDisabledTimesHint(true)
+                }
+                setDisabledTimes(reservationsMap.get(date) || [])
+              }}
+            />
+            <TimePicker
+              label="Hora de Término"
+              name="endTime"
+              control={control}
+              error={errors.endTime}
+              displayDisabledHint={displayEndDisabledTimesHint}
+              disabledTimes={disabledTimes}
+              minTime={(() => {
+                if (watchStartDate === watchEndDate) {
+                  return new Date(`1970-01-01T${watch("startTime")}`)
+                }
+                return new Date(`1970-01-01T${OPENING_TIME}`)
+              })()}
+              maxTime={new Date(`1970-01-01T${CLOSING_TIME}`)}
+              required
+              placeholder="Selecione a hora de término"
+              onChange={() => {
+                setDisplayEndDisabledTimesHint(false)
+              }}
+            />
           </div>
-        </BaseForm>
-      ) : (
-        <div className="loading-container">
-          <p>Carregando dados da sala...</p>
         </div>
-      )}
+      </BaseForm>
     </>
   )
 }

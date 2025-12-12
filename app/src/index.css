@@ -1,26 +1,145 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 500;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@layer base {
+  :root {
+    /* Blossom Light Theme - Cherry Blossom */
+    --radius: 0.625rem;
+
+    /* Backgrounds */
+    --background: 350 100% 97%; /* #FFF0F3 - snow pink */
+    --foreground: 340 65% 20%; /* #590D22 - deep wine */
+
+    /* Cards and Popovers */
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 340 65% 20%; /* #590D22 */
+    --popover: 0 0% 100%;
+    --popover-foreground: 340 65% 20%;
+
+    /* Primary - Cherry Pink */
+    --primary: 340 82% 44%; /* #C9184A */
+    --primary-foreground: 350 100% 97%; /* #FFF0F3 */
+
+    /* Secondary */
+    --secondary: 350 100% 95%; /* #FFE5EC */
+    --secondary-foreground: 340 73% 28%; /* #800F2F */
+
+    /* Muted */
+    --muted: 350 100% 90%; /* #FFCCD5 */
+    --muted-foreground: 340 80% 36%; /* #A4133C */
+
+    /* Accent */
+    --accent: 350 100% 78%; /* #FF8FA3 */
+    --accent-foreground: 340 65% 20%; /* #590D22 */
+
+    /* Destructive */
+    --destructive: 0 84% 60%; /* #DC2626 */
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders and Inputs */
+    --border: 350 100% 85%; /* #FFB3C1 */
+    --input: 350 100% 85%; /* #FFB3C1 */
+    --ring: 350 100% 65%; /* #FF4D6D */
+
+    /* Charts */
+    --chart-1: 350 100% 65%; /* #FF4D6D */
+    --chart-2: 350 100% 73%; /* #FF758F */
+    --chart-3: 350 100% 78%; /* #FF8FA3 */
+    --chart-4: 350 100% 86%; /* #FFB3C6 */
+    --chart-5: 206 100% 87%; /* #BDE0FE */
+
+    /* Sidebar */
+    --sidebar-background: 350 100% 95%; /* #FFE5EC */
+    --sidebar-foreground: 340 65% 20%; /* #590D22 */
+    --sidebar-primary: 340 82% 44%; /* #C9184A */
+    --sidebar-primary-foreground: 350 100% 97%;
+    --sidebar-accent: 350 100% 90%; /* #FFCCD5 */
+    --sidebar-accent-foreground: 340 73% 28%;
+    --sidebar-border: 350 100% 85%; /* #FFB3C1 */
+    --sidebar-ring: 350 100% 65%; /* #FF4D6D */
+  }
+
+  .dark {
+    /* Blossom Dark Theme */
+    --background: 340 40% 7%; /* #1A0A10 */
+    --foreground: 350 100% 97%; /* #FFF0F3 */
+
+    /* Cards and Popovers */
+    --card: 340 40% 13%; /* #2D1219 */
+    --card-foreground: 350 100% 95%; /* #FFE5EC */
+    --popover: 340 40% 13%;
+    --popover-foreground: 350 100% 95%;
+
+    /* Primary */
+    --primary: 350 100% 73%; /* #FF758F */
+    --primary-foreground: 340 40% 7%; /* #1A0A10 */
+
+    /* Secondary */
+    --secondary: 340 40% 17%; /* #3D1A24 */
+    --secondary-foreground: 350 100% 95%;
+
+    /* Muted */
+    --muted: 340 40% 17%; /* #3D1A24 */
+    --muted-foreground: 350 100% 78%; /* #FF8FA3 */
+
+    /* Accent */
+    --accent: 340 40% 22%; /* #4D2130 */
+    --accent-foreground: 350 100% 95%;
+
+    /* Destructive */
+    --destructive: 0 84% 63%; /* #FF4444 */
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders and Inputs */
+    --border: 350 30% 20%;
+    --input: 350 30% 25%;
+    --ring: 350 100% 65%; /* #FF4D6D */
+
+    /* Charts */
+    --chart-1: 350 100% 65%;
+    --chart-2: 350 100% 73%;
+    --chart-3: 350 100% 78%;
+    --chart-4: 340 80% 36%;
+    --chart-5: 200 70% 65%;
+
+    /* Sidebar */
+    --sidebar-background: 340 40% 13%;
+    --sidebar-foreground: 350 100% 95%;
+    --sidebar-primary: 350 100% 73%;
+    --sidebar-primary-foreground: 340 40% 7%;
+    --sidebar-accent: 340 40% 17%;
+    --sidebar-accent-foreground: 350 100% 95%;
+    --sidebar-border: 350 30% 15%;
+    --sidebar-ring: 340 80% 36%;
+  }
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  min-width: 320px;
-  min-height: 100vh;
-  background-color: #fffbeb !important;
-  display: block;
-}
+@layer base {
+  * {
+    @apply border-border;
+  }
 
-#root {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  body {
+    @apply bg-background text-foreground;
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 500;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    min-width: 320px;
+    min-height: 100vh;
+    display: block;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
 }

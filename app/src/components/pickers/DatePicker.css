@@ -1,63 +1,81 @@
 /* ========================================
-   Container e Labels
+   DatePicker - Blossom Theme
    ======================================== */
+
+/* Container e Labels */
 .picker-group {
   position: relative;
   margin-bottom: 1.5rem;
 }
 
 .picker-label {
-  color: #462500;
+  color: hsl(340 65% 20%);
   font-weight: 600;
   margin-bottom: 0.5rem;
   display: block;
   font-size: 0.95rem;
 }
 
-/* ========================================
-   Input Customizado
-   ======================================== */
+.dark .picker-label {
+  color: hsl(350 100% 95%);
+}
+
+/* Input Customizado */
 .date-picker-wrapper {
   width: 100%;
 }
 
 .date-picker-control {
   width: 100%;
-  background: #fffaf2;
-  border: 1px solid #d4c5a9;
+  background: hsl(350 100% 99%);
+  border: 1px solid hsl(350 100% 85%);
   border-radius: 8px;
   padding: 10px 12px;
-  color: #462500;
+  color: hsl(340 65% 20%);
   transition: all 0.2s ease;
   height: 44px;
   font-size: 0.95rem;
   cursor: pointer;
 }
 
+.dark .date-picker-control {
+  background: hsl(340 40% 13%);
+  border-color: hsl(350 30% 25%);
+  color: hsl(350 100% 95%);
+}
+
 .date-picker-control:hover {
-  border-color: #c4b599;
+  border-color: hsl(350 100% 73%);
+}
+
+.dark .date-picker-control:hover {
+  border-color: hsl(350 100% 65%);
 }
 
 .date-picker-control:focus {
-  border-color: #794000;
-  box-shadow: 0 4px 18px rgba(121, 64, 0, 0.12);
+  border-color: hsl(340 82% 44%);
+  box-shadow: 0 0 0 3px hsl(340 82% 44% / 0.15);
   outline: none;
-  background: #fff;
+  background: hsl(0 0% 100%);
+}
+
+.dark .date-picker-control:focus {
+  border-color: hsl(350 100% 73%);
+  box-shadow: 0 0 0 3px hsl(350 100% 73% / 0.2);
+  background: hsl(340 40% 15%);
 }
 
 .date-picker-control.is-invalid {
-  border-color: #dc3545;
+  border-color: hsl(0 84% 60%);
 }
 
 .date-picker-control.is-invalid:focus {
-  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.15);
+  box-shadow: 0 0 0 3px hsl(0 84% 60% / 0.15);
 }
 
-/* ========================================
-   Mensagens de Erro e Hints
-   ======================================== */
+/* Mensagens de Erro e Hints */
 .picker-error {
-  color: #dc3545;
+  color: hsl(0 84% 60%);
   font-size: 0.875rem;
   margin-top: 0.35rem;
   display: block;
@@ -69,10 +87,15 @@
   gap: 0.5rem;
   margin-top: 0.5rem;
   padding: 0.5rem 0.75rem;
-  background: #fff3cd;
-  border: 1px solid #ffc107;
+  background: hsl(350 100% 95%);
+  border: 1px solid hsl(350 100% 85%);
   border-radius: 6px;
   font-size: 0.85rem;
+}
+
+.dark .picker-hint {
+  background: hsl(340 40% 17%);
+  border-color: hsl(350 30% 25%);
 }
 
 .hint-icon {
@@ -80,21 +103,32 @@
 }
 
 .hint-text {
-  color: #856404;
+  color: hsl(340 73% 28%);
   font-weight: 500;
 }
 
+.dark .hint-text {
+  color: hsl(350 100% 78%);
+}
+
 /* ========================================
-   Customização do React-DatePicker
+   React-DatePicker - Blossom Theme
    ======================================== */
 
 /* Calendário principal */
 .react-datepicker {
   font-family: inherit;
-  border: 1px solid #d4c5a9;
+  border: 1px solid hsl(350 100% 85%);
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 24px hsl(340 82% 44% / 0.12);
   overflow: hidden;
+  background: hsl(0 0% 100%);
+}
+
+.dark .react-datepicker {
+  background: hsl(340 40% 13%);
+  border-color: hsl(350 30% 25%);
+  box-shadow: 0 8px 24px hsl(0 0% 0% / 0.3);
 }
 
 .react-datepicker__triangle {
@@ -103,16 +137,25 @@
 
 /* Header do calendário */
 .react-datepicker__header {
-  background: #fffaf2;
-  border-bottom: 1px solid #d4c5a9;
+  background: hsl(350 100% 97%);
+  border-bottom: 1px solid hsl(350 100% 85%);
   padding: 1rem;
 }
 
+.dark .react-datepicker__header {
+  background: hsl(340 40% 17%);
+  border-color: hsl(350 30% 25%);
+}
+
 .react-datepicker__current-month {
-  color: #462500;
+  color: hsl(340 65% 20%);
   font-weight: 600;
   font-size: 1rem;
   margin-bottom: 0.75rem;
+}
+
+.dark .react-datepicker__current-month {
+  color: hsl(350 100% 95%);
 }
 
 /* Dias da semana */
@@ -123,12 +166,16 @@
 }
 
 .react-datepicker__day-name {
-  color: #794000;
+  color: hsl(340 82% 44%);
   font-weight: 600;
   font-size: 0.85rem;
   width: 2.2rem;
   line-height: 2.2rem;
   margin: 0.2rem;
+}
+
+.dark .react-datepicker__day-name {
+  color: hsl(350 100% 73%);
 }
 
 /* Corpo do calendário */
@@ -147,44 +194,74 @@
   height: 2.2rem;
   line-height: 2.2rem;
   margin: 0.2rem;
-  color: #462500;
+  color: hsl(340 65% 20%);
   border-radius: 50%;
   transition: all 0.2s ease;
   cursor: pointer;
   font-size: 0.9rem;
 }
 
+.dark .react-datepicker__day {
+  color: hsl(350 100% 95%);
+}
+
 .react-datepicker__day:hover {
-  background: #f5e6d3;
+  background: hsl(350 100% 90%);
   border-radius: 50%;
+}
+
+.dark .react-datepicker__day:hover {
+  background: hsl(340 40% 22%);
 }
 
 /* Dia selecionado */
 .react-datepicker__day--selected {
-  background: #794000 !important;
-  color: #fff !important;
+  background: hsl(340 82% 44%) !important;
+  color: hsl(350 100% 97%) !important;
   font-weight: 600;
 }
 
+.dark .react-datepicker__day--selected {
+  background: hsl(350 100% 73%) !important;
+  color: hsl(340 40% 7%) !important;
+}
+
 .react-datepicker__day--selected:hover {
-  background: #5a3000 !important;
+  background: hsl(340 85% 38%) !important;
+}
+
+.dark .react-datepicker__day--selected:hover {
+  background: hsl(350 100% 65%) !important;
 }
 
 /* Dia atual */
 .react-datepicker__day--today {
   font-weight: 600;
-  color: #794000;
-  border: 2px solid #794000;
+  color: hsl(340 82% 44%);
+  border: 2px solid hsl(340 82% 44%);
+}
+
+.dark .react-datepicker__day--today {
+  color: hsl(350 100% 73%);
+  border-color: hsl(350 100% 73%);
 }
 
 .react-datepicker__day--today:hover {
-  background: #f5e6d3;
+  background: hsl(350 100% 90%);
+}
+
+.dark .react-datepicker__day--today:hover {
+  background: hsl(340 40% 22%);
 }
 
 /* Dias fora do mês */
 .react-datepicker__day--outside-month {
-  color: #c4b599;
+  color: hsl(350 30% 70%);
   cursor: not-allowed;
+}
+
+.dark .react-datepicker__day--outside-month {
+  color: hsl(350 20% 40%);
 }
 
 .react-datepicker__day--outside-month:hover {
@@ -192,21 +269,32 @@
 }
 
 /* ========================================
-   DIAS DESABILITADOS - Principal Feature
+   DIAS DESABILITADOS
    ======================================== */
 .react-datepicker__day--disabled,
 .disabled-date {
   position: relative;
-  background: #f8f9fa !important;
-  color: #adb5bd !important;
+  background: hsl(350 20% 95%) !important;
+  color: hsl(350 20% 60%) !important;
   cursor: not-allowed !important;
   text-decoration: line-through;
   opacity: 0.6;
 }
 
+.dark .react-datepicker__day--disabled,
+.dark .disabled-date {
+  background: hsl(340 30% 18%) !important;
+  color: hsl(350 20% 45%) !important;
+}
+
 .react-datepicker__day--disabled:hover,
 .disabled-date:hover {
-  background: #e9ecef !important;
+  background: hsl(350 20% 90%) !important;
+}
+
+.dark .react-datepicker__day--disabled:hover,
+.dark .disabled-date:hover {
+  background: hsl(340 30% 22%) !important;
 }
 
 /* Marca visual extra para datas desabilitadas */
@@ -224,10 +312,16 @@
    ======================================== */
 .react-datepicker__month-dropdown,
 .react-datepicker__year-dropdown {
-  background: #fff;
-  border: 1px solid #d4c5a9;
+  background: hsl(0 0% 100%);
+  border: 1px solid hsl(350 100% 85%);
   border-radius: 8px;
   padding: 0.5rem;
+}
+
+.dark .react-datepicker__month-dropdown,
+.dark .react-datepicker__year-dropdown {
+  background: hsl(340 40% 13%);
+  border-color: hsl(350 30% 25%);
 }
 
 .react-datepicker__month-option,
@@ -236,17 +330,34 @@
   cursor: pointer;
   border-radius: 4px;
   transition: background 0.2s ease;
+  color: hsl(340 65% 20%);
+}
+
+.dark .react-datepicker__month-option,
+.dark .react-datepicker__year-option {
+  color: hsl(350 100% 95%);
 }
 
 .react-datepicker__month-option:hover,
 .react-datepicker__year-option:hover {
-  background: #f5e6d3;
+  background: hsl(350 100% 90%);
+}
+
+.dark .react-datepicker__month-option:hover,
+.dark .react-datepicker__year-option:hover {
+  background: hsl(340 40% 22%);
 }
 
 .react-datepicker__month-option--selected,
 .react-datepicker__year-option--selected {
-  background: #794000;
-  color: #fff;
+  background: hsl(340 82% 44%);
+  color: hsl(350 100% 97%);
+}
+
+.dark .react-datepicker__month-option--selected,
+.dark .react-datepicker__year-option--selected {
+  background: hsl(350 100% 73%);
+  color: hsl(340 40% 7%);
 }
 
 /* ========================================
@@ -261,15 +372,23 @@
 }
 
 .react-datepicker__navigation:hover {
-  background: #f5e6d3;
+  background: hsl(350 100% 90%);
   border-radius: 50%;
 }
 
+.dark .react-datepicker__navigation:hover {
+  background: hsl(340 40% 22%);
+}
+
 .react-datepicker__navigation-icon::before {
-  border-color: #794000;
+  border-color: hsl(340 82% 44%);
   border-width: 2px 2px 0 0;
   width: 8px;
   height: 8px;
+}
+
+.dark .react-datepicker__navigation-icon::before {
+  border-color: hsl(350 100% 73%);
 }
 
 /* ========================================
@@ -315,12 +434,35 @@
    Acessibilidade
    ======================================== */
 .react-datepicker__day:focus {
-  outline: 2px solid #794000;
+  outline: 2px solid hsl(340 82% 44%);
   outline-offset: 2px;
+}
+
+.dark .react-datepicker__day:focus {
+  outline-color: hsl(350 100% 73%);
 }
 
 .date-picker-control:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-  background: #e9ecef;
+  background: hsl(350 20% 90%);
+}
+
+.dark .date-picker-control:disabled {
+  background: hsl(340 30% 18%);
+}
+
+/* ========================================
+   Popper positioning
+   ======================================== */
+.react-datepicker-popper {
+  z-index: 50;
+}
+
+.react-datepicker-popper[data-placement^="bottom"] {
+  padding-top: 10px;
+}
+
+.react-datepicker-popper[data-placement^="top"] {
+  padding-bottom: 10px;
 }

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
-import { Card, ProgressBar, Spinner } from "react-bootstrap"
-import { FaUsers, FaCalendarAlt, FaBuilding } from "react-icons/fa"
-import { useWebsocket } from "../../components/websocket/WebsocketContext"
-import { publishUpdateMessage } from "../../service/websocket/websocket"
-import type { AdminDashboardUpdateMessage } from "../../service/websocket/websocket.types"
-import "./Dashboard.css"
+import { Users, Building, CalendarDays, Loader2 } from "lucide-react"
+import { useWebsocket } from "@/components/websocket/WebsocketContext"
+import { publishUpdateMessage } from "@/service/websocket/websocket"
+import type { AdminDashboardUpdateMessage } from "@/service/websocket/websocket.types"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Progress } from "@/components/ui/progress"
 
 export function Dashboard() {
   const [updates, setUpdates] = useState<AdminDashboardUpdateMessage | null>(null)
@@ -32,21 +32,17 @@ export function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="dashboard-loading">
-        <Spinner
-          animation="border"
-          role="status"
-        >
-          <span className="visually-hidden">Carregando...</span>
-        </Spinner>
+      <div className="flex h-64 items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <span className="sr-only">Carregando...</span>
       </div>
     )
   }
 
   if (!updates) {
     return (
-      <div className="dashboard-error">
-        <p>Nenhum dado disponível no momento</p>
+      <div className="flex h-64 items-center justify-center">
+        <p className="text-muted-foreground">Nenhum dado disponível no momento</p>
       </div>
     )
   }
@@ -58,202 +54,111 @@ export function Dashboard() {
     100,
   )
 
+  const total = updates.userQuantity + updates.roomQuantity + updates.reservationQuantity
+
+  const stats = [
+    {
+      label: "Usuários",
+      value: updates.userQuantity,
+      icon: Users,
+      color: "text-blue-500",
+      bgColor: "bg-blue-500/10",
+      progress: (updates.userQuantity / maxValue) * 100,
+    },
+    {
+      label: "Salas",
+      value: updates.roomQuantity,
+      icon: Building,
+      color: "text-emerald-500",
+      bgColor: "bg-emerald-500/10",
+      progress: (updates.roomQuantity / maxValue) * 100,
+    },
+    {
+      label: "Reservas",
+      value: updates.reservationQuantity,
+      icon: CalendarDays,
+      color: "text-purple-500",
+      bgColor: "bg-purple-500/10",
+      progress: (updates.reservationQuantity / maxValue) * 100,
+    },
+  ]
+
   return (
-    <div className="dashboard-container">
-      <div className="dashboard-grid">
-        {/* Users Card */}
-        <div className="dashboard-col">
-          <Card className="dashboard-card">
-            <Card.Body className="dashboard-card-body">
-              <div className="dashboard-card-header">
-                <div className="dashboard-card-icon users-icon">
-                  <FaUsers />
+    <div className="space-y-6">
+      {/* Stats Grid */}
+      <div className="grid gap-4 md:grid-cols-3">
+        {stats.map((stat) => (
+          <Card key={stat.label}>
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div
+                  className={`flex h-12 w-12 items-center justify-center rounded-lg ${stat.bgColor}`}
+                >
+                  <stat.icon className={`h-6 w-6 ${stat.color}`} />
                 </div>
-                <div className="dashboard-card-title-group">
-                  <p className="dashboard-card-label">Usuários</p>
-                  <h3 className="dashboard-card-value">{updates.userQuantity}</h3>
+                <div className="flex-1">
+                  <p className="text-sm text-muted-foreground">{stat.label}</p>
+                  <h3 className="text-2xl font-bold">{stat.value}</h3>
                 </div>
               </div>
-              <div className="dashboard-card-progress">
-                <ProgressBar
-                  now={(updates.userQuantity / maxValue) * 100}
-                  className="users-progress"
-                  label={`${Math.round((updates.userQuantity / maxValue) * 100)}%`}
+              <div className="mt-4">
+                <Progress
+                  value={stat.progress}
+                  className="h-2"
                 />
+                <p className="mt-1 text-xs text-muted-foreground text-right">
+                  {Math.round(stat.progress)}%
+                </p>
               </div>
-            </Card.Body>
+            </CardContent>
           </Card>
-        </div>
-
-        {/* Rooms Card */}
-        <div className="dashboard-col">
-          <Card className="dashboard-card">
-            <Card.Body className="dashboard-card-body">
-              <div className="dashboard-card-header">
-                <div className="dashboard-card-icon rooms-icon">
-                  <FaBuilding />
-                </div>
-                <div className="dashboard-card-title-group">
-                  <p className="dashboard-card-label">Salas</p>
-                  <h3 className="dashboard-card-value">{updates.roomQuantity}</h3>
-                </div>
-              </div>
-              <div className="dashboard-card-progress">
-                <ProgressBar
-                  now={(updates.roomQuantity / maxValue) * 100}
-                  className="rooms-progress"
-                  label={`${Math.round((updates.roomQuantity / maxValue) * 100)}%`}
-                />
-              </div>
-            </Card.Body>
-          </Card>
-        </div>
-
-        {/* Reservations Card */}
-        <div className="dashboard-col">
-          <Card className="dashboard-card">
-            <Card.Body className="dashboard-card-body">
-              <div className="dashboard-card-header">
-                <div className="dashboard-card-icon reservations-icon">
-                  <FaCalendarAlt />
-                </div>
-                <div className="dashboard-card-title-group">
-                  <p className="dashboard-card-label">Reservas</p>
-                  <h3 className="dashboard-card-value">{updates.reservationQuantity}</h3>
-                </div>
-              </div>
-              <div className="dashboard-card-progress">
-                <ProgressBar
-                  now={(updates.reservationQuantity / maxValue) * 100}
-                  className="reservations-progress"
-                  label={`${Math.round((updates.reservationQuantity / maxValue) * 100)}%`}
-                />
-              </div>
-            </Card.Body>
-          </Card>
-        </div>
+        ))}
       </div>
 
       {/* Summary Section */}
-      <div className="dashboard-summary">
-        <div className="dashboard-summary-col">
-          <Card className="dashboard-summary-card">
-            <Card.Body>
-              <h5 className="summary-title">Estatísticas do Sistema</h5>
-              <div className="summary-stats">
-                <div className="summary-stat-item">
-                  <span className="summary-stat-label">Total de Usuários:</span>
-                  <span className="summary-stat-value">{updates.userQuantity}</span>
-                </div>
-                <div className="summary-stat-item">
-                  <span className="summary-stat-label">Total de Salas:</span>
-                  <span className="summary-stat-value">{updates.roomQuantity}</span>
-                </div>
-                <div className="summary-stat-item">
-                  <span className="summary-stat-label">Total de Reservas:</span>
-                  <span className="summary-stat-value">{updates.reservationQuantity}</span>
-                </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Estatísticas do Sistema</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {stats.map((stat) => (
+              <div
+                key={stat.label}
+                className="flex items-center justify-between"
+              >
+                <span className="text-muted-foreground">Total de {stat.label}:</span>
+                <span className="font-semibold">{stat.value}</span>
               </div>
-            </Card.Body>
-          </Card>
-        </div>
+            ))}
+          </CardContent>
+        </Card>
 
-        <div className="dashboard-summary-col">
-          <Card className="dashboard-summary-card">
-            <Card.Body>
-              <h5 className="summary-title">Distribuição de Recursos</h5>
-              <div className="distribution-chart">
-                <div className="distribution-item">
-                  <div className="distribution-label">
-                    <span>Usuários</span>
-                    <span className="distribution-percentage">
-                      {maxValue > 0
-                        ? (
-                            (updates.userQuantity /
-                              (updates.userQuantity +
-                                updates.roomQuantity +
-                                updates.reservationQuantity)) *
-                            100
-                          ).toFixed(1)
-                        : 0}
-                      %
-                    </span>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Distribuição de Recursos</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {stats.map((stat) => {
+              const percentage = total > 0 ? (stat.value / total) * 100 : 0
+              return (
+                <div
+                  key={stat.label}
+                  className="space-y-2"
+                >
+                  <div className="flex items-center justify-between text-sm">
+                    <span>{stat.label}</span>
+                    <span className="font-medium">{percentage.toFixed(1)}%</span>
                   </div>
-                  <ProgressBar
-                    now={
-                      maxValue > 0
-                        ? (updates.userQuantity /
-                            (updates.userQuantity +
-                              updates.roomQuantity +
-                              updates.reservationQuantity)) *
-                          100
-                        : 0
-                    }
-                    className="users-progress"
+                  <Progress
+                    value={percentage}
+                    className="h-2"
                   />
                 </div>
-                <div className="distribution-item">
-                  <div className="distribution-label">
-                    <span>Salas</span>
-                    <span className="distribution-percentage">
-                      {maxValue > 0
-                        ? (
-                            (updates.roomQuantity /
-                              (updates.userQuantity +
-                                updates.roomQuantity +
-                                updates.reservationQuantity)) *
-                            100
-                          ).toFixed(1)
-                        : 0}
-                      %
-                    </span>
-                  </div>
-                  <ProgressBar
-                    now={
-                      maxValue > 0
-                        ? (updates.roomQuantity /
-                            (updates.userQuantity +
-                              updates.roomQuantity +
-                              updates.reservationQuantity)) *
-                          100
-                        : 0
-                    }
-                    className="rooms-progress"
-                  />
-                </div>
-                <div className="distribution-item">
-                  <div className="distribution-label">
-                    <span>Reservas</span>
-                    <span className="distribution-percentage">
-                      {maxValue > 0
-                        ? (
-                            (updates.reservationQuantity /
-                              (updates.userQuantity +
-                                updates.roomQuantity +
-                                updates.reservationQuantity)) *
-                            100
-                          ).toFixed(1)
-                        : 0}
-                      %
-                    </span>
-                  </div>
-                  <ProgressBar
-                    now={
-                      maxValue > 0
-                        ? (updates.reservationQuantity /
-                            (updates.userQuantity +
-                              updates.roomQuantity +
-                              updates.reservationQuantity)) *
-                          100
-                        : 0
-                    }
-                    className="reservations-progress"
-                  />
-                </div>
-              </div>
-            </Card.Body>
-          </Card>
-        </div>
+              )
+            })}
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

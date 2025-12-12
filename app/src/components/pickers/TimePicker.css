@@ -1,63 +1,81 @@
 /* ========================================
-   Container e Labels
+   TimePicker - Blossom Theme
    ======================================== */
+
+/* Container e Labels */
 .picker-group {
   position: relative;
   margin-bottom: 1.5rem;
 }
 
 .picker-label {
-  color: #462500;
+  color: hsl(340 65% 20%);
   font-weight: 600;
   margin-bottom: 0.5rem;
   display: block;
   font-size: 0.95rem;
 }
 
-/* ========================================
-   Input Customizado
-   ======================================== */
+.dark .picker-label {
+  color: hsl(350 100% 95%);
+}
+
+/* Input Customizado */
 .time-picker-wrapper {
   width: 100%;
 }
 
 .time-picker-control {
   width: 100%;
-  background: #fffaf2;
-  border: 1px solid #d4c5a9;
+  background: hsl(350 100% 99%);
+  border: 1px solid hsl(350 100% 85%);
   border-radius: 8px;
   padding: 10px 12px;
-  color: #462500;
+  color: hsl(340 65% 20%);
   transition: all 0.2s ease;
   height: 44px;
   font-size: 0.95rem;
   cursor: pointer;
 }
 
+.dark .time-picker-control {
+  background: hsl(340 40% 13%);
+  border-color: hsl(350 30% 25%);
+  color: hsl(350 100% 95%);
+}
+
 .time-picker-control:hover {
-  border-color: #c4b599;
+  border-color: hsl(350 100% 73%);
+}
+
+.dark .time-picker-control:hover {
+  border-color: hsl(350 100% 65%);
 }
 
 .time-picker-control:focus {
-  border-color: #794000;
-  box-shadow: 0 4px 18px rgba(121, 64, 0, 0.12);
+  border-color: hsl(340 82% 44%);
+  box-shadow: 0 0 0 3px hsl(340 82% 44% / 0.15);
   outline: none;
-  background: #fff;
+  background: hsl(0 0% 100%);
+}
+
+.dark .time-picker-control:focus {
+  border-color: hsl(350 100% 73%);
+  box-shadow: 0 0 0 3px hsl(350 100% 73% / 0.2);
+  background: hsl(340 40% 15%);
 }
 
 .time-picker-control.is-invalid {
-  border-color: #dc3545;
+  border-color: hsl(0 84% 60%);
 }
 
 .time-picker-control.is-invalid:focus {
-  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.15);
+  box-shadow: 0 0 0 3px hsl(0 84% 60% / 0.15);
 }
 
-/* ========================================
-   Mensagens de Erro e Hints
-   ======================================== */
+/* Mensagens de Erro e Hints */
 .picker-error {
-  color: #dc3545;
+  color: hsl(0 84% 60%);
   font-size: 0.875rem;
   margin-top: 0.35rem;
   display: block;
@@ -69,10 +87,15 @@
   gap: 0.5rem;
   margin-top: 0.5rem;
   padding: 0.5rem 0.75rem;
-  background: #fff3cd;
-  border: 1px solid #ffc107;
+  background: hsl(350 100% 95%);
+  border: 1px solid hsl(350 100% 85%);
   border-radius: 6px;
   font-size: 0.85rem;
+}
+
+.dark .picker-hint {
+  background: hsl(340 40% 17%);
+  border-color: hsl(350 30% 25%);
 }
 
 .hint-icon {
@@ -80,21 +103,32 @@
 }
 
 .hint-text {
-  color: #856404;
+  color: hsl(340 73% 28%);
   font-weight: 500;
 }
 
+.dark .hint-text {
+  color: hsl(350 100% 78%);
+}
+
 /* ========================================
-   Customização do React-DatePicker (Time)
+   React-DatePicker Time - Blossom Theme
    ======================================== */
 
 /* Calendário principal */
 .react-datepicker.custom-time-calendar {
   font-family: inherit;
-  border: 1px solid #d4c5a9;
+  border: 1px solid hsl(350 100% 85%);
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 24px hsl(340 82% 44% / 0.12);
   overflow: hidden;
+  background: hsl(0 0% 100%);
+}
+
+.dark .react-datepicker.custom-time-calendar {
+  background: hsl(340 40% 13%);
+  border-color: hsl(350 30% 25%);
+  box-shadow: 0 8px 24px hsl(0 0% 0% / 0.3);
 }
 
 .react-datepicker__triangle {
@@ -103,26 +137,43 @@
 
 /* Header do seletor de tempo */
 .react-datepicker__header--time {
-  background: #fffaf2;
-  border-bottom: 1px solid #d4c5a9;
+  background: hsl(350 100% 97%);
+  border-bottom: 1px solid hsl(350 100% 85%);
   padding: 1rem;
 }
 
+.dark .react-datepicker__header--time {
+  background: hsl(340 40% 17%);
+  border-color: hsl(350 30% 25%);
+}
+
 .react-datepicker__header--time .react-datepicker-time__header {
-  color: #462500;
+  color: hsl(340 65% 20%);
   font-weight: 600;
   font-size: 1rem;
 }
 
+.dark .react-datepicker__header--time .react-datepicker-time__header {
+  color: hsl(350 100% 95%);
+}
+
 /* Container de tempo */
 .react-datepicker__time-container {
-  border-left: 1px solid #d4c5a9;
+  border-left: 1px solid hsl(350 100% 85%);
   width: 100%;
 }
 
+.dark .react-datepicker__time-container {
+  border-color: hsl(350 30% 25%);
+}
+
 .react-datepicker__time {
-  background: #fff;
+  background: hsl(0 0% 100%);
   border-radius: 0;
+}
+
+.dark .react-datepicker__time {
+  background: hsl(340 40% 13%);
 }
 
 .react-datepicker__time .react-datepicker__time-box {
@@ -143,60 +194,100 @@
 }
 
 .react-datepicker__time-list::-webkit-scrollbar-track {
-  background: #fffaf2;
+  background: hsl(350 100% 97%);
   border-radius: 10px;
+}
+
+.dark .react-datepicker__time-list::-webkit-scrollbar-track {
+  background: hsl(340 40% 17%);
 }
 
 .react-datepicker__time-list::-webkit-scrollbar-thumb {
-  background: #d4c5a9;
+  background: hsl(350 100% 85%);
   border-radius: 10px;
 }
 
+.dark .react-datepicker__time-list::-webkit-scrollbar-thumb {
+  background: hsl(350 30% 30%);
+}
+
 .react-datepicker__time-list::-webkit-scrollbar-thumb:hover {
-  background: #c4b599;
+  background: hsl(350 100% 73%);
+}
+
+.dark .react-datepicker__time-list::-webkit-scrollbar-thumb:hover {
+  background: hsl(350 100% 65%);
 }
 
 /* Itens de horário */
 .react-datepicker__time-list-item {
   padding: 0.75rem 1rem;
-  color: #462500;
+  color: hsl(340 65% 20%);
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 0.95rem;
   text-align: center;
 }
 
+.dark .react-datepicker__time-list-item {
+  color: hsl(350 100% 95%);
+}
+
 .react-datepicker__time-list-item:hover {
-  background: #f5e6d3;
+  background: hsl(350 100% 90%);
+}
+
+.dark .react-datepicker__time-list-item:hover {
+  background: hsl(340 40% 22%);
 }
 
 /* Horário selecionado */
 .react-datepicker__time-list-item--selected {
-  background: #794000 !important;
-  color: #fff !important;
+  background: hsl(340 82% 44%) !important;
+  color: hsl(350 100% 97%) !important;
   font-weight: 600;
 }
 
+.dark .react-datepicker__time-list-item--selected {
+  background: hsl(350 100% 73%) !important;
+  color: hsl(340 40% 7%) !important;
+}
+
 .react-datepicker__time-list-item--selected:hover {
-  background: #5a3000 !important;
+  background: hsl(340 85% 38%) !important;
+}
+
+.dark .react-datepicker__time-list-item--selected:hover {
+  background: hsl(350 100% 65%) !important;
 }
 
 /* ========================================
-   HORÁRIOS DESABILITADOS - Principal Feature
+   HORÁRIOS DESABILITADOS
    ======================================== */
 .react-datepicker__time-list-item--disabled,
 .disabled-time {
   position: relative;
-  background: #f8f9fa !important;
-  color: #adb5bd !important;
+  background: hsl(350 20% 95%) !important;
+  color: hsl(350 20% 60%) !important;
   cursor: not-allowed !important;
   text-decoration: line-through;
   opacity: 0.6;
 }
 
+.dark .react-datepicker__time-list-item--disabled,
+.dark .disabled-time {
+  background: hsl(340 30% 18%) !important;
+  color: hsl(350 20% 45%) !important;
+}
+
 .react-datepicker__time-list-item--disabled:hover,
 .disabled-time:hover {
-  background: #e9ecef !important;
+  background: hsl(350 20% 90%) !important;
+}
+
+.dark .react-datepicker__time-list-item--disabled:hover,
+.dark .disabled-time:hover {
+  background: hsl(340 30% 22%) !important;
 }
 
 /* Marca visual extra para horários desabilitados */
@@ -248,22 +339,34 @@
    Acessibilidade
    ======================================== */
 .react-datepicker__time-list-item:focus {
-  outline: 2px solid #794000;
+  outline: 2px solid hsl(340 82% 44%);
   outline-offset: -2px;
+}
+
+.dark .react-datepicker__time-list-item:focus {
+  outline-color: hsl(350 100% 73%);
 }
 
 .time-picker-control:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-  background: #e9ecef;
+  background: hsl(350 20% 90%);
+}
+
+.dark .time-picker-control:disabled {
+  background: hsl(340 30% 18%);
 }
 
 /* ========================================
    States e Feedback Visual
    ======================================== */
 .time-picker-control::placeholder {
-  color: #c4b599;
+  color: hsl(350 40% 60%);
   opacity: 1;
+}
+
+.dark .time-picker-control::placeholder {
+  color: hsl(350 30% 50%);
 }
 
 .time-picker-control:read-only {
@@ -272,6 +375,26 @@
 
 /* Indicador de foco ativo */
 .time-picker-wrapper:focus-within .time-picker-control {
-  border-color: #794000;
-  box-shadow: 0 4px 18px rgba(121, 64, 0, 0.12);
+  border-color: hsl(340 82% 44%);
+  box-shadow: 0 0 0 3px hsl(340 82% 44% / 0.15);
+}
+
+.dark .time-picker-wrapper:focus-within .time-picker-control {
+  border-color: hsl(350 100% 73%);
+  box-shadow: 0 0 0 3px hsl(350 100% 73% / 0.2);
+}
+
+/* ========================================
+   Popper positioning
+   ======================================== */
+.react-datepicker-popper {
+  z-index: 50;
+}
+
+.react-datepicker-popper[data-placement^="bottom"] {
+  padding-top: 10px;
+}
+
+.react-datepicker-popper[data-placement^="top"] {
+  padding-bottom: 10px;
 }

@@ -1,10 +1,10 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
-import { Alert } from "../../components/alert/Alert"
-import { BaseForm } from "../../components/form/BaseForm"
-import { FormInput } from "../../components/form/inputs/FormInput"
-import { forgotPassword } from "../../service/user/user.api"
+import { Alert } from "@/components/alert/Alert"
+import { BaseForm } from "@/components/form/BaseForm"
+import { FormInput } from "@/components/form/inputs/FormInput"
+import { forgotPassword } from "@/service/user/user.api"
 
 export type ForgotPasswordFormData = {
   email: string

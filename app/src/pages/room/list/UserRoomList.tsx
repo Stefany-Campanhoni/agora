@@ -1,95 +1,94 @@
 import { useEffect, useState } from "react"
-import { Col, Container, Row, Spinner } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
-import { Alert, type AlertType } from "../../../components/alert/Alert"
-import { RoomCard } from "../../../components/room/RoomCard"
-import { useAuth } from "../../../hooks/useAuth"
-import { getAllRooms } from "../../../service/room/room.api"
-import type { Room } from "../../../service/room/room.types"
-import "./RoomList.css"
+import { Loader2 } from "lucide-react"
+import { useSelector } from "react-redux"
+
+import type { RootState } from "@/store"
+import { RoomCard } from "@/components/room/RoomCard"
+import { Alert } from "@/components/alert/Alert"
+import { getAllRooms } from "@/service/room/room.api"
+import type { Room } from "@/service/room/room.types"
 
 export function UserRoomList() {
   const [rooms, setRooms] = useState<Room[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [displayWarning, setDisplayWarning] = useState(false)
-  const [alert, setAlert] = useState<{ message: string; type: AlertType } | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [alert, setAlert] = useState<{
+    show: boolean
+    message: string
+    type: "success" | "error" | "warning"
+  }>({ show: false, message: "", type: "success" })
+
   const navigate = useNavigate()
-  const { isAuthenticated } = useAuth()
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated)
 
   useEffect(() => {
-    loadRooms()
+    fetchRooms()
   }, [])
 
-  const loadRooms = async () => {
+  const fetchRooms = async () => {
     try {
-      setIsLoading(true)
-      const response = await getAllRooms(false)
+      setLoading(true)
+      const response = await getAllRooms()
       setRooms(response.rooms)
     } catch (error) {
-      console.error("Erro ao carregar salas:", error)
-      setAlert({ message: "Erro ao carregar salas.", type: "error" })
+      setAlert({
+        show: true,
+        message: "Erro ao carregar salas. Tente novamente.",
+        type: "error",
+      })
     } finally {
-      setIsLoading(false)
+      setLoading(false)
     }
   }
 
-  if (isLoading) {
+  const handleReserve = (room: Room) => {
+    if (!isAuthenticated) {
+      setAlert({
+        show: true,
+        message: "Você precisa estar logado para fazer uma reserva.",
+        type: "warning",
+      })
+      return
+    }
+    navigate(`/reservations/create/${room.id}`)
+  }
+
+  if (loading) {
     return (
-      <Container className="rooms-container d-flex justify-content-center align-items-center">
-        <Spinner
-          animation="border"
-          role="status"
-        >
-          <span className="visually-hidden">Carregando...</span>
-        </Spinner>
-      </Container>
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
     )
   }
 
-  const handleReserve = (roomId: number) => {
-    if (!isAuthenticated) {
-      setDisplayWarning(true)
-      return
-    }
-
-    navigate(`${roomId}/reserve`)
-  }
-
   return (
-    <Container className="rooms-container">
-      {alert && (
+    <div className="container mx-auto px-4 py-6">
+      <h1 className="text-2xl font-bold text-foreground mb-6">Salas Disponíveis</h1>
+
+      {alert.show && (
         <Alert
-          message={alert.message}
           type={alert.type}
-          onClose={() => setAlert(null)}
-        />
-      )}
-      {displayWarning && (
-        <Alert
-          type="warning"
-          onClose={() => setDisplayWarning(false)}
+          onClose={() => setAlert((prev) => ({ ...prev, show: false }))}
         >
-          Você precisa estar logado para reservar uma sala.
-          <br />
-          Clique aqui para <a href="/user/login">fazer login</a>.
+          {alert.message}
         </Alert>
       )}
 
-      <Row className="rooms-grid g-4 justify-content-center">
-        {rooms.map((room) => (
-          <Col
-            key={room.id}
-            md={6}
-            lg={4}
-            className="d-flex"
-          >
+      {rooms.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">Nenhuma sala disponível no momento.</p>
+        </div>
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {rooms.map((room) => (
             <RoomCard
+              key={room.id}
               room={room}
-              onReserve={handleReserve}
+              onReserve={() => handleReserve(room)}
             />
-          </Col>
-        ))}
-      </Row>
-    </Container>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }

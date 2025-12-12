@@ -1,11 +1,11 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
-import { Alert, type AlertType } from "../../components/alert/Alert"
-import { BaseForm } from "../../components/form/BaseForm"
-import { FormInput } from "../../components/form/inputs/FormInput"
-import { useAuth } from "../../hooks/useAuth"
-import { registerUser } from "../../service/user/user.api"
+import { Alert, type AlertType } from "@/components/alert/Alert"
+import { BaseForm } from "@/components/form/BaseForm"
+import { FormInput } from "@/components/form/inputs/FormInput"
+import { useAuth } from "@/hooks/useAuth"
+import { registerUser } from "@/service/user/user.api"
 
 export type RegisterFormData = {
   name: string

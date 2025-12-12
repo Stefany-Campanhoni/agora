@@ -1,10 +1,12 @@
-import Nav from "react-bootstrap/Nav"
 import { useLocation, useNavigate } from "react-router-dom"
-import logo from "../../assets/logo.png"
-import { useModal } from "../../hooks/useModal"
-import { UserModal } from "../modal/UserModal"
-import "./header.css"
-import { useAuth } from "../../hooks/useAuth"
+import { Home, DoorOpen, CalendarDays, User } from "lucide-react"
+import logo from "@/assets/logo.png"
+import { useModal } from "@/hooks/useModal"
+import { useAuth } from "@/hooks/useAuth"
+import { UserModal } from "@/components/modal/UserModal"
+import { ThemeToggle } from "@/components/theme/ThemeToggle"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 export function Header() {
   const { isModalOpen, toggleModal } = useModal()
@@ -16,78 +18,87 @@ export function Header() {
     toggleModal()
   }
 
+  const navItems = [
+    { path: "/home", label: "Home", icon: Home },
+    { path: "/rooms", label: "Salas Disponíveis", icon: DoorOpen },
+    ...(isAuthenticated
+      ? [{ path: "/reservations", label: "Minhas Reservas", icon: CalendarDays }]
+      : []),
+  ]
+
+  const isActive = (path: string) => location.pathname === path
+
   return (
     <>
       <UserModal
         show={isModalOpen}
         onHide={handleUserIconClick}
       />
-      <div className="header-container">
-        <div className="logo-container">
-          <img
-            src={logo}
-            alt="Agora Logo"
-            className="logo"
-          />
-        </div>
-        <Nav
-          variant="pills"
-          activeKey={location.pathname}
-          className="header-nav"
-          onSelect={(selectedKey) => {
-            navigate(selectedKey || "/home")
-          }}
-        >
-          <Nav.Item>
-            <Nav.Link
-              eventKey="/home"
-              className="nav-link text-light"
-            >
-              Home
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link
-              eventKey="/rooms"
-              className="nav-link text-light"
-            >
-              Salas Disponíveis
-            </Nav.Link>
-          </Nav.Item>
-          {isAuthenticated && (
-            <Nav.Item>
-              <Nav.Link
-                eventKey="/reservations"
-                className="nav-link text-light"
+
+      <header className="sticky top-0 z-50 w-full border-b bg-primary text-primary-foreground shadow-sm">
+        <div className="container flex h-16 items-center justify-between px-4">
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <img
+              src={logo}
+              alt="Agora Logo"
+              className="h-10 w-auto cursor-pointer"
+              onClick={() => navigate("/home")}
+            />
+          </div>
+
+          {/* Navigation */}
+          <nav className="hidden md:flex items-center gap-1">
+            {navItems.map((item) => (
+              <Button
+                key={item.path}
+                variant="ghost"
+                onClick={() => navigate(item.path)}
+                className={cn(
+                  "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10",
+                  isActive(item.path) && "bg-primary-foreground/20 text-primary-foreground",
+                )}
               >
-                Minhas Reservas
-              </Nav.Link>
-            </Nav.Item>
-          )}
-        </Nav>
-        <div
-          className="user-icon"
-          onClick={handleUserIconClick}
-        >
-          <svg
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="user-icon-svg"
-          >
-            <path
-              d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
-              fill="currentColor"
-            />
-            <path
-              d="M12 14C7.58172 14 4 17.5817 4 22H20C20 17.5817 16.4183 14 12 14Z"
-              fill="currentColor"
-            />
-          </svg>
+                <item.icon className="mr-2 h-4 w-4" />
+                {item.label}
+              </Button>
+            ))}
+          </nav>
+
+          {/* Mobile Navigation */}
+          <nav className="flex md:hidden items-center gap-1">
+            {navItems.map((item) => (
+              <Button
+                key={item.path}
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate(item.path)}
+                className={cn(
+                  "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10",
+                  isActive(item.path) && "bg-primary-foreground/20 text-primary-foreground",
+                )}
+              >
+                <item.icon className="h-5 w-5" />
+                <span className="sr-only">{item.label}</span>
+              </Button>
+            ))}
+          </nav>
+
+          {/* Right side actions */}
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleUserIconClick}
+              className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
+            >
+              <User className="h-5 w-5" />
+              <span className="sr-only">Menu do usuário</span>
+            </Button>
+          </div>
         </div>
-      </div>
+      </header>
     </>
   )
 }

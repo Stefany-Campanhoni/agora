@@ -1,5 +1,6 @@
 import { useEffect } from "react"
-import "./Alert.css"
+import { X, AlertCircle, CheckCircle, AlertTriangle } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 export type AlertType = "error" | "success" | "warning"
 
@@ -10,6 +11,18 @@ export type AlertProps = {
   autoClose?: boolean
   autoCloseDuration?: number
   children?: React.ReactNode
+}
+
+const alertStyles = {
+  error: "bg-destructive/10 border-destructive text-destructive",
+  success: "bg-green-50 border-green-500 text-green-700 dark:bg-green-950/20 dark:text-green-400",
+  warning: "bg-amber-50 border-amber-500 text-amber-700 dark:bg-amber-950/20 dark:text-amber-400",
+}
+
+const iconStyles = {
+  error: "text-destructive",
+  success: "text-green-500 dark:text-green-400",
+  warning: "text-amber-500 dark:text-amber-400",
 }
 
 export function Alert({
@@ -30,124 +43,36 @@ export function Alert({
   const getIcon = () => {
     switch (type) {
       case "error":
-        return (
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="alert-icon"
-          >
-            <circle
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-            <path
-              d="M12 7V12"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <circle
-              cx="12"
-              cy="16"
-              r="1"
-              fill="currentColor"
-            />
-          </svg>
-        )
+        return <AlertCircle className={cn("h-5 w-5", iconStyles[type])} />
       case "success":
-        return (
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="alert-icon"
-          >
-            <circle
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-            <path
-              d="M9 12L11 14L15 10"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        )
+        return <CheckCircle className={cn("h-5 w-5", iconStyles[type])} />
       case "warning":
-        return (
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="alert-icon"
-          >
-            <path
-              d="M12 2L2 20H22L12 2Z"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M12 9V13"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <circle
-              cx="12"
-              cy="17"
-              r="1"
-              fill="currentColor"
-            />
-          </svg>
-        )
+        return <AlertTriangle className={cn("h-5 w-5", iconStyles[type])} />
       default:
         return null
     }
   }
 
   return (
-    <div className={`alert alert-${type}`}>
-      <div className="alert-content">
-        <div className="alert-icon-wrapper">{getIcon()}</div>
-        <p className="alert-message">{message ? message : children}</p>
-        <button
-          className="alert-close-btn"
-          onClick={onClose}
-          aria-label="Fechar alerta"
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M18 6L6 18M6 6L18 18"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-      </div>
+    <div
+      className={cn(
+        "relative flex items-center gap-3 rounded-lg border p-4 shadow-sm",
+        alertStyles[type],
+      )}
+      role="alert"
+    >
+      <div className="flex-shrink-0">{getIcon()}</div>
+      <p className="flex-1 text-sm font-medium">{message ? message : children}</p>
+      <button
+        onClick={onClose}
+        className={cn(
+          "flex-shrink-0 rounded-md p-1 transition-colors hover:bg-black/10 dark:hover:bg-white/10",
+          iconStyles[type],
+        )}
+        aria-label="Fechar alerta"
+      >
+        <X className="h-4 w-4" />
+      </button>
     </div>
   )
 }

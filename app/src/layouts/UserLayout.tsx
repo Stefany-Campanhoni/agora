@@ -1,9 +1,8 @@
 import { Outlet } from "react-router-dom"
-import "./UserLayout.css"
 
 export function UserLayout() {
   return (
-    <div className="user-layout">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Outlet />
     </div>
   )

@@ -1,12 +1,12 @@
 import { useState } from "react"
-import { Button } from "react-bootstrap"
 import { useForm } from "react-hook-form"
 import { useNavigate, useSearchParams } from "react-router-dom"
-import { Alert, type AlertType } from "../../components/alert/Alert"
-import { BaseForm } from "../../components/form/BaseForm"
-import { FormInput } from "../../components/form/inputs/FormInput"
-import { resetPassword } from "../../service/user/user.api"
-import type { ResetPasswordPayload } from "../../service/user/user.types"
+import { Alert, type AlertType } from "@/components/alert/Alert"
+import { BaseForm } from "@/components/form/BaseForm"
+import { FormInput } from "@/components/form/inputs/FormInput"
+import { Button } from "@/components/ui/button"
+import { resetPassword } from "@/service/user/user.api"
+import type { ResetPasswordPayload } from "@/service/user/user.types"
 
 export type ResetPasswordFormData = {
   password: string

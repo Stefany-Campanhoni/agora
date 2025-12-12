@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
-import { Badge, Card, Container } from "react-bootstrap"
-import { getUserReservations } from "../../service/reservation/reservation.api"
-import type { Reservation, ReservationList } from "../../service/reservation/reservation.types"
-import "./UserReservations.css"
+import { Loader2, MapPin, Users, ArrowRight, CalendarDays } from "lucide-react"
+
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { getUserReservations } from "@/service/reservation/reservation.api"
+import type { Reservation, ReservationList } from "@/service/reservation/reservation.types"
 
 enum Status {
   UPCOMING = "Próxima",
@@ -57,7 +59,7 @@ export function UserReservations() {
     }
   }
 
-  const isUpcoming = (reservation: Reservation): Status => {
+  const getStatus = (reservation: Reservation): Status => {
     const reservationStart = new Date(reservation.startDateTime)
     const reservationEnd = new Date(reservation.endDateTime)
     const now = new Date()
@@ -73,6 +75,21 @@ export function UserReservations() {
     return Status.IN_PROGRESS
   }
 
+  const getStatusVariant = (
+    status: Status,
+  ): "default" | "secondary" | "destructive" | "outline" => {
+    switch (status) {
+      case Status.UPCOMING:
+        return "default"
+      case Status.IN_PROGRESS:
+        return "secondary"
+      case Status.DONE:
+        return "outline"
+      default:
+        return "default"
+    }
+  }
+
   const isSameDay = (start: string, end: string) => {
     const startDate = new Date(start)
     const endDate = new Date(end)
@@ -85,187 +102,113 @@ export function UserReservations() {
 
   if (loading) {
     return (
-      <Container className="user-reservations-container">
-        <div className="reservations-loading">
-          <p>Carregando suas reservas...</p>
-        </div>
-      </Container>
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
     )
   }
 
   return (
-    <Container className="user-reservations-container">
-      <div className="reservations-header">
-        <h2>Minhas Reservas</h2>
-        <p className="reservations-subtitle">Gerencie e visualize todas as suas reservas</p>
+    <div className="container mx-auto px-4 py-6">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-foreground">Minhas Reservas</h1>
+        <p className="text-muted-foreground mt-1">Gerencie e visualize todas as suas reservas</p>
       </div>
 
       {userReservations && userReservations.items.length > 0 ? (
-        <div className="reservations-grid">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {userReservations.items.map((reservation) => {
             const start = formatDateTime(reservation.startDateTime)
             const end = formatDateTime(reservation.endDateTime)
-            const upcoming = isUpcoming(reservation)
+            const status = getStatus(reservation)
             const sameDay = isSameDay(reservation.startDateTime, reservation.endDateTime)
 
             return (
               <Card
                 key={reservation.id}
-                className="reservation-card"
+                className="overflow-hidden hover:shadow-lg transition-shadow duration-300"
               >
-                <Card.Body>
-                  <div className="reservation-card-header">
-                    <div className="reservation-card-title">
-                      <h5 className="reservation-room-name">{reservation.room.name}</h5>
-                      {reservation.room.description && (
-                        <p className="reservation-description">{reservation.room.description}</p>
-                      )}
+                <CardContent className="p-0">
+                  {/* Header */}
+                  <div className="p-4 border-b border-border">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-foreground truncate">
+                          {reservation.room.name}
+                        </h3>
+                        {reservation.room.description && (
+                          <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+                            {reservation.room.description}
+                          </p>
+                        )}
+                      </div>
+                      <Badge variant={getStatusVariant(status)}>{status}</Badge>
                     </div>
-                    <Badge
-                      bg={upcoming === Status.UPCOMING ? "success" : "secondary"}
-                      className="reservation-card-badge"
-                    >
-                      {upcoming}
-                    </Badge>
                   </div>
 
-                  <div className="reservation-ticket">
-                    <div className="ticket-route">
-                      <div className="ticket-time-block">
-                        <div className="ticket-time">{start.time}</div>
-                        <div className="ticket-date">{start.shortDate}</div>
+                  {/* Time Route */}
+                  <div className="p-4 bg-muted/30">
+                    <div className="flex items-center justify-between gap-4">
+                      {/* Start Time */}
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-foreground">{start.time}</div>
+                        <div className="text-sm text-muted-foreground">{start.shortDate}</div>
                         {!sameDay && (
-                          <div className="ticket-year">
+                          <div className="text-xs text-muted-foreground">
                             {new Date(reservation.startDateTime).getFullYear()}
                           </div>
                         )}
                       </div>
 
-                      <div className="ticket-connector">
-                        <div className="connector-arrow">
-                          <svg
-                            width="40"
-                            height="20"
-                            viewBox="0 0 60 20"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M2 10H58M58 10L50 2M58 10L50 18"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </div>
+                      {/* Arrow */}
+                      <div className="flex-1 flex justify-center">
+                        <ArrowRight className="h-5 w-5 text-primary" />
                       </div>
 
-                      <div className="ticket-time-block">
-                        <div className="ticket-time">{end.time}</div>
-                        <div className="ticket-date">{end.shortDate}</div>
+                      {/* End Time */}
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-foreground">{end.time}</div>
+                        <div className="text-sm text-muted-foreground">{end.shortDate}</div>
                         {!sameDay && (
-                          <div className="ticket-year">
+                          <div className="text-xs text-muted-foreground">
                             {new Date(reservation.endDateTime).getFullYear()}
                           </div>
                         )}
                       </div>
                     </div>
+                  </div>
 
-                    <div className="ticket-divider"></div>
-
-                    <div className="ticket-info">
-                      <div className="ticket-info-item">
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M21 10C21 17 12 23 12 23S3 17 3 10C3 7.61 3.95 5.32 5.64 3.64C7.32 1.95 9.61 1 12 1S16.68 1.95 18.36 3.64C20.05 5.32 21 7.61 21 10Z"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <circle
-                            cx="12"
-                            cy="10"
-                            r="3"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          />
-                        </svg>
-                        <div>
-                          <div className="ticket-label">Localização</div>
-                          <div className="ticket-value">{reservation.room.location}</div>
-                        </div>
-                      </div>
-
-                      <div className="ticket-info-item">
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <circle
-                            cx="9"
-                            cy="7"
-                            r="4"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          />
-                          <path
-                            d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                        <div>
-                          <div className="ticket-label">Capacidade</div>
-                          <div className="ticket-value">
-                            {reservation.room.capacity}{" "}
-                            {reservation.room.capacity === 1 ? "pessoa" : "pessoas"}
-                          </div>
-                        </div>
-                      </div>
+                  {/* Room Info */}
+                  <div className="p-4 space-y-3">
+                    <div className="flex items-center gap-2 text-sm">
+                      <MapPin className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-muted-foreground">Localização:</span>
+                      <span className="text-foreground">{reservation.room.location}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <Users className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-muted-foreground">Capacidade:</span>
+                      <span className="text-foreground">
+                        {reservation.room.capacity}{" "}
+                        {reservation.room.capacity === 1 ? "pessoa" : "pessoas"}
+                      </span>
                     </div>
                   </div>
-                </Card.Body>
+                </CardContent>
               </Card>
             )
           })}
         </div>
       ) : (
-        <div className="reservations-empty">
-          <div className="empty-icon">📅</div>
-          <h4>Nenhuma reserva encontrada</h4>
-          <p>
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+          <CalendarDays className="h-16 w-16 text-muted-foreground/50 mb-4" />
+          <h3 className="text-lg font-medium text-foreground">Nenhuma reserva encontrada</h3>
+          <p className="text-muted-foreground mt-2 max-w-sm">
             Você ainda não possui reservas. Explore as salas disponíveis e faça sua primeira
             reserva!
           </p>
         </div>
       )}
-    </Container>
+    </div>
   )
 }

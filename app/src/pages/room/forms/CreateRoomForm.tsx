@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react"
-import { Form } from "react-bootstrap"
 import { useForm } from "react-hook-form"
 import { useNavigate, useParams } from "react-router-dom"
-import { Alert, type AlertType } from "../../../components/alert/Alert"
-import { BaseForm } from "../../../components/form/BaseForm"
-import { FormInput } from "../../../components/form/inputs/FormInput"
-import { createRoom, getRoomById, updateRoom } from "../../../service/room/room.api"
-import type { Room, RoomRequest } from "../../../service/room/room.types"
-import "./CreateRoomForm.css"
+import { Loader2 } from "lucide-react"
+
+import { Alert } from "@/components/alert/Alert"
+import { BaseForm } from "@/components/form/BaseForm"
+import { FormInput } from "@/components/form/inputs/FormInput"
+import { Label } from "@/components/ui/label"
+import { createRoom, getRoomById, updateRoom } from "@/service/room/room.api"
+import type { Room, RoomRequest } from "@/service/room/room.types"
 
 export type RoomFormData = {
   name: string
@@ -20,9 +21,14 @@ export function RoomForm() {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const [isLoading, setIsLoading] = useState(false)
+  const [pageLoading, setPageLoading] = useState(!!id)
   const [initialData, setInitialData] = useState<Partial<Room>>({})
   const [isEditMode, setIsEditMode] = useState(false)
-  const [alert, setAlert] = useState<{ message: string; type: AlertType } | null>(null)
+  const [alert, setAlert] = useState<{
+    message: string
+    type: "success" | "error" | "warning"
+  } | null>(null)
+
   const {
     register,
     handleSubmit,
@@ -44,7 +50,7 @@ export function RoomForm() {
     } else {
       setIsEditMode(false)
       setInitialData({})
-      setIsLoading(false)
+      setPageLoading(false)
       reset({
         name: "",
         description: "",
@@ -74,7 +80,7 @@ export function RoomForm() {
 
   const loadRoom = async (roomId: number) => {
     try {
-      setIsLoading(true)
+      setPageLoading(true)
       const room = await getRoomById(roomId)
       setInitialData(room)
     } catch (error) {
@@ -82,7 +88,7 @@ export function RoomForm() {
       setAlert({ message: "Erro ao carregar dados da sala", type: "error" })
       navigate("/rooms")
     } finally {
-      setIsLoading(false)
+      setPageLoading(false)
     }
   }
 
@@ -101,7 +107,10 @@ export function RoomForm() {
       setTimeout(() => navigate("/rooms"), 2000)
     } catch (error) {
       console.error("Erro ao salvar sala:", error)
-      setAlert({ message: "Erro ao salvar sala. Tente novamente.", type: "error" })
+      setAlert({
+        message: "Erro ao salvar sala. Tente novamente.",
+        type: "error",
+      })
     } finally {
       setIsLoading(false)
     }
@@ -110,20 +119,31 @@ export function RoomForm() {
   const title = !isEditMode ? "Criar Sala" : "Editar Sala"
   const submitText = !isEditMode ? "Criar Sala" : "Salvar Alterações"
 
+  if (pageLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    )
+  }
+
   return (
-    <div className="room-form-container">
+    <div className="container mx-auto px-4 py-6 max-w-2xl">
       {alert && (
         <Alert
-          message={alert.message}
           type={alert.type}
           onClose={() => setAlert(null)}
-        />
+        >
+          {alert.message}
+        </Alert>
       )}
+
       <BaseForm
         title={title}
         onSubmit={handleSubmit(handleFormSubmit)}
         submitText={submitText}
         isLoading={isLoading}
+        showBackButton
       >
         <FormInput
           label="Nome da Sala"
@@ -138,21 +158,19 @@ export function RoomForm() {
           error={errors.name}
         />
 
-        <Form.Group className="mb-3">
-          <Form.Label>Descrição</Form.Label>
-          <Form.Control
-            as="textarea"
+        <div className="space-y-2">
+          <Label htmlFor="description">Descrição</Label>
+          <textarea
+            id="description"
             rows={3}
             placeholder="Digite uma descrição para a sala (opcional)"
+            className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
             {...register("description")}
-            isInvalid={!!errors.description}
           />
           {errors.description && (
-            <Form.Control.Feedback type="invalid">
-              {errors.description.message}
-            </Form.Control.Feedback>
+            <p className="text-sm text-destructive">{errors.description.message}</p>
           )}
-        </Form.Group>
+        </div>
 
         <FormInput
           label="Capacidade"

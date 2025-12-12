@@ -1,7 +1,8 @@
 import type { HTMLInputTypeAttribute } from "react"
-import { Form, type FormControlProps } from "react-bootstrap"
 import type { FieldError, UseFormRegisterReturn } from "react-hook-form"
-import "./FormInput.css"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils"
 
 export type FormInputProps = {
   label: string
@@ -9,7 +10,9 @@ export type FormInputProps = {
   placeholder?: string
   register: UseFormRegisterReturn
   error?: FieldError
-} & FormControlProps
+  className?: string
+  disabled?: boolean
+}
 
 export function FormInput({
   label,
@@ -17,27 +20,26 @@ export function FormInput({
   placeholder,
   register,
   error,
-  ...props
+  className,
+  disabled,
 }: FormInputProps) {
   return (
-    <Form.Group className="mb-3 form-input-group">
-      <Form.Label className="form-input-label">{label}</Form.Label>
-      <Form.Control
+    <div className="space-y-2">
+      <Label
+        htmlFor={register.name}
+        className="text-sm font-medium"
+      >
+        {label}
+      </Label>
+      <Input
+        id={register.name}
         type={type}
         placeholder={placeholder}
-        className="form-input-control"
+        className={cn(error && "border-destructive focus-visible:ring-destructive", className)}
+        disabled={disabled}
         {...register}
-        isInvalid={!!error}
-        {...props}
       />
-      {error && (
-        <Form.Control.Feedback
-          type="invalid"
-          className="form-input-feedback"
-        >
-          {error.message}
-        </Form.Control.Feedback>
-      )}
-    </Form.Group>
+      {error && <p className="text-sm text-destructive">{error.message}</p>}
+    </div>
   )
 }

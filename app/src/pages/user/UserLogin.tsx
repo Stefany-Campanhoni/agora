@@ -1,11 +1,11 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
-import { Alert } from "../../components/alert/Alert"
-import { BaseForm } from "../../components/form/BaseForm"
-import { FormInput } from "../../components/form/inputs/FormInput"
-import { useAuth } from "../../hooks/useAuth"
-import { loginUser } from "../../service/user/user.api"
+import { Alert } from "@/components/alert/Alert"
+import { BaseForm } from "@/components/form/BaseForm"
+import { FormInput } from "@/components/form/inputs/FormInput"
+import { useAuth } from "@/hooks/useAuth"
+import { loginUser } from "@/service/user/user.api"
 
 export type LoginFormData = {
   email: string
@@ -57,16 +57,14 @@ export function UserLogin() {
         submitText="Entrar"
         isLoading={isLoading}
         footerContent={
-          <div className="base-form-footer">
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault()
-                handleForgotPassword()
-              }}
+          <div className="mt-4 text-center">
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              className="text-sm text-primary hover:underline"
             >
               Esqueci minha senha
-            </a>
+            </button>
           </div>
         }
       >
